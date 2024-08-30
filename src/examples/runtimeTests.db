@@ -1,0 +1,10 @@
+const const x = 5!
+x + 5!
+const const y = 8!
+x + y!
+
+var var z!
+if (1 < 5) {
+	z = 5!
+}
+z!

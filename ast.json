@@ -1,0 +1,120 @@
+{
+  "kindName": "BlockStatement",
+  "body": [
+    {
+      "kindName": "VariableDeclarationStatement",
+      "identifier": "x",
+      "modifiers": [
+        false,
+        false
+      ],
+      "value": {
+        "kindName": "NumberExpression",
+        "value": 5
+      }
+    },
+    {
+      "kindName": "ExpressionStatement",
+      "expression": {
+        "kindName": "BinaryExpression",
+        "left": {
+          "kindName": "SymbolExpression",
+          "symbol": "x"
+        },
+        "operator": {
+          "value": "+",
+          "type": 28
+        },
+        "right": {
+          "kindName": "NumberExpression",
+          "value": 5
+        }
+      }
+    },
+    {
+      "kindName": "VariableDeclarationStatement",
+      "identifier": "y",
+      "modifiers": [
+        false,
+        false
+      ],
+      "value": {
+        "kindName": "NumberExpression",
+        "value": 8
+      }
+    },
+    {
+      "kindName": "ExpressionStatement",
+      "expression": {
+        "kindName": "BinaryExpression",
+        "left": {
+          "kindName": "SymbolExpression",
+          "symbol": "x"
+        },
+        "operator": {
+          "value": "+",
+          "type": 28
+        },
+        "right": {
+          "kindName": "SymbolExpression",
+          "symbol": "y"
+        }
+      }
+    },
+    {
+      "kindName": "VariableDeclarationStatement",
+      "identifier": "z",
+      "modifiers": [
+        true,
+        true
+      ]
+    },
+    {
+      "kindName": "IfStatement",
+      "test": {
+        "kindName": "BinaryExpression",
+        "left": {
+          "kindName": "NumberExpression",
+          "value": 1
+        },
+        "operator": {
+          "value": "<",
+          "type": 18
+        },
+        "right": {
+          "kindName": "NumberExpression",
+          "value": 5
+        }
+      },
+      "consequent": {
+        "kindName": "BlockStatement",
+        "body": [
+          {
+            "kindName": "ExpressionStatement",
+            "expression": {
+              "kindName": "AssignmentExpression",
+              "assigne": {
+                "kindName": "SymbolExpression",
+                "symbol": "z"
+              },
+              "assignedValue": {
+                "kindName": "NumberExpression",
+                "value": 5
+              }
+            }
+          },
+          {
+            "kindName": "EndOfBlockStatement"
+          }
+        ]
+      }
+    },
+    {
+      "kindName": "ExpressionStatement",
+      "expression": {
+        "kindName": "SymbolExpression",
+        "symbol": "z"
+      }
+    }
+  ]
+}

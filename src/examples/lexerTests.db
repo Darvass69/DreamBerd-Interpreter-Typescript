@@ -1,0 +1,54 @@
+const const x = -(5 + 5) * 8!
+var const x = 5!
+const var x = 5!
+var var x = 5!
+var var x!
+++x!
+
+function a() => {
+	var var x!
+}
+
+async function a() => {
+	var var x!
+}
+
+function a() => {var var x!}
+
+function a() => 5 + 5!
+
+function a(b, c, d) => {b + c - d^b!}
+function a(b) => -b!
+
+
+var var x = 5!
+x = "Hello"!
+
+if (x == 42 || x < 26 && x % 5 == 0) {
+	const const y = "hello world"!
+} else if (x == 69) {
+	const const y = "nice"! 
+} else {
+	const const y = "hello world"!
+}
+
+
+a.b!
+
+a.b.c.d.e.f.g.h!
+
+a[b].c.d[e][f + g - 5][1 == 1] += 5!
+
+
+a()!
+
+b(1)!
+
+c(1,2,3,4,5)!
+
+a()()().b(a(), 2 + 2)
+
+
+current x!
+next x!
+previous x!
