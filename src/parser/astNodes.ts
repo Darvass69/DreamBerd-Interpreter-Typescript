@@ -1,6 +1,6 @@
 import { Token, TokenType } from "../lexer/token";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const none = {} as any;
 
 /* -------------------------- Node types and utils -------------------------- */
@@ -66,8 +66,8 @@ export type AstNodeType<T extends AstNodeKind> =
   : T extends AstNodeKind.MemberExpression ? MemberExpression
   : T extends AstNodeKind.CallExpression ? CallExpression
 
-  : T extends AstNodeKind.BranchingStatement ? BranchingStatement
-  : T extends AstNodeKind.BranchingExpression ? BranchingExpression
+  : T extends AstNodeKind.BranchingStatement ? BranchingStatement<any>
+  : T extends AstNodeKind.BranchingExpression ? BranchingExpression<any>
   : T extends AstNodeKind.EOFStatement ? EOFStatement
   : T extends AstNodeKind.EndOfBlockStatement ? EndOfBlockStatement
   : Statement;
@@ -90,19 +90,21 @@ export function createAstNode<T extends AstNodeKind>(
 export interface Statement {
   kind: AstNodeKind;
   kindName: string;
+  start?: number[];
+  end?: number[];
 }
 
 export interface Expression extends Statement {}
 
 /** These are not real statements, they are when we have a syntax that can be more than one thing */
-export interface BranchingStatement extends Statement {
+export interface BranchingStatement<T extends Statement> extends Statement {
   kind: AstNodeKind.BranchingExpression;
-  branches: (Statement | Statement[])[];
+  branches: T[];
 }
 
-export interface BranchingExpression extends Expression {
+export interface BranchingExpression<T extends Expression> extends Expression {
   kind: AstNodeKind.BranchingExpression;
-  branches: Expression[];
+  branches: T[];
 }
 
 export type Lifetime = {
@@ -131,17 +133,25 @@ export interface BlockStatement extends Statement {
   body: Statement[];
 }
 
+export enum Modifiers {
+  None,
+  Const,
+  // eslint-disable-next-line unicorn/prevent-abbreviations
+  Var,
+  SuperGlobal
+}
+
 export interface VariableDeclarationStatement extends Statement {
   kind: AstNodeKind.VariableDeclarationStatement;
-  identifier: string;
-  modifiers: [canReassign: boolean, canMutate: boolean]; // isConst, isConst
+  name: string;
+  modifiers: [canReassign: Modifiers, canMutate: Modifiers]; // isConst, isConst
   value?: Expression;
   lifetime?: Lifetime;
 }
 
 export interface FunctionDeclarationStatement extends Statement {
   kind: AstNodeKind.FunctionDeclarationStatement;
-  identifier: Token;
+  name: Token;
   parameters: FunctionParameter[];
   isAsync: boolean;
   body: ExpressionStatement | BlockStatement;

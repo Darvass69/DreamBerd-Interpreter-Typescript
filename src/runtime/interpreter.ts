@@ -39,9 +39,9 @@ eval_lu[AstNodeKind.BlockStatement] = (node: BlockStatement, environment: Enviro
 eval_lu[AstNodeKind.VariableDeclarationStatement] = (node: VariableDeclarationStatement, environment: Environment): RuntimeValue => {
 	let result: RuntimeValue;
 	if (node.value == undefined) {
-		result = environment.declareVar(node.identifier, node.modifiers, undefined, node.lifetime);
+		result = environment.declareVar(node.name, node.modifiers, undefined, node.lifetime);
 	} else {
-		result = environment.declareVar(node.identifier, node.modifiers, evaluate(node.value, environment), node.lifetime);
+		result = environment.declareVar(node.name, node.modifiers, evaluate(node.value, environment), node.lifetime);
 	}
 
 	return result;

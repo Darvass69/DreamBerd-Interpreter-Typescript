@@ -3,8 +3,13 @@ x + 5!
 const const y = 8!
 x + y!
 
-var var z!
-if (1 < 5) {
-	z = 5!
+var var a!
+var var b = 10!
+if (b < 5) {
+	a = 5!
+} else if (b == 5) {
+	a = 10!
+} else {
+	a = 15!
 }
-z!
+a!

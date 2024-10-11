@@ -13,6 +13,7 @@ import {
   FunctionParameter,
   IfStatement,
   MemberExpression,
+  Modifiers,
   NumberExpression,
   PrefixExpression,
   ReturnStatement,
@@ -24,7 +25,7 @@ import {
 import {BindingPower, EndOfLineTokens, LedHandler} from "./lookups";
 import Parser from "./parser";
 
-const ignoredTypes = new Set([TokenType.WhiteSpace, TokenType.LineBreak]);
+const ignoredTypes = new Set([TokenType.whiteSpace, TokenType.lineBreak]);
 function goToNextMeaningfulToken(parser: Parser): Token {
   while (ignoredTypes.has(parser.currentToken().type)) {
     parser.advance();
@@ -38,11 +39,6 @@ export function parseStatement(parser: Parser): Statement {
 
   if (stmt_handler != undefined) {
     return stmt_handler(parser);
-  }
-
-  // Handling when we need to close a block
-  if (parser.currentToken().type == TokenType.CloseCurly) {
-    return createAstNode(AstNodeKind.EndOfBlockStatement, {});
   }
 
   // skip to parse expression
@@ -92,8 +88,9 @@ export function parseBlockStatement(parser: Parser): BlockStatement {
 
   while (
     parser.hasToken() &&
-    parser.currentToken().type != TokenType.CloseCurly
+    !parser.expect([TokenType.CloseCurly], undefined, false, false)[0]
   ) {
+    // expect indent
     body.push(parseStatement(parser));
   }
 
@@ -103,18 +100,18 @@ export function parseBlockStatement(parser: Parser): BlockStatement {
 
 export function parseVariableDeclarationStatement(parser: Parser): VariableDeclarationStatement {
   const modifier1 = parser.expectIdentifier(["const", "var"])[1];
-  const modifiers: [canReassign: boolean, canMutate: boolean] = [false, false];
+  const modifiers: [canReassign: Modifiers, canMutate: Modifiers] = [Modifiers.None, Modifiers.None];
   if (modifier1.value == "const") {
-    modifiers[0] = false;
+    modifiers[0] = Modifiers.Const;
   } else if (modifier1.value == "var") {
-    modifiers[0] = true;
+    modifiers[0] = Modifiers.Var;
   }
 
   const modifier2 = parser.expectIdentifier(["const", "var"])[1];
   if (modifier2.value == "const") {
-    modifiers[1] = false;
+    modifiers[1] = Modifiers.Const;;
   } else if (modifier2.value == "var") {
-    modifiers[1] = true;
+    modifiers[1] = Modifiers.Var;
   }
 
   const identifierToken = parser.expect([TokenType.Identifier])[1];
@@ -135,7 +132,7 @@ export function parseVariableDeclarationStatement(parser: Parser): VariableDecla
   parser.expect(EndOfLineTokens);
 
   return createAstNode(AstNodeKind.VariableDeclarationStatement, {
-    identifier,
+    name: identifier,
     modifiers,
     ...(value == undefined ? undefined : {value}),
     ...(lifetime == undefined ? undefined : {lifetime}),
@@ -164,7 +161,7 @@ export function parseFunctionDeclarationStatement(parser: Parser): FunctionDecla
   }
 
   return createAstNode(AstNodeKind.FunctionDeclarationStatement, {
-    identifier,
+    name: identifier,
     parameters,
     isAsync,
     body
@@ -322,6 +319,8 @@ export function parseArrayDeclarationExpression() {}
 export function parseMemberExpression(parser: Parser, left: Expression, bp: BindingPower): MemberExpression {
   let computed: boolean = false;
   let property: SymbolExpression | Expression;
+
+  //! This is not the right way to do it. We should be doing expect and passing an empty array as ignored.
   if (parser.currentToken().type == TokenType.Dot) {
     parser.expect([TokenType.Dot]);
     property = parseExpression(parser, bp);

@@ -1,6 +1,10 @@
 {
   "scripts": {
-    "main": "npx ts-node src/main.ts"
+    "main": "node ./dist/main.js",
+    "watch": "tsc --watch",
+    "main2": "npx ts-node src/main.ts",
+    "build": "tsc",
+    "run": "node ./dist/main.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

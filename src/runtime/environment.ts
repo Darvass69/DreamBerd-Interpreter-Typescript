@@ -1,4 +1,4 @@
-import { Lifetime } from "../parser/astNodes";
+import { Lifetime, Modifiers } from "../parser/astNodes";
 import { createNull, createUndefined, RuntimeValue } from "./values";
 
 export function createGlobalScope() {
@@ -39,7 +39,7 @@ export default class Environment {
     this.constants = new Set();
   }
 
-  public declareVar(variableName: string, modifiers: [canReassign: boolean, canMutate: boolean], value?: RuntimeValue, lifetime?: Lifetime): RuntimeValue {
+  public declareVar(variableName: string, modifiers: [canReassign: Modifiers, canMutate: Modifiers], value?: RuntimeValue, lifetime?: Lifetime): RuntimeValue {
     if (this.variables.has(variableName)) {
       throw `Cannot declare variable ${variableName} as it's already defined.`;
     }
