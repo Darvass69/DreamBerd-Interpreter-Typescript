@@ -4,11 +4,47 @@ Then, after parsing, we go through each possibility and find which one is more l
 I think that ultimately, its impossible to have errors in DreamBerd because we can just turn it to string.
 */
 
-import {AstNodeKind, BlockStatement, BranchingStatement, Statement} from "./astNodes";
-import {tokenize} from "../lexer/lexer";
-import {newToken, Token, TokenToString, TokenType, TokenTypeListToString} from "../lexer/token";
+import {AstNodeKind, BlockStatement, BranchingStatement, Expression, Statement} from "./astNodes";
+import {Tokenizer} from "../lexer/lexer";
+import {getToken, getTokenTypes, getTokenValues, hasTokensLeft, Token, TokenType, TokenValue} from "../lexer/token";
 import Lookups, { LedHandler, NudHandler, StmtHandler } from "./lookups";
-import {parseStatement} from "./parserFunctions";
+import { BindingPower } from "./bindingPower";
+import { parseProgram } from "./parserFunctions";
+import { BranchManager } from "./branches/branchManager";
+import { Checkpoint, Handler, HandlerParameters } from "./branches/checkpoint";
+import { isEmpty, isNil } from "lodash";
+
+export const options = {
+  debug: true,
+  useSignificantWhitespace: false
+};
+
+/** We assume this will always be filled before we need it */
+export const references = ({} as unknown) as {
+  tokens: Token[]
+  lookups: Lookups
+  branchManager: BranchManager
+};
+
+// Find a better name
+export async function createAst(sourceCode: string): Promise<BlockStatement | BranchingStatement<BlockStatement>> {
+  const tokens = new Tokenizer(sourceCode).tokenize();
+  const lookups = new Lookups();
+  const branchManager = new BranchManager();
+
+  references.tokens = tokens;
+  references.lookups= lookups;
+  references.branchManager = branchManager;
+
+  const checkpoint = Checkpoint.new(0, parseProgram, []);
+
+  const parser = new Parser(checkpoint, new ParserState());
+  console.log("Created initial branch");
+  branchManager.addBranch(parser);
+  await branchManager.run();
+  return checkpoint.result;
+}
+
 
 export class ExitBranchError extends Error {
   constructor(message?: string) {
@@ -18,362 +54,399 @@ export class ExitBranchError extends Error {
 
 type Choice = Token | StmtHandler | NudHandler | LedHandler | null
 
-export class Parser {
-  private defaultIgnored = [TokenType.whiteSpace, TokenType.lineBreak];
+class ParserState {
+  public position: number;
+  /** This is a list of the choice of tokens we made to get from the last checkpoint to here. */
+  public tokenChoices: Token[];
+  public handlerChoices: (StmtHandler | NudHandler | LedHandler | null)[];
 
+  constructor(previousState?: ParserState, changes?: {tokenChoice?: Token, handlerChoice?: (StmtHandler | NudHandler | LedHandler | null)}) {
+    if (isNil(previousState)) {
+      this.position = 0;
+      this.tokenChoices = [];
+      this.handlerChoices = [];
+    } else {
+      this.position = 0;
+
+      this.tokenChoices = this.copyTokens(previousState.tokenChoices);
+      if (changes?.tokenChoice !== undefined) {
+        this.tokenChoices.push(changes.tokenChoice);
+      }
+
+      this.handlerChoices = [...previousState.handlerChoices];
+      if (changes?.handlerChoice !== undefined) {
+        this.handlerChoices.push(changes.handlerChoice);
+      }
+    }
+  }
+
+  public resetChoices() {
+    this.tokenChoices.splice(0);
+    this.handlerChoices.splice(0);
+  }
+
+  private copyTokens(tokens: Token[]): Token[]{
+    tokens = structuredClone(tokens);
+    tokens.forEach((token)=> {token.nullCount = token.totalNullCount}) //! this might create problems later, but I don't care
+    return tokens;
+  }
+}
+
+export default class Parser {
   //Checkpoint
-  private checkpoint: Checkpoint<any, any>;
+  private checkpoint: Checkpoint<any, Statement>;
 
   // State
-  /** This is a list of the choices we made to get from the last checkpoint to here. */
-  private choices: Choice[];
-  private position: number;
-  // end state
+  private state: ParserState;
 
   // How far in the choice list we are
-  private choiceIndex: number = 0;
+  private tokenChoiceIndex: number = 0;
+  private handlerChoiceIndex: number = 0;
 
-  constructor(checkpoint: Checkpoint<any, any>, position = 0, choices: Choice[] = []) {
+  private hideLogs: boolean = false;
+
+  constructor(checkpoint: Checkpoint<any, any>, state: ParserState) {
     this.checkpoint = checkpoint;
-    this.position = position;
-    this.choices = choices;
+    this.state = state;
   }
 
-  public current(index?: number) {
-    //TODO FIX when undef
-    const token = global.tokens[this.position + (index ?? 0)];
+  public current(): {token: Token, isChoice: boolean} {
+    let token = getToken(this.state.position, false, this.state.tokenChoices);
 
-    if (token === undefined) {
-      return newToken(undefined, TokenType.None);
+    if (!isNil(token)) {
+      return {token, isChoice: true};
     }
 
-    return token;
-  }
+    token = getToken(this.state.position, true, references.tokens);
 
-  public next(offset?: number) {
-    if (offset == undefined) {
-      this.position++;
-    } else {
-      this.position += offset;
+    if (!isNil(token)) {
+      return {token, isChoice: false};
     }
+    
+    this.exit(`No token was found at position ${this.state.position}`);
+    return undefined as any;
   }
 
-  get getPosition() {
-    return this.position;
+  public next(end: number) {
+    this.state.position = end;
   }
 
   public hasToken(): boolean {
-    // We are outside the tokens
-    if (this.position >= global.tokens.length) {
-      return false;
-    }
+    return hasTokensLeft(this.state.position, references.tokens)
+  }
 
-    let index = 0;
-    while (this.position + index < global.tokens.length) {
-      // we hit a meaningless token, we ignore it.
-      if (this.defaultIgnored.includes(this.current(index).type)) {
-        index++;
-      }
-      // we hit the EOF
-      if (this.current(index).type === TokenType.EOF) {
-        return false;
-      }
-
-      // We have a meaningful token
-      return true;
-    }
-    return false;
+  public getPosition(): number {
+    return this.state.position;
   }
 
   /**
+   * TODO better errors
    * @throws 
    */
   public exit(reason?: string) {
     console.log("\x1b[31m" + "Exiting branch because of: " + (reason ?? "unknown") + "\x1b[0m");
-    //TODO Better errors
     throw new ExitBranchError();
   }
 
+  //~ might not be needed/might need to be changed
   public changeCheckpoint(checkpoint: Checkpoint<any,any>) {
     this.checkpoint = checkpoint;
-    this.choices.splice(0);
+    this.tokenChoiceIndex = 0;
+    this.handlerChoiceIndex = 0;
+    this.state.resetChoices();
   }
 
-  //TODO
   /**
-   * 
+   * Parse using the function stored in the checkpoint
    * @returns 
    * @throws {ExitBranchError}
    */
-  public parse<T extends Statement>(): T | BranchingStatement<T> {
-    // when we parse, we have :
-      // tokens: Token[];
-      // lookups: Lookups;
-      // position: number;
-
-      // choices: (string | TokenType)[];
-
-    // Do we have a ref to the function we need to call to parse? Yes.
-      // checkpoint.use(this)
-
-    this.checkpoint.parseFunction(this);
-    return this.checkpoint.result;
+  public parse() {
+    this.checkpoint.execute(this);
   }
 
-
-  //? Do we log stuff? Like when we fail at parsing some patterns?
   /**
-   * Return the next non ignored token. If it doesn't match one of the expected, throws an error.
-   * Creates new branches for every token after the 1st matched.
+   * TODO better logs
+   * Return the next token. If it doesn't match one of the expected types, throws an error.
+   * + creates branches.
    * @param expected Token expected.
    * @param ignored Ignores those tokens.
    * @returns The token matched.
    * @throws `ExitBranchError`
    */
-  public expect(expected: (string | TokenType)[], ignored?: (string | TokenType)[]): Token {
-    // Follow the choice for this branch (we assume its right, if its not, we have bigger problems)
-    // TODO add error when choice is an unexpected type.
-    if (this.choiceIndex < this.choices.length) {
-      const choice: Choice = this.choices[this.choiceIndex];
-      console.log("\x1b[34m" + `Choice ${choiceToString(choice)} ${this.choiceIndex} of ${this.choices.length}. End ${this.position}` + "\x1b[0m");
-      this.choiceIndex++;
-      return choice as Token;
-    }
-
-    // If we don't already have a choice, we find the next token and create branches
-    const result = this.findToken(expected, ignored);
+  public expect(expected: TokenType[]): TokenValue {
+    const oldPosition = this.state.position;
+    const result = this.findToken(expected);
 
     if (result === null) {
-      this.exit(`Exited because we found ${TokenToString(this.failedToken as Token)} instead of one of ${expected.map((element) => typeof element === "string" ? element : TokenType[element]).toString()}`);
+      this.exit(`Exited because we didn't find one of ${expected.map((element) => typeof element === "string" ? element : TokenType[element]).toString()} at ${this.state.position}`);
+    } else { 
+      !this.hideLogs && console.log(`expected: ${TokenType[result.type]} of ${expected.map((type) => TokenType[type])} at ${oldPosition}-${this.state.position}`);
     }
 
-    console.log(`expected: ${TokenToString(result as Token)}`);
-    return result as Token;
+    return result as TokenValue;
   }
 
   /**
-   * Return the next non ignored token. If it doesn't match one of the expected, returns null (and doesn't advance).
-   * Creates new branches for every token after the 1st matched and a branch where no tokens where matched (null).
+   * TODO better logs
+   * Return the next token. If it doesn't match one of the expected types, returns null (and doesn't eat that token).
+   * + creates branches.
    * @param expected Token expected.
    * @param ignored Ignores those tokens.
    * @returns The token matched.
    */
-  public optional(expected: (string | TokenType)[], ignored?: (string | TokenType)[]): Token | null {
-    // Follow the choice for this branch (we assume its right, if its not, we have bigger problems)
-    // TODO add error when choice is an unexpected type.
-    if (this.choiceIndex < this.choices.length) {
-      const choice: Choice = this.choices[this.choiceIndex];
-      console.log("\x1b[34m" + `Choice ${choiceToString(choice)} ${this.choiceIndex} of ${this.choices.length}. End ${this.position}` + "\x1b[0m");
-      this.choiceIndex++;
-      return choice as Token | null;
-    }
-
-    // If we don't already have a choice, we find the next token and create branches
-    // Create a branch for the choice of not doing anything
-    this.createBranches([null]);
-    const result = this.findToken(expected, ignored);
-    if (result == undefined) {
-      console.log(`optional: null`);
-    } else {
-      console.log(`optional: ${TokenToString(result)}`);
-    }
+  public optional(expected: TokenType[], hideLogs?: boolean): TokenValue | null {
+    const oldPosition = this.state.position;
+    const result = this.findToken(expected, true);
+    !hideLogs && console.log(`optional: ${isNil(result) ? "null" : TokenType[result.type]} of ${expected.map((type) => TokenType[type])} at ${oldPosition}-${this.state.position}`);
     return result;
   }
 
-  /** Keep the last failed token from `optional` for better error message. */
-  private failedToken?: Token;
-
-  //TODO make a better system to match tokens, like with lambdas or smt
   /**
-   * Return the next non ignored token. If it doesn't match one of the expected, returns null (and doesn't advance).
+   * Return the next token. If it doesn't match one of the expected, returns null (and doesn't eat that token).
+   * + creates branches.
    * @param expected Token expected.
    * @param ignored Ignores those tokens.
    * @returns The token matched.
    */
-  private findToken(expected: (string | TokenType)[], ignored: (string | TokenType)[] = this.defaultIgnored): Token | null {
+  private findToken(expected: TokenType[], optional?: boolean): TokenValue | null {
 
-    //^ This might need to get more complicated to handle identifiers that cross token boundaries and other stuff like that
-    const compareCurrentToken = (comparator: string | TokenType): boolean => {
-      if (typeof comparator === 'string') {
-        return this.current(index).value === comparator;
+    const choice = this.getTokenChoice();
+
+    if (choice !== undefined) {
+      if (choice === null) {
+        return choice;
+      } else if (expected.includes(choice.type)) {
+        this.state.position = choice?.end;
+        return choice;
       } else {
-        return this.current(index).type === comparator;
+        return null;
       }
-    };
-
-    let index = 0;
-    while (this.hasToken()) {
-      // skip ignored tokens
-      // eslint-disable-next-line unicorn/no-array-callback-reference
-      if (!ignored.some(compareCurrentToken)) {
-        //TODO TEMP, REMOVE WHEN WE HAVE A BETTER WAY TO MATCH TOKENS. If one of the expected is TokenType.Symbol, we return any non-whitespace token
-        if (expected.includes(TokenType.Symbol)) {
-          this.position++;
-          this.createBranches([{...this.current(index - 1), type: TokenType.Identifier}]);
-          this.position--;
-        }
-        //TODO END TEMP
-
-        // eslint-disable-next-line unicorn/no-array-callback-reference
-        const matched = expected.filter(compareCurrentToken);
-        if (matched.length === 0) {
-          this.failedToken = this.current(index);
-          return null;
-        }
-        this.next(index);
-
-        // Create new tokens for all the matched types/string
-        const choices: Token[] = matched.map((element) => typeof element == "string" 
-          ? {...this.current(), type: TokenType.Identifier} 
-          : {...this.current(), type: element}
-        );
-        this.next();
-
-
-        // Make new branches
-        // We keep one choice for the current branch
-        const currentChoice = choices.shift() as Token;
-        // We create branches with the remaining choices, based on this branch
-        this.createBranches(choices);
-
-        // We commit the choice for this branch
-        this.choices.push(currentChoice);
-        this.choiceIndex++;
-        return currentChoice;
-      }
-      index++;
     }
 
-    return null;
-  }
-
-  /**
-   * Return 1 stmt handler, and create branches with the rest
-   */
-  public getStmt(): StmtHandler {
-    // Follow the choice for this branch (we assume its right, if its not, we have bigger problems)
-    // TODO add error when choice is an unexpected type.
-    if (this.choiceIndex < this.choices.length) {
-      const choice: Choice = this.choices[this.choiceIndex];
-      console.log("\x1b[34m" + `Choice ${choiceToString(choice)} ${this.choiceIndex} of ${this.choices.length}. End ${this.position}` + "\x1b[0m");
-      this.choiceIndex++;
-      return choice as StmtHandler;
+    const token = this.current().token;
+    const matched: (TokenValue | null)[] = getTokenValues(token, expected);
+    if (isEmpty(matched)) {
+      return null;
     }
 
-
-    // get rid of meaningless tokens
-    while (this.hasToken() && this.defaultIgnored.includes(this.current().type)) {
-      this.next();
+    if (optional && !(expected.length === 1 && expected[0] === TokenType.WhiteSpace)) {
+      matched.push(null);
     }
 
-    // Get handlers that use raw value
-    const identifier_handlers = global.lookups.stmt_lu.get(TokenType.Identifier)?.filter(([, lu_identifier])=>lu_identifier === this.current().value || lu_identifier === "");
-    const handlers =  this.current().type == TokenType.Identifier ? undefined : global.lookups.stmt_lu.get(this.current().type);
-    const choices = [...(handlers ?? []), ...(identifier_handlers ?? [])].map(([handler,]) => handler);
+    this.submitTokenChoices(token, matched);
+    const currentChoice =  this.getTokenChoice() ?? null;
 
-    // Make new branches
-    // We keep one choice for the current branch
-    const currentChoice = choices.shift() as StmtHandler;
-    // We create branches with the remaining choices, based on this branch
-    this.createBranches(choices);
-
-    // We commit the choice for this branch
-    this.choices.push(currentChoice);
-    this.choiceIndex++;
-    console.log(`Stmt ${currentChoice.name}`);
+    if (currentChoice !== null) {
+      this.state.position = currentChoice?.end;
+    }
     return currentChoice;
   }
 
-  public getNud(): NudHandler {
-    // Follow the choice for this branch (we assume its right, if its not, we have bigger problems)
-    // TODO add error when choice is an unexpected type.
-    if (this.choiceIndex < this.choices.length) {
-      const choice: Choice = this.choices[this.choiceIndex];
-      console.log("\x1b[34m" + `Choice ${choiceToString(choice)} ${this.choiceIndex} of ${this.choices.length}. End ${this.position}` + "\x1b[0m");
-      this.choiceIndex++;
-      return choice as NudHandler;
+  private submitTokenChoices(token: Token, choices: (TokenValue | null)[]) {
+    //* I think that when we add checkpoints for real, this is where we'll tell the checkpoint what we have, and get from it things like the state we ned to be in (like what nb of null).
+
+    if (choices.length === 0) {
+      this.exit("No token choice found");
+      return;
     }
 
-
-    // get rid of meaningless tokens
-    while (this.hasToken() && this.defaultIgnored.includes(this.current().type)) {
-      this.next();
+    const currentTokenChoice = getToken(this.state.position, false, this.state.tokenChoices);
+    if (currentTokenChoice?.values && currentTokenChoice.values.length > 0) {
+      this.exit("Attempting to create a token choice with more than 1 choice.");
     }
 
-    // Get handlers that use raw value
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const identifier_handlers = global.lookups.nud_lu.get(TokenType.Identifier)?.filter(([,_, lu_identifier])=>lu_identifier === this.current().value || lu_identifier === "");
-    const handlers = this.current().type == TokenType.Identifier ? undefined : global.lookups.nud_lu.get(this.current().type);
+    let currentChoice: Token | undefined;
+    choices.forEach((choice, index) => {
+      let newToken: Token;
+
+      if (currentTokenChoice === undefined) {
+        newToken = {
+          start: token.start,
+          values: []
+        };
+      } else {
+        newToken = {
+          start: token.start,
+          values: [],
+          nullCount: currentTokenChoice.totalNullCount,
+          totalNullCount: currentTokenChoice.totalNullCount
+        }; 
+      }
+
+
+      if (choice === null) {
+        newToken.nullCount = (newToken.nullCount ?? 0) + 1;
+        newToken.totalNullCount = (newToken.totalNullCount ?? 0) + 1;
+      } else {
+        newToken.values.push(choice);
+      }
+
+      if (index === 0) {
+        currentChoice = newToken;
+      } else {
+        references.branchManager.addBranch(new Parser(this.checkpoint, new ParserState(this.state, {tokenChoice: newToken})));
+        
+        !this.hideLogs && console.log("\x1b[33m" + `Created token branch, choice: ${isNil(choice) ? "null" : `${isNil(choice) ? "null" : TokenType[choice.type]}`}. Position ${this.state.position}` + "\x1b[0m");
+      }
+    });
     
-    if (handlers === undefined && identifier_handlers === undefined) {
-      this.exit(`Could not find Nud handler for token: ${TokenToString(this.current())} at position: ${this.position}`);
+    if (currentChoice !== undefined) {
+      this.state.tokenChoices.push(currentChoice);
     }
-    const choices = [...(handlers ?? []), ...(identifier_handlers ?? [])].map(([handler,]) => handler);
+  }
 
-    // Make new branches
-    // We keep one choice for the current branch
-    const currentChoice = choices.shift() as NudHandler;
-    // We create branches with the remaining choices, based on this branch
-    this.createBranches(choices);
+  private getTokenChoice(): TokenValue | null | undefined {
+    const token = getToken(this.state.position, false, this.state.tokenChoices);
 
-    // We commit the choice for this branch
-    this.choices.push(currentChoice);
-    this.choiceIndex++;
-    console.log(`Nud ${currentChoice.name}`);
+    if (isNil(token)) {
+      return undefined;
+    }
+
+    if (!isNil(token.nullCount) && token.nullCount > 0) {
+      token.nullCount--;
+      return null;
+    }
+
+    if (token?.values.length > 1) {
+      this.exit(`Found a token choice with multiple values ${JSON.stringify(token)}.`);
+      return undefined;
+    } else if (token.values.length <= 0) {
+      return undefined;
+    } else {
+      return token.values[0];
+    }
+  }
+  
+
+  /**
+   * TODO better logs
+   * Return 1 stmt handler, and create branches with the rest
+   */
+  public getStmt(): StmtHandler {
+    if (this.hasHandlerChoiceLeft()) {
+      const choice = this.getHandlerChoice() as StmtHandler;
+      !this.hideLogs && console.log("\x1b[34m" + `Stmt choice ${choiceToString(choice)} ${this.handlerChoiceIndex} of ${this.state.handlerChoices.length}. Position ${this.state.position}` + "\x1b[0m");
+      return choice;
+    }
+
+    // Get handlers
+    const current = this.current();
+    if (isNil(current.token)) {
+      this.exit(`Could not find token at position ${this.state.position}`);
+      return undefined as any;
+    }
+
+    const handlers: StmtHandler[] = references.lookups.getStmtHandlers(getTokenTypes(current.token));
+
+    if (isEmpty(handlers)) {
+      //TODO better logs
+      this.exit(`Could not find Stmt handler for token at ${this.state.position}`);
+    }
+
+    this.submitHandlerChoices(handlers);
+    const currentChoice = this.getHandlerChoice() as StmtHandler;
+    !this.hideLogs && console.log(`Stmt ${choiceToString(currentChoice)}`); //TODO better logs
+    return currentChoice;
+  }
+
+  public getNud(bp: BindingPower): NudHandler {
+   if (this.hasHandlerChoiceLeft()) {
+     const choice = this.getHandlerChoice() as NudHandler;
+     !this.hideLogs && console.log("\x1b[34m" + `Nud choice ${choiceToString(choice)} ${this.handlerChoiceIndex} of ${this.state.handlerChoices.length}. Position ${this.state.position}` + "\x1b[0m");
+     return choice;
+    }
+    
+    // Get handlers
+    const current = this.current();
+    if (isNil(current.token)) {
+      this.exit(`Could not find token at position ${this.state.position}`);
+      return undefined as any;
+    }
+
+    const handlers: NudHandler[] = references.lookups.getNudHandlers(bp, getTokenTypes(current.token));
+
+    if (isEmpty(handlers)) {
+      //TODO better logs
+      this.exit(`Could not find Nud handler for token at ${this.state.position}`);
+    }
+
+    this.submitHandlerChoices(handlers);
+    const currentChoice = this.getHandlerChoice() as NudHandler;
+    !this.hideLogs && console.log(`Nud ${choiceToString(currentChoice)}`);
     return currentChoice;
   }
 
   public getLed(bp: BindingPower): LedHandler | null {
-    // Follow the choice for this branch (we assume its right, if its not, we have bigger problems)
-    // TODO add error when choice is an unexpected type.
-    if (this.choiceIndex < this.choices.length) {
-      const choice: Choice = this.choices[this.choiceIndex];
-      console.log("\x1b[34m" + `Choice ${choiceToString(choice)} ${this.choiceIndex} of ${this.choices.length}. End ${this.position}` + "\x1b[0m");
-      this.choiceIndex++;
-      return choice as LedHandler | null;
+    if (this.hasHandlerChoiceLeft()) {
+      const choice = this.getHandlerChoice() as LedHandler | null;
+      !this.hideLogs && console.log("\x1b[34m" + `Nud choice ${choiceToString(choice)} ${this.handlerChoiceIndex} of ${this.state.handlerChoices.length}. Position ${this.state.position}` + "\x1b[0m");
+      return choice;
+    }
+    
+    // Get handlers
+    const current = this.current();
+    if (isNil(current.token)) {
+      this.exit(`Could not find token at position ${this.state.position}`);
+      return undefined as any;
     }
 
-
-    // get rid of meaningless tokens
-    while (this.hasToken() && this.defaultIgnored.includes(this.current().type)) {
-      this.next();
+    const handlers: (LedHandler | null)[] = references.lookups.getLedHandlers(bp, getTokenTypes(current.token));
+    
+    if (isEmpty(handlers)) {
+      handlers.push(null);
     }
 
-    // Get handlers that use raw value
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const identifier_handlers = global.lookups.led_lu.get(TokenType.Identifier)?.filter(([,_, lu_identifier])=>lu_identifier === this.current().value || lu_identifier === "");
-    const handlers = this.current().type == TokenType.Identifier ? undefined : global.lookups.led_lu.get(this.current().type);
-
-    if (handlers === undefined && identifier_handlers === undefined) {
-      return null;
-    }
-    const choices = [...(handlers ?? []), ...(identifier_handlers ?? [])]
-      .filter(([, led_bp]) => led_bp > bp)
-      .map(([handler,]) => handler);
-
-    // Make new branches
-    // We keep one choice for the current branch
-    const currentChoice = choices.shift() as LedHandler;
-    // We create branches with the remaining choices, based on this branch
-    this.createBranches(choices);
-
-    // We commit the choice for this branch
-    this.choices.push(currentChoice);
-    this.choiceIndex++;
-    console.log(`Led ${currentChoice.name}`);
+    this.submitHandlerChoices(handlers);
+    const currentChoice = this.getHandlerChoice() as LedHandler;
+    !this.hideLogs && console.log(`Led ${choiceToString(currentChoice)}`);
     return currentChoice;
   }
 
-  private createBranches(choices: Choice[]) {
-    for (const choice of choices) {
-      global.branchManager.addBranch(new Parser(this.checkpoint, this.position, [...this.choices, choice]));
-      console.log("\x1b[33m" + `Created branch, choice: ${choiceToString(choice)}, position: ${this.position}` + "\x1b[0m");
+
+  private submitHandlerChoices(choices: (StmtHandler | NudHandler | LedHandler | null)[]) {
+    const currentChoice = choices.shift();
+    if (currentChoice === undefined) {
+      this.exit("No handler choice found");
+      return;
     }
+
+    for (const choice of choices) {
+      references.branchManager.addBranch(new Parser(this.checkpoint, new ParserState(this.state, {handlerChoice: choice})));
+      !this.hideLogs && console.log("\x1b[33m" + `Created handler branch, choice: ${isNil(choice) ? "null" : choiceToString(choice)}, position: ${this.state.position}` + "\x1b[0m");
+    }
+
+    this.state.handlerChoices.push(currentChoice);
+    // console.log("\x1b[33m" + `Added choice to current branch: ${isNil(currentChoices) ? "null" : currentChoices.map(choiceToString).toString()}, position: ${this.state.position}` + "\x1b[0m");
   }
+
+  private hasHandlerChoiceLeft(): boolean {
+    return this.handlerChoiceIndex < this.state.handlerChoices.length;
+  }
+
+  private getHandlerChoice(): StmtHandler | NudHandler | LedHandler | null { 
+    const choice: Choice = this.state.handlerChoices[this.handlerChoiceIndex];
+    
+    this.handlerChoiceIndex++;
+    return choice;
+  }
+
+  public exec<T extends HandlerParameters, R extends Statement>(
+    parsingFunction: Handler<T, R>,
+    ...parameters: T
+  ): R | BranchingStatement<R> {
+    // testCheckpoint = new checkpoint
+    // p.changeCheckpoint(testCheckpoint);
+    // testCheckpoint.parseFunction(p);
+    // const expression = testCheckpoint.result;
+    const newCheckpoint = Checkpoint.new(this.getPosition(), parsingFunction, parameters);
+    this.changeCheckpoint(newCheckpoint);
+    newCheckpoint.execute(this);
+    return newCheckpoint.result;
+  }
+
 }
 
 function choiceToString(choice: Choice) {
-  return typeof choice === "function" ? choice.name :
-    (choice === null ? "null" :
-    TokenToString(choice))
+  return typeof choice === "function" ? choice.name : (choice === null ? "null" : choice);
 }

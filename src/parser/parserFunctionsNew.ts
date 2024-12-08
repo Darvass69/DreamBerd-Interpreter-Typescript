@@ -1,98 +1,9 @@
-import { tokenize } from "../lexer/lexer";
-import { ArithmeticMap, BitwiseMap, ComparisonMap, LogicalMap, newToken, Token, TokenToString, TokenType } from "../lexer/token";
-import { AstNodeKind, BinaryExpression, BlockStatement, BranchingStatement, createAstNode, Expression, ExpressionStatement, NumberExpression, Statement, StringExpression, SymbolExpression } from "./astNodes";
-import { BindingPower } from "./lookups";
-
-
-const debug = true;
-/** We assume this will always be filled before we need it */
-export const global = ({} as unknown) as {
-  tokens: Token[]
-  lookups: Lookups
-  branchManager: BranchManager
-};
-
-// Find a better name
-export async function createAst(sourceCode: string): Promise<BlockStatement | BranchingStatement<BlockStatement>> {
-  const tokens = tokenize(sourceCode);
-  const lookups = new Lookups();
-  const branchManager = new BranchManager();
-
-  global.tokens = tokens;
-  global.lookups= lookups;
-  global.branchManager = branchManager;
-
-  const checkpoint = new Checkpoint(parseProgram, []);
-
-  const parser = new Parser(checkpoint);
-  console.log("Created initial branch");
-  branchManager.addBranch(parser);
-  await branchManager.run();
-  return checkpoint.result;
-}
-
-
-
-
-
-/**
- * Checkpoint explores all the branches down stream
- * whenever it creates a new branch it keeps track of important info
- * at the end, it creates branches for the parent checkpoint with only unique branches
- *  
- * WIP
- * needs to remember what checkpoint already exist/be able to use a checkpoint for more than 1 fn call
- */
-class Checkpoint<T extends any[], R extends Statement> {
-  private _results: R[] = [];
-
-  get result(): BranchingStatement<R> {
-    return createAstNode(AstNodeKind.BranchingStatement, {branches: this._results});
-  }
-
-  public constructor(
-    private parsingFunction: (parser: Parser, ...parameters: T) => R, 
-    private parameters: T
-  ) {}
-
-  /**
-   * Parse using the function in the checkpoint.
-   * @param parser 
-   */
-  public parseFunction(parser: Parser): R {
-    const result = this.parsingFunction(parser, ...this.parameters);
-    this._results.push(result);
-    return result;
-  }
-}
-
-class BranchManager {
-  private branches: Parser[] = [];
-
-  public addBranch(p: Parser) {
-    this.branches.push(p);
-  }
-
-  /**
-   * Continuously parse branches one by one from the buffer.
-   * I don't think we need it to be async or to have a loop, but its future proof.
-   */
-  public async run() {
-    // If we have no references to any branches, it means we are done
-    while (this.branches.length > 0) {
-      try {
-        console.log("\x1b[35m" + "Processing new branch" + "\x1b[0m"); //!! this.branches[0].log
-        this.branches[0].parse();
-      } catch (error) {
-        if (!(error instanceof ExitBranchError)) {
-          throw error;
-        }
-      } finally {
-        this.branches.shift();
-      }
-    }
-  }
-}
+import { BinaryOperators, TokenType } from "../lexer/token";
+// import { AstNodeKind, BinaryExpression, BlockStatement, createAstNode, Expression, ExpressionStatement, NumberExpression, Statement, StringExpression, SymbolExpression } from "./astNodes";
+// import { Checkpoint } from "./branches/checkpoint";
+// import { LedHandler } from "./lookups";
+// import { BindingPower } from "./BindingPower";
+// import Parser from "./parser";
 
 
 
@@ -103,100 +14,92 @@ class BranchManager {
 
 
 
-/* --------------------------------- Program -------------------------------- */
-export function parseProgram(p: Parser): BlockStatement {
-  const body: Statement[] = [];
-  while (p.hasToken()) {
-    body.push(parseStatement(p));
-  }
-  return createAstNode(AstNodeKind.BlockStatement, {body});
-}
+// /* --------------------------------- Program -------------------------------- */
+// export function parseProgram(p: Parser): BlockStatement {
+//   const body: Statement[] = [];
+//   while (p.hasToken()) {
+//     body.push(parseStatement(p));
+//   }
+//   return createAstNode(AstNodeKind.BlockStatement, {body});
+// }
 
-/* ---------------------------------- Stmt ---------------------------------- */
-export function parseStatement(p: Parser): Statement {
-  // we create branches with all the possibilities inside getStmt
-  return p.getStmt()(p);
-}
+// /* ---------------------------------- Stmt ---------------------------------- */
+// export function parseStatement(p: Parser): Statement {
+//   // we create branches with all the possibilities inside getStmt
+//   return p.getStmt()(p);
+// }
 
-export function parseExpressionStatement(p: Parser): ExpressionStatement {
-  // const expression = parseExpression(p, BindingPower.default_bp);
-  // p.expect(EndOfLineTokens); //~ This could be parseEndOfLine
+// export function parseExpressionStatement(p: Parser): ExpressionStatement {
+//   // const expression = parseExpression(p, BindingPower.default_bp);
+//   // p.expect(EndOfLineTokens); //~ This could be parseEndOfLine
 
-  // return createAstNode(AstNodeKind.ExpressionStatement, {expression});
-  p.changeCheckpoint(testCheckpoint);
-  testCheckpoint.parseFunction(p)
-  const expression = testCheckpoint.result;
-  p.expect(EndOfLineTokens); //~ This could be parseEndOfLine
+//   // return createAstNode(AstNodeKind.ExpressionStatement, {expression});
+//   p.changeCheckpoint(testCheckpoint);
+//   testCheckpoint.parseFunction(p);
+//   const expression = testCheckpoint.result;
+//   p.expect([TokenType.EndOfStatement]); //~ This could be parseEndOfLine
 
-  return createAstNode(AstNodeKind.ExpressionStatement, {expression});
-}
+//   return createAstNode(AstNodeKind.ExpressionStatement, {expression});
+// }
 
 
-/* ---------------------------------- Expr ---------------------------------- */
-export function parseExpression(p: Parser, bp: BindingPower): Expression {
-  const nud_handler = p.getNud();
-  if (nud_handler === undefined) {
-    p.exit();
-  }
+// /* ---------------------------------- Expr ---------------------------------- */
+// export function parseExpression(p: Parser, bp: BindingPower): Expression {
+//   const nud_handler = p.getNud(bp);
+//   if (nud_handler === undefined) {
+//     p.exit();
+//   }
   
-  let left = nud_handler(p);
-  let led_handler: LedHandler | null;
-  while ((led_handler = p.getLed(bp)) != null) { //! we need to add a branch with null
-    left = led_handler(p, left, bp);
-  }
-  return left;
-}
+//   let left = nud_handler(p);
+//   let led_handler: LedHandler | null;
+//   while ((led_handler = p.getLed(bp)) != null) { //! we need to add a branch with null
+//     left = led_handler(p, left);
+//   }
+//   return left;
+// }
 
-export function parseGroupingExpression(p: Parser): Expression {
-  p.expect([TokenType.OpenParen]);
-  const expression = parseExpression(p, BindingPower.default_bp);
-  p.expect([TokenType.CloseParen]);
-  return expression;
-}
+// export function parseGroupingExpression(p: Parser): Expression {
+  
+//     /*
+//     closing a group might get messy because we can't eat the token and we want to create branches with 2 choices at the same time.
+//     type RecurringTuple = [string, number, RecurringTuple[]];
+//     */
 
-const binaryOperators: TokenType[] = [...Object.values(ComparisonMap), ...Object.values(ArithmeticMap), ...Object.values(LogicalMap), ...Object.values(BitwiseMap)]
-export function parseBinaryExpression(p: Parser, left: Expression, bp: BindingPower): BinaryExpression {
-	// We assume we are already at the operator token
-	const operator = p.expect(binaryOperators);
-	const right = parseExpression(p, bp);
+//   p.expect([TokenType.OpenParen]);
+//   const expression = parseExpression(p, BindingPower.default_bp);
+//   p.expect([TokenType.CloseParen]);
+//   return expression;
+// }
 
-	return createAstNode(AstNodeKind.BinaryExpression, {left, operator, right});
-}
+// export function parseBinaryExpression(p: Parser, left: Expression, bp: BindingPower): BinaryExpression {
+// 	// We assume we are already at the operator token
+// 	const operator = p.expect([...BinaryOperators]);
+// 	const right = parseExpression(p, bp);
 
-export function parsePrimaryExpression(p: Parser): NumberExpression | StringExpression | SymbolExpression {
-  const token = p.expect([TokenType.Number, TokenType.String, TokenType.Symbol]);
+// 	return createAstNode(AstNodeKind.BinaryExpression, {left, operator: operator.type, right});
+// }
 
-	switch (token.type) {
-		case TokenType.Number: {
-			return createAstNode(AstNodeKind.NumberExpression, {value: Number(token.value)});
-		}
-		case TokenType.String: {
-			return createAstNode(AstNodeKind.StringExpression, {value: token.value});
-		}
-		case TokenType.Identifier: {
-			return createAstNode(AstNodeKind.SymbolExpression, {symbol: token.value});
-		}
-		default: {
-			return createAstNode(AstNodeKind.StringExpression, {value: ""});
-		}
-	}
-}
+// export function parsePrimaryExpression(p: Parser): NumberExpression | StringExpression | SymbolExpression {
+//   const token = p.expect([TokenType.Number, TokenType.String, TokenType.Identifier]);
 
-
-
-
-
-
-
+// 	switch (token.type) {
+// 		case TokenType.Number: {
+// 			return createAstNode(AstNodeKind.NumberExpression, {value: token.value.value});
+// 		}
+// 		case TokenType.String: {
+// 			return createAstNode(AstNodeKind.StringExpression, {value: token.value.value});
+// 		}
+// 		case TokenType.Identifier: {
+// 			return createAstNode(AstNodeKind.SymbolExpression, {symbol: token.value.value});
+// 		}
+// 		default: {
+// 			return createAstNode(AstNodeKind.StringExpression, {value: ""});
+// 		}
+// 	}
+// }
 
 
-
-
-
-
-
-
-const testCheckpoint = new Checkpoint(parseExpression, [BindingPower.default_bp]);
+// const testCheckpoint = Checkpoint.new(0, parseExpression, [BindingPower.default_bp]);
 
 
 

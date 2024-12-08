@@ -1,122 +1,127 @@
+import { isEmpty, isNil } from "lodash";
+import { references } from "../parser/parser";
+
 // Represent tokens our language understands.
 export enum TokenType {
 	//~ Primitives
-	null,
-	undefined, //? Is undefined undefined?
-	boolean,
-	number,
-	string, // '"' or "'" n times ... '"' or "'" n times, the same symbol on both sides
-	implicitString, // Any string of characters. Last option after everything has been tried. (on request parsing?)
-	identifier, // Any string of characters separated by spaces, create a new interpretation each time.
+	Null,
+	Undefined, //? Is undefined undefined?
+	Boolean,
+	Number,
+	String, // '"' or "'" n times ... '"' or "'" n times, the same symbol on both sides
+	ImplicitString, // Any string of characters. Last option after everything has been tried. (on request parsing?)
+	Identifier, // Any string of characters separated by spaces, create a new interpretation each time.
 
 	//~ Operators
 
 	// Prefix
-	logicalNot, // ;
-	bitwiseNot, // ~
-	unaryMinus, // - Negative a number
+	LogicalNot, // ;
+	BitwiseNot, // ~
+	UnaryMinus, // - Negative a number
 
 	// State
-	plusPlus, // ++
-	minusMinus, // --
-	previous, // previous
-	next, // next
-	current, // current
+	PlusPlus, // ++
+	MinusMinus, // --
+	Previous, // previous
+	Next, // next
+	Current, // current
 
 	// Logical
-	logicalOr, // ||
-	logicalAnd, // &&
+	LogicalOr, // ||
+	LogicalAnd, // &&
 
 	// Bitwise
-	bitwiseOr, // |
-	bitwiseXor, // **
-	bitwiseAnd, // &
+	BitwiseOr, // |
+	BitwiseXor, // **
+	BitwiseAnd, // &
 
 	// Equality
-	equals, // ==
-	notEqual, // ;=
-	strongEqual, // ===
-	strongNotEqual, // ;==
-	strongestEqual, // ====
-	strongestNotEqual, // ;===
+	Equals, // ==
+	NotEqual, // ;=
+	StrongEqual, // ===
+	StrongNotEqual, // ;==
+	StrongestEqual, // ====
+	StrongestNotEqual, // ;===
 
 	// Comparison
-	smaller, // <
-	greater, // >
-	smallerEqual, // <=
-	greaterEqual, // >=
+	Smaller, // <
+	Greater, // >
+	SmallerEqual, // <=
+	GreaterEqual, // >=
 
 	// Bit shift
-	bitShiftLeft, // <<
-	bitShiftRight, // >>
-	bitShiftUnsignedLeft, // <<<
-	bitShiftUnsignedRight, // >>>
+	BitShiftLeft, // <<
+	BitShiftRight, // >>
+	BitShiftUnsignedLeft, // <<<
+	BitShiftUnsignedRight, // >>>
 
 	// Additive
-	add, // +
-	subtract, // -
+	Add, // +
+	Subtract, // -
 	
 	// Multiplicative
-	multiply, // *
-	divide, // /
-	modulo, // %
+	Multiply, // *
+	Divide, // /
+	Modulo, // %
 
 	// Exponent
-	exponent, // ^
+	Exponent, // ^
 
 	//~ Other
 	// Assignment
-	assignment, // Don't forget combined assignment
+	Assignment, // Don't forget combined assignment
 
 	// Keywords
-	const,
-	var,
+	Const,
+	Var,
 	
-	async, // async
-	function, // /^(f?u?n?c?t?i?o?n?) */ && !empty
-	commaDelimiter, // ',' and some amount of ' ' either side, only the total of spaces count
-	return, // return
+	Async, // async
+	Function, // /^(f?u?n?c?t?i?o?n?) */ && !empty
+	CommaDelimiter, // ',' and some amount of ' ' either side, only the total of spaces count
+	Return, // return
 
-	if, // if
-	else, // else
+	If, // if
+	Else, // else
 
-	when, // when
+	When, // when
 
-	delete, // delete
+	Delete, // delete
 
-	reverse, // reverse
+	Reverse, // reverse
 
-	import, // import
-	export, // export
+	Import, // import
+	Export, // export
 
-	super, // super
-	this, // this
+	Super, // super
+	This, // this
+	Class, // class or className
+	New, // new
 
 	// Punctuation
-	dot, // .
-	colon, // :
+	Dot, // .
+	Colon, // :
 	// comma, // ,
 
-	openBracket, // [
-	closeBracket, // ]
-	openCurly, // {
-	closeCurly, // }
-	openParen, // (
-	closeParen, // )
+	OpenBracket, // [
+	CloseBracket, // ]
+	OpenCurly, // {
+	CloseCurly, // }
+	OpenParen, // (
+	CloseParen, // )
 
-	arrow, // =>
+	Arrow, // =>
 
 	// Spaces
-	whiteSpace, // " "
-	lineBreak, // \n
-	tabs, // \t
+	WhiteSpace, // " "
+	LineBreak, // \n
+	// tabs, // \t
 
 	// End of statement
-	endOfStatement, // any number of '!' or '¡'
+	EndOfStatement, // any number of '!' or '¡'
 	// endOfStatementDebug, // like 'endOfStatement' but with any number of '?'
 
 	// End of file
-	fileDelimiter,
+	FileDelimiter,
 	EOF,
 
 	//TODO
@@ -124,185 +129,190 @@ export enum TokenType {
 	_variableType,
 }
 
+const tokenTypeValues: TokenType[] = Object.keys(TokenType).filter((v) => !Number.isNaN(Number(v))).map(Number);
 
-interface TokenBaseStruct {
-  start: number
-}
-
-interface TokenTypeBaseStruct {
-  end: number
+export type Token = {
+	start: number,
+	values: TokenValue[]
+	nullCount?: number,
+	totalNullCount?: number
 }
 
 interface NoValueTokenType {
-	isMatching: boolean
+	// isMatching: boolean
 }
 
-export type TokenStructs<K extends TokenType> = {
-	//~ Primitives
-	[TokenType.null]: NoValueTokenType,
-	[TokenType.undefined]: NoValueTokenType,
-	[TokenType.boolean]: {value: "true" | "false" | "maybe"},
-	[TokenType.number]: {value: number}, //to parse
-	[TokenType.string]: {value: string}, //to parse
-	[TokenType.implicitString]: {value: string}, // this might need to be more complicated. //to parse
-	[TokenType.identifier]: {value: string}, //to parse
+export type TokenValue = {
+	end: number
+} &
+//~ Primitives
+( {type: TokenType.Null} & NoValueTokenType
+| {type: TokenType.Undefined} & NoValueTokenType
+| {type: TokenType.Boolean} & {value: "true" | "false" | "maybe"}
+| {type: TokenType.Number} & {value: number}
+| {type: TokenType.String} & {value: string}
+| {type: TokenType.ImplicitString} & {value: string} // this might need to be more complicated. //to parse
+| {type: TokenType.Identifier} & {value: string}
+//~ Operators
+// Prefix
+| {type: TokenType.LogicalNot} & NoValueTokenType
+| {type: TokenType.BitwiseNot} & NoValueTokenType
+| {type: TokenType.UnaryMinus} & NoValueTokenType
 
-	//~ Operators
+// State
+| {type: TokenType.PlusPlus} & NoValueTokenType
+| {type: TokenType.MinusMinus} & NoValueTokenType
+| {type: TokenType.Previous} & NoValueTokenType
+| {type: TokenType.Next} & NoValueTokenType
+| {type: TokenType.Current} & NoValueTokenType
 
-	// Prefix
-	[TokenType.logicalNot]: NoValueTokenType,
-	[TokenType.bitwiseNot]: NoValueTokenType,
-	[TokenType.unaryMinus]: NoValueTokenType,
+// Logical
+| {type: TokenType.LogicalOr} & NoValueTokenType
+| {type: TokenType.LogicalAnd} & NoValueTokenType
 
-	// State
-	[TokenType.plusPlus]: NoValueTokenType,
-	[TokenType.minusMinus]: NoValueTokenType,
-	[TokenType.previous]: NoValueTokenType,
-	[TokenType.next]: NoValueTokenType,
-	[TokenType.current]: NoValueTokenType,
+// Bitwise
+| {type: TokenType.BitwiseOr} & NoValueTokenType
+| {type: TokenType.BitwiseXor} & NoValueTokenType
+| {type: TokenType.BitwiseAnd} & NoValueTokenType
 
-	// Logical
-	[TokenType.logicalOr]: NoValueTokenType,
-	[TokenType.logicalAnd]: NoValueTokenType,
+// Equality
+| {type: TokenType.Equals} & NoValueTokenType
+| {type: TokenType.NotEqual} & NoValueTokenType
+| {type: TokenType.StrongEqual} & NoValueTokenType
+| {type: TokenType.StrongNotEqual} & NoValueTokenType
+| {type: TokenType.StrongestEqual} & NoValueTokenType
+| {type: TokenType.StrongestNotEqual} & NoValueTokenType
 
-	// Bitwise
-	[TokenType.bitwiseOr]: NoValueTokenType,
-	[TokenType.bitwiseXor]: NoValueTokenType,
-	[TokenType.bitwiseAnd]: NoValueTokenType,
+// Comparison
+| {type: TokenType.Smaller} & NoValueTokenType
+| {type: TokenType.Greater} & NoValueTokenType
+| {type: TokenType.SmallerEqual} & NoValueTokenType
+| {type: TokenType.GreaterEqual} & NoValueTokenType
 
-	// Equality
-	[TokenType.equals]: NoValueTokenType,
-	[TokenType.notEqual]: NoValueTokenType,
-	[TokenType.strongEqual]: NoValueTokenType,
-	[TokenType.strongNotEqual]: NoValueTokenType,
-	[TokenType.strongestEqual]: NoValueTokenType,
-	[TokenType.strongestNotEqual]: NoValueTokenType,
+// Bit shift
+| {type: TokenType.BitShiftLeft} & NoValueTokenType
+| {type: TokenType.BitShiftRight} & NoValueTokenType
+| {type: TokenType.BitShiftUnsignedLeft} & NoValueTokenType
+| {type: TokenType.BitShiftUnsignedRight} & NoValueTokenType
 
-	// Comparison
-	[TokenType.smaller]: NoValueTokenType,
-	[TokenType.greater]: NoValueTokenType,
-	[TokenType.smallerEqual]: NoValueTokenType,
-	[TokenType.greaterEqual]: NoValueTokenType,
+// Arithmetic
+| {type: TokenType.Add} & NoValueTokenType
+| {type: TokenType.Subtract} & NoValueTokenType
+| {type: TokenType.Multiply} & NoValueTokenType
+| {type: TokenType.Divide} & NoValueTokenType
+| {type: TokenType.Modulo} & NoValueTokenType
+| {type: TokenType.BitShiftUnsignedRight} & NoValueTokenType
 
-	// Bit shift
-	[TokenType.bitShiftLeft]: NoValueTokenType,
-	[TokenType.bitShiftRight]: NoValueTokenType,
-	[TokenType.bitShiftUnsignedLeft]: NoValueTokenType,
-	[TokenType.bitShiftUnsignedRight]: NoValueTokenType,
+//~ Other
+// Assignment
+| {type: TokenType.Assignment} & {operator?: typeof CombinedAssignmentOperators[number]}
 
-	// Arithmetic
-	[TokenType.add]: NoValueTokenType,
-	[TokenType.subtract]: NoValueTokenType,
-	[TokenType.multiply]: NoValueTokenType,
-	[TokenType.divide]: NoValueTokenType,
-	[TokenType.modulo]: NoValueTokenType,
-	[TokenType.exponent]: NoValueTokenType,
+// Keywords
+| {type: TokenType.Const} & NoValueTokenType
+| {type: TokenType.Var} & NoValueTokenType
 
-	//~ Other
-	// Assignment
-	[TokenType.assignment]: {operator: keyof typeof BinaryOperators | "none"}, //!type doesn't work!!! operator is for combined assignment
+| {type: TokenType.Async} & NoValueTokenType
+| {type: TokenType.Function} & NoValueTokenType
+| {type: TokenType.CommaDelimiter} & {nbSpaces: number}
+| {type: TokenType.Return} & NoValueTokenType
 
-	// Keywords
-	[TokenType.const]: NoValueTokenType,
-	[TokenType.var]: NoValueTokenType,
+| {type: TokenType.If} & NoValueTokenType
+| {type: TokenType.Else} & NoValueTokenType
 
-	[TokenType.async]: NoValueTokenType,
-	[TokenType.function]: NoValueTokenType, //to parse
-	[TokenType.commaDelimiter]: {nbSpaces: number}, //to parse
-	[TokenType.return]: NoValueTokenType,
+| {type: TokenType.When} & NoValueTokenType
 
-	[TokenType.if]: NoValueTokenType,
-	[TokenType.else]: NoValueTokenType,
+| {type: TokenType.Delete} & NoValueTokenType
 
-	[TokenType.when]: NoValueTokenType,
+| {type: TokenType.Reverse} & NoValueTokenType
 
-	[TokenType.delete]: NoValueTokenType,
+| {type: TokenType.Import} & NoValueTokenType
+| {type: TokenType.Export} & NoValueTokenType
 
-	[TokenType.reverse]: NoValueTokenType,
+| {type: TokenType.Super} & NoValueTokenType
+| {type: TokenType.This} & NoValueTokenType
+| {type: TokenType.Class} & NoValueTokenType
+| {type: TokenType.New} & NoValueTokenType
 
-	[TokenType.import]: NoValueTokenType,
-	[TokenType.export]: NoValueTokenType,
+// Punctuation
+| {type: TokenType.Dot} & NoValueTokenType
+| {type: TokenType.Colon} & NoValueTokenType
+// | {type: TokenType.comma} & NoValueTokenType
 
-	[TokenType.super]: NoValueTokenType,
-	[TokenType.this]: NoValueTokenType,
+| {type: TokenType.OpenBracket} & NoValueTokenType
+| {type: TokenType.CloseBracket} & NoValueTokenType
+| {type: TokenType.OpenCurly} & NoValueTokenType
+| {type: TokenType.CloseCurly} & NoValueTokenType
+| {type: TokenType.OpenParen} & NoValueTokenType
+| {type: TokenType.CloseParen} & NoValueTokenType
 
-	// Punctuation
-	[TokenType.dot]: NoValueTokenType,
-	[TokenType.colon]: NoValueTokenType,
-	// [TokenType.comma]: NoValueTokenType,
+| {type: TokenType.Arrow} & NoValueTokenType
 
-	[TokenType.openBracket]: NoValueTokenType,
-	[TokenType.closeBracket]: NoValueTokenType,
-	[TokenType.openCurly]: NoValueTokenType,
-	[TokenType.closeCurly]: NoValueTokenType,
-	[TokenType.openParen]: NoValueTokenType,
-	[TokenType.closeParen]: NoValueTokenType,
+// Spaces
+| {type: TokenType.WhiteSpace} & {nbSpaces: number}
+| {type: TokenType.LineBreak} & NoValueTokenType
+// | {type: TokenType.tabs} & {nbTabs: number}
 
-	[TokenType.arrow]: NoValueTokenType,
+// End of statement
+| {type: TokenType.EndOfStatement} & {priority: number, debug?: number}
 
-	// Spaces
-	[TokenType.whiteSpace]: {nbSpaces: number}, //to parse
-	[TokenType.lineBreak]: NoValueTokenType, //to parse
-	[TokenType.tabs]: {nbTabs: number}, //to parse
+// End of file
+| {type: TokenType.FileDelimiter} & {file: string | false} //to parse
+| {type: TokenType.EOF} & NoValueTokenType
 
-	// End of statement
-	[TokenType.endOfStatement]: {priority: number, debug?: number}, //to parse
-
-	// End of file
-	[TokenType.fileDelimiter]: {file: string | false} //to parse
-	[TokenType.EOF]: NoValueTokenType, //to parse
-
-	// To do later
-	[TokenType._lifetime]: {},
-	[TokenType._variableType]: {}
-}[K] & TokenTypeBaseStruct;
-
-export type Token = TokenBaseStruct & {
-  -readonly [K in keyof typeof TokenType]?: TokenStructs<typeof TokenType[K]>;
-};
+// To do later
+| {type: TokenType._lifetime} & {}
+| {type: TokenType._variableType} & {}
+);
 
 export const LogicalOperators = [
-	TokenType.logicalOr, // ||
-	TokenType.logicalAnd, // &&
-]
+	TokenType.LogicalOr, // ||
+	TokenType.LogicalAnd, // &&
+] as const;
 
 export const BitwiseOperators = [
-	TokenType.bitwiseOr, // |
-	TokenType.bitwiseXor, // **
-	TokenType.bitwiseAnd, // &
-]
+	TokenType.BitwiseOr, // |
+	TokenType.BitwiseXor, // **
+	TokenType.BitwiseAnd, // &
+] as const;
 
 export const EqualityOperators = [
-	TokenType.equals, // ==
-	TokenType.notEqual, // ;=
-	TokenType.strongEqual, // ===
-	TokenType.strongNotEqual, // ;==
-	TokenType.strongestEqual, // ====
-	TokenType.strongestNotEqual, // ;===
-]
+	TokenType.Equals, // ==
+	TokenType.NotEqual, // ;=
+	TokenType.StrongEqual, // ===
+	TokenType.StrongNotEqual, // ;==
+	TokenType.StrongestEqual, // ====
+	TokenType.StrongestNotEqual, // ;===
+] as const;
 
 export const ComparisonOperators = [
-	TokenType.smaller, // <
-	TokenType.greater, // >
-	TokenType.smallerEqual, // <=
-	TokenType.greaterEqual, // >=
-]
+	TokenType.Smaller, // <
+	TokenType.Greater, // >
+	TokenType.SmallerEqual, // <=
+	TokenType.GreaterEqual, // >=
+] as const;
 
-export const BitShiftOperators =[
-	TokenType.bitShiftLeft, // <<
-	TokenType.bitShiftRight, // >>
-	TokenType.bitShiftUnsignedLeft, // <<<
-	TokenType.bitShiftUnsignedRight, // >>>
-]
+export const BitShiftOperators = [
+	TokenType.BitShiftLeft, // <<
+	TokenType.BitShiftRight, // >>
+	TokenType.BitShiftUnsignedLeft, // <<<
+	TokenType.BitShiftUnsignedRight, // >>>
+] as const;
 
 export const ArithmeticOperators = [
-	TokenType.add, // +
-	TokenType.subtract, // -
-	TokenType.multiply, // *
-	TokenType.divide, // /
-	TokenType.modulo, // %
-	TokenType.exponent, // ^
-]
+	TokenType.Add, // +
+	TokenType.Subtract, // -
+	TokenType.Multiply, // *
+	TokenType.Divide, // /
+	TokenType.Modulo, // %
+	TokenType.Exponent, // ^
+] as const;
+
+export const CombinedAssignmentOperators = [
+	...LogicalOperators,
+	...BitwiseOperators,
+	...BitShiftOperators,
+	...ArithmeticOperators
+] as const;
 
 export const BinaryOperators = [
 	...LogicalOperators,
@@ -311,7 +321,7 @@ export const BinaryOperators = [
 	...ComparisonOperators,
 	...BitShiftOperators,
 	...ArithmeticOperators
-]
+] as const;
 
 export function TokenTypeListToString(tokenTypes: TokenType[]): string {
 	return tokenTypes.map((type) => TokenType[type]).toString();
@@ -323,3 +333,136 @@ export function TokenTypeListToString(tokenTypes: TokenType[]): string {
 // 	}
 // }
 
+export const constantPatternMap: {
+  [key: string]: TokenType
+} = {
+  // Primitives
+  "null": TokenType.Null,
+  "undefined": TokenType.Undefined,
+  "true": TokenType.Boolean, //Special case
+  "false": TokenType.Boolean, //Special case
+  "maybe": TokenType.Boolean, //Special case
+  // Operators
+  ";": TokenType.LogicalNot,
+  "~": TokenType.BitwiseNot,
+	// "-": TokenType.UnaryMinus,
+
+  "++": TokenType.PlusPlus,
+  "--": TokenType.MinusMinus,
+  "previous": TokenType.Previous,
+  "next": TokenType.Next,
+  "current": TokenType.Current,
+
+  "||": TokenType.LogicalOr,
+  "&&": TokenType.LogicalAnd,
+
+  "|": TokenType.BitwiseOr,
+  "**": TokenType.BitwiseXor,
+  "&": TokenType.BitwiseAnd,
+
+  "==": TokenType.Equals,
+  ";=": TokenType.NotEqual,
+  "===": TokenType.StrongEqual,
+  ";==": TokenType.StrongNotEqual,
+  "====": TokenType.StrongestEqual,
+  ";===": TokenType.StrongestNotEqual,
+
+  "<": TokenType.Smaller,
+  ">": TokenType.Greater,
+  "<=": TokenType.SmallerEqual,
+  ">=": TokenType.GreaterEqual,
+
+  "<<": TokenType.BitShiftLeft,
+  ">>": TokenType.BitShiftRight,
+  "<<<": TokenType.BitShiftUnsignedLeft,
+  ">>>": TokenType.BitShiftUnsignedRight,
+
+  "+": TokenType.Add,
+  "-": TokenType.Subtract, //Special case, same symbol as unaryMinus
+  "*": TokenType.Multiply,
+  "/": TokenType.Divide,
+  "%": TokenType.Modulo,
+  "^": TokenType.Exponent,
+  // Other
+  "const": TokenType.Const,
+  "var": TokenType.Var,
+
+  "async": TokenType.Async,
+  "return": TokenType.Return,
+
+  "if": TokenType.If,
+  "else": TokenType.Else,
+
+  "when": TokenType.When,
+
+  "delete": TokenType.Delete,
+
+  "reverse": TokenType.Reverse,
+
+  "import": TokenType.Import,
+  "export": TokenType.Export,
+
+  "super": TokenType.Super,
+  "this": TokenType.This,
+  "class": TokenType.Class,
+  "className": TokenType.Class,
+  "new": TokenType.New,
+
+  ".": TokenType.Dot,
+  ":": TokenType.Colon,
+
+  "[": TokenType.OpenBracket,
+  "]": TokenType.CloseBracket,
+  "{": TokenType.OpenCurly,
+  "}": TokenType.CloseCurly,
+  "(": TokenType.OpenParen,
+  ")": TokenType.CloseParen,
+
+  "=>": TokenType.Arrow,
+	//Spaces
+  "\n": TokenType.LineBreak,
+  "\r\n": TokenType.LineBreak,
+};
+
+// function newToken(base: Omit<Token, "values">, values: TokenValue[]): Token {
+// 	return {
+// 		...base,
+// 		values
+// 	};
+// }
+
+export function getToken(startPosition: number, returnEOF: boolean, ...tokenLists: Token[][]): Token | undefined {
+	// Make sure we are still in the bound of the file
+	if (!hasTokensLeft(startPosition, references.tokens)) {
+		if (returnEOF) {
+			return {start: startPosition, values: [{type: TokenType.EOF, end: startPosition}]};
+		}
+		return undefined;
+	}
+
+	for (const tokens of tokenLists) {
+	
+		const token = tokens.find((token) => token.start === startPosition);
+		if (!isNil(token)) {
+			return token;
+		}
+	}
+
+	return undefined;
+}
+
+export function getTokenValues(token: Token | undefined, types: TokenType[]): TokenValue[] {
+	if (isNil(token) || isEmpty(types)) {
+		return [];
+	}
+
+	return token.values.filter((value) => types.includes(value.type));
+}
+
+export function getTokenTypes(token: Token): TokenType[] {
+	return [...new Set(token.values.map((value) => value.type))];
+}
+
+export function hasTokensLeft(position: number, tokenList: Token[]): boolean {
+	return position < Math.max(...tokenList.map((v) => v.start));
+}

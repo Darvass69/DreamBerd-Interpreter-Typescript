@@ -1,17 +1,20 @@
-export class UniqueQueue<T> {
+export class UniqueQueue<T extends number> {
 	public set: Set<T> = new Set();
 	public queue: Array<T> = [];
 
-	push(item: T) {
-		if (!this.set.has(item)) {
-			this.set.add(item);
-			this.queue.push(item);
+	push(...items: T[]) {
+		for (const item of items) {
+
+			if (!this.set.has(item)) {
+				this.set.add(item);
+				this.queue.push(item);
+				this.queue.sort((a,b)=> a - b);
+			}
 		}
 	}
 
 	pop() {
-		const item = this.queue.shift();
-		return item;
+		return this.queue.shift();
 	}
 
 	peek() {

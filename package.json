@@ -1,18 +1,23 @@
 {
   "scripts": {
-    "main": "node ./dist/main.js",
+    "js": "node ./dist/main.js",
     "watch": "tsc --watch",
-    "main2": "npx ts-node src/main.ts",
+    "main": "npx ts-node src/main.ts",
     "build": "tsc",
     "run": "node ./dist/main.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@types/lodash": "^4.17.10",
     "@types/node": "^22.5.0",
     "eslint": "^9.9.1",
     "eslint-plugin-unicorn": "^55.0.0",
     "globals": "^15.9.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

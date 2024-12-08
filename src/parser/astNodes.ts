@@ -1,4 +1,4 @@
-import { Token, TokenType } from "../lexer/token";
+import { TokenType } from "../lexer/token";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const none = {} as any;
@@ -72,7 +72,7 @@ export type AstNodeType<T extends AstNodeKind> =
   : T extends AstNodeKind.EndOfBlockStatement ? EndOfBlockStatement
   : Statement;
 
-type AstNodeProperties<T extends AstNodeKind> = Omit<AstNodeType<T>, keyof Statement>;
+type AstNodeProperties<T extends AstNodeKind> = Omit<AstNodeType<T>, "kindName" | "kind">;
 
 export function createAstNode<T extends AstNodeKind>(
   kind: T,
@@ -90,8 +90,8 @@ export function createAstNode<T extends AstNodeKind>(
 export interface Statement {
   kind: AstNodeKind;
   kindName: string;
-  start?: number[];
-  end?: number[];
+  start?: number;
+  end?: number;
 }
 
 export interface Expression extends Statement {}
@@ -151,14 +151,14 @@ export interface VariableDeclarationStatement extends Statement {
 
 export interface FunctionDeclarationStatement extends Statement {
   kind: AstNodeKind.FunctionDeclarationStatement;
-  name: Token;
+  name: string;
   parameters: FunctionParameter[];
   isAsync: boolean;
   body: ExpressionStatement | BlockStatement;
 }
 
 export interface FunctionParameter {
-  identifier: Token;
+  identifier: string;
   lifetime?: Lifetime
 }
 
@@ -212,20 +212,20 @@ export interface AssignmentExpression extends Expression {
 
 export interface PrefixExpression extends Expression {
   kind: AstNodeKind.PrefixExpression;
-  prefix: Token;
+  prefix: TokenType;
   right: Expression;
 }
 
 export interface StateExpression extends Expression {
   kind: AstNodeKind.StateExpression;
-  operator: Token;
+  operator: TokenType;
   argument: SymbolExpression | MemberExpression
 }
 
 export interface BinaryExpression extends Expression {
   kind: AstNodeKind.BinaryExpression;
   left: Expression;
-  operator: Token;
+  operator: TokenType;
   right: Expression;
 }
 

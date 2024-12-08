@@ -1,5 +1,7 @@
 import fs from 'node:fs';
-import { createAst } from './parser/parserFunctionsNew';
+import { createAst } from './parser/parser';
+import { Tokenizer } from './lexer/lexer';
+import { Token, TokenType } from './lexer/token';
 // import { createGlobalScope } from './runtime/environment';
 // import { evaluate } from './runtime/interpreter';
 
@@ -15,8 +17,15 @@ const path = "./src/examples/" + files[fileNb];
 
 async function main() {
 	const file = fs.readFileSync(path, 'utf8');
+
+	const tokens = new Tokenizer(file).tokenize();
+	fs.writeFileSync("./tokens.json", JSON.stringify(tokens, tokenListToStringJson, 2));
+	
+	console.log(`successfully created ${tokens.length} tokens.`);
+	// console.log(getTokenValues(tokens, 0, []));
+
 	const program = await createAst(file);
-	fs.writeFileSync("./ast.json", JSON.stringify(program, ignoreKeys, 2));
+	fs.writeFileSync("./ast.json", JSON.stringify(program, astToStringJson, 2));
 	console.info("successfully created the AST !!!");
 
 	// if (execute) {
@@ -37,14 +46,29 @@ try {
 
 // Ignore some keys when logging the AST
 const ignoredKeys = new Set(["kind"]);
-export function ignoreKeys(key: any, value: any)
+export function astToStringJson(key: any, value: any)
 {
 	if (ignoredKeys.has(key)) {
 		return;
 	}
+
+	if (key === "operator") {
+		return TokenType[value];
+	}
   return value;
 }
 
+//
+export function tokenListToStringJson(key: any, value: any) {
+	if (key === "type") {
+		return TokenType[value as TokenType];
+	}
+	return value;
+}
+
+export function saveLogs(fileName: string, content: string) {
+	fs.writeFileSync(`./${fileName}`, content);
+}
 
 /*
 1 * 2 + 3 * 4

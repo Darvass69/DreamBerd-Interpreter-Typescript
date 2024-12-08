@@ -6,6 +6,7 @@
       "body": [
         {
           "kindName": "ExpressionStatement",
+          "start": 0,
           "expression": {
             "kindName": "BranchingStatement",
             "branches": [
@@ -13,208 +14,194 @@
                 "kindName": "BinaryExpression",
                 "left": {
                   "kindName": "NumberExpression",
-                  "value": 1
+                  "value": 1,
+                  "end": 1
                 },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
+                "operator": "Add",
                 "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  }
-                }
-              },
-              {
-                "kindName": "BinaryExpression",
-                "left": {
-                  "kindName": "SymbolExpression",
-                  "symbol": "1"
-                },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
-                "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  }
+                  "kindName": "NumberExpression",
+                  "value": 2,
+                  "end": 5
                 }
               },
               {
                 "kindName": "BinaryExpression",
                 "left": {
                   "kindName": "NumberExpression",
-                  "value": 1
+                  "value": 1,
+                  "end": 1
                 },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
+                "operator": "Add",
                 "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  }
+                  "kindName": "SymbolExpression",
+                  "symbol": "2",
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1",
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "NumberExpression",
+                  "value": 2,
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1",
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "2",
+                  "end": 5
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kindName": "None"
+        },
+        {
+          "kindName": "ExpressionStatement",
+          "start": 9,
+          "expression": {
+            "kindName": "BranchingStatement",
+            "branches": [
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "NumberExpression",
+                  "value": 3,
+                  "end": 10
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "NumberExpression",
+                  "value": 4,
+                  "end": 14
                 }
               },
               {
                 "kindName": "BinaryExpression",
                 "left": {
                   "kindName": "NumberExpression",
-                  "value": 1
+                  "value": 1,
+                  "end": 1
                 },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
+                "operator": "Add",
                 "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  }
-                }
-              },
-              {
-                "kindName": "BinaryExpression",
-                "left": {
-                  "kindName": "SymbolExpression",
-                  "symbol": "1"
-                },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
-                "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  }
-                }
-              },
-              {
-                "kindName": "BinaryExpression",
-                "left": {
-                  "kindName": "SymbolExpression",
-                  "symbol": "1"
-                },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
-                "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "NumberExpression",
-                    "value": 1
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  }
+                  "kindName": "NumberExpression",
+                  "value": 2,
+                  "end": 5
                 }
               },
               {
                 "kindName": "BinaryExpression",
                 "left": {
                   "kindName": "NumberExpression",
-                  "value": 1
+                  "value": 1,
+                  "end": 1
                 },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
+                "operator": "Add",
                 "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  }
+                  "kindName": "SymbolExpression",
+                  "symbol": "2",
+                  "end": 5
                 }
               },
               {
                 "kindName": "BinaryExpression",
                 "left": {
                   "kindName": "SymbolExpression",
-                  "symbol": "1"
+                  "symbol": "1",
+                  "end": 1
                 },
-                "operator": {
-                  "value": "+",
-                  "type": 28
-                },
+                "operator": "Add",
                 "right": {
-                  "kindName": "BinaryExpression",
-                  "left": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  },
-                  "operator": {
-                    "value": "+",
-                    "type": 28
-                  },
-                  "right": {
-                    "kindName": "SymbolExpression",
-                    "symbol": "1"
-                  }
+                  "kindName": "NumberExpression",
+                  "value": 2,
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1",
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "2",
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "NumberExpression",
+                  "value": 1,
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "NumberExpression",
+                  "value": 2,
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "NumberExpression",
+                  "value": 1,
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "2",
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1",
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "NumberExpression",
+                  "value": 2,
+                  "end": 5
+                }
+              },
+              {
+                "kindName": "BinaryExpression",
+                "left": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1",
+                  "end": 1
+                },
+                "operator": "Add",
+                "right": {
+                  "kindName": "SymbolExpression",
+                  "symbol": "2",
+                  "end": 5
                 }
               }
             ]
