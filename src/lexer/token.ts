@@ -1,5 +1,6 @@
 import { isEmpty, isNil } from "lodash";
 import { references } from "../parser/parser";
+import { TokenChoice } from "../parser/branches/parserState";
 
 // Represent tokens our language understands.
 export enum TokenType {
@@ -134,8 +135,6 @@ const tokenTypeValues: TokenType[] = Object.keys(TokenType).filter((v) => !Numbe
 export type Token = {
 	start: number,
 	values: TokenValue[]
-	nullCount?: number,
-	totalNullCount?: number
 }
 
 interface NoValueTokenType {
@@ -201,7 +200,7 @@ export type TokenValue = {
 | {type: TokenType.Multiply} & NoValueTokenType
 | {type: TokenType.Divide} & NoValueTokenType
 | {type: TokenType.Modulo} & NoValueTokenType
-| {type: TokenType.BitShiftUnsignedRight} & NoValueTokenType
+| {type: TokenType.Exponent} & NoValueTokenType
 
 //~ Other
 // Assignment
@@ -431,26 +430,28 @@ export const constantPatternMap: {
 // 	};
 // }
 
-export function getToken(startPosition: number, returnEOF: boolean, ...tokenLists: Token[][]): Token | undefined {
+export function getToken(startPosition: number, tokens: Token[]): Token | undefined {
 	// Make sure we are still in the bound of the file
 	if (!hasTokensLeft(startPosition, references.tokens)) {
-		if (returnEOF) {
-			return {start: startPosition, values: [{type: TokenType.EOF, end: startPosition}]};
-		}
-		return undefined;
+		return {start: startPosition, values: [{type: TokenType.EOF, end: startPosition}]};
 	}
 
-	for (const tokens of tokenLists) {
-	
-		const token = tokens.find((token) => token.start === startPosition);
-		if (!isNil(token)) {
-			return token;
-		}
-	}
-
-	return undefined;
+	return tokens.find((token) => token.start === startPosition);
 }
 
+export function getChoiceAtPosition(startPosition: number, choices: TokenChoice[]): TokenChoice | undefined {
+	if (hasChoicesLeft(startPosition, choices)) {
+		return choices.find((choice) => choice.start === startPosition);
+	}
+}
+
+export function hasChoicesLeft(position: number, choices: TokenChoice[]): boolean {
+	return position < Math.max(...choices.map((v) => v.start));
+}
+
+/**
+ * Find all the values from a token that that matches any of the given token types.
+ */
 export function getTokenValues(token: Token | undefined, types: TokenType[]): TokenValue[] {
 	if (isNil(token) || isEmpty(types)) {
 		return [];

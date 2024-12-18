@@ -3,15 +3,65 @@
 /* -------------------------------------------------------------------------- */
 
 /*
+waitForResults
+
+
+
+
+better/more comments?
+
+
+unit tests to make sure things work well. Could also be done before we try to make it work. It will reduce the debug time by a lot.
+
+*/
+
+
+
+
+
+
+/*
 p.exec is now async
 it resolves when all branches has reached
 	when each parser gets in the exec method, add their promise to the list.
 	when we are ready to release them, resolve all the promise in the list
 		we would need an event in the branch manager that triggers each checkpoint with position <= to current position so they can release their parsers
-	
+
 
 
 for this to work, we just need to make sure branches are only created when needed so we don't have duplicates (it shouldn't be a problem, but we need to watch out for it)
+we also need to change how we identify our checkpoints.
+	a checkpoint is a certain starting state with a certain transformation
+		transformation: handler/parsing function
+		state: position, future choices (token and handler)
+	  
+	when all the branches child of the checkpoint have resolved, resolves the parent branches
+
+
+
+parent branches:
+	identified by the order of opened checkpoint it went through. Basically the call stack.
+	This makes sure that all places that needs the result have the result, but that places that comes from the same checkpoint, but with , for example a different choice, aren't duplicated
+	if we handle token choices well, we should not have to check the previous checkpoints.
+
+
+I think we can get rid of branch manager. Each checkpoint will simply start the parsing when ~~everyone has reached their start or later~~. We just need to parse as soon as we create it. Other parser should not change the result.
+
+
+token choices are created before the checkpoint
+handler choices are created in the checkpoint
+
+
+
+its simply impossible to create a checkpoint with token (and handler) choice remaining unless we add more than 1 choice when we get the handler (we can't get the handler, then expect something, then call the handler. It would just break).
+
+We handle choices when we create new branches in the checkpoint. So now, instead of adding to branch manager, the checkpoint itself is going to track those instead.
+
+
+
+
+The checkpoint handles creating and executing branches
+
 
 
 

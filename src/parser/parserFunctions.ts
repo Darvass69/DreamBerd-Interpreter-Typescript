@@ -18,20 +18,20 @@ import Parser, { options } from "./parser";
 
 
 /* --------------------------------- Program -------------------------------- */
-export function parseProgram(p: Parser): BlockStatement {
+export async function parseProgram(p: Parser): Promise<BlockStatement> {
   const body: Statement[] = [];
   while (p.hasToken()) {
-    body.push(parseStatement(p));
+    body.push(await p.executeHandler(parseStatement));
   }
   return createAstNode(AstNodeKind.BlockStatement, {body});
 }
 
-export function parseStatement(p: Parser): Statement {
+export async function parseStatement(p: Parser): Promise<Statement> {
   p.optional([TokenType.WhiteSpace]);
-  return p.getStmt()(p);
+  return p.executeHandler(p.getStmt());
 }
 
-export function parseExpression(p: Parser, bp: BindingPower, nbSpaces: number): Expression {
+export async function parseExpression(p: Parser, bp: BindingPower, nbSpaces: number): Promise<Expression> {
   // if (options.useSignificantWhitespace) {
   //   //
   // }
@@ -43,19 +43,18 @@ export function parseExpression(p: Parser, bp: BindingPower, nbSpaces: number): 
   // }
 
   p.optional([TokenType.WhiteSpace]);
-  
+
   const nud_handler = p.getNud(bp);
   if (nud_handler === undefined) {
     p.exit();
   }
-  
-  let left = nud_handler(p, nbSpaces);
-  // let left = p.exec(nud_handler, nbSpaces);
+
+  let left = await p.executeHandler(nud_handler, nbSpaces);
   p.optional([TokenType.WhiteSpace]); //! this will be a problem. We can't always eat this one, sometimes we might need to keep it to parse the next grouping
   
   let led_handler: LedHandler | null = p.getLed(bp);
   while (led_handler != null) { //! we need to add a branch with null
-    left = led_handler(p, left, nbSpaces);
+    left = await p.executeHandler(led_handler, left, nbSpaces);
     p.optional([TokenType.WhiteSpace]);
     led_handler = p.getLed(bp);
   }
@@ -63,9 +62,9 @@ export function parseExpression(p: Parser, bp: BindingPower, nbSpaces: number): 
 }
 
 // Essentially a NUD, but its whitespace counterpart is way more complicated
-export function parseGroupingExpressionParen(p: Parser, bp: BindingPower, nbSpaces: number): Expression {
+export async function parseGroupingExpressionParen(p: Parser, bp: BindingPower, nbSpaces: number): Promise<Expression> {
   p.expect([TokenType.OpenParen]);
-  const expression = parseExpression(p, BindingPower.default_bp, nbSpaces);
+  const expression = await p.executeHandler(Lookups.createNudHandler(BindingPower.default_bp, parseExpression), nbSpaces);
   p.expect([TokenType.CloseParen]);
   return expression;
 }
@@ -174,10 +173,10 @@ export function parseGroupingExpressionParen(p: Parser, bp: BindingPower, nbSpac
 
 
 /* ---------------------------------- Stmt ---------------------------------- */
-export function parseExpressionStatement(p: Parser): ExpressionStatement {
+export async function parseExpressionStatement(p: Parser): Promise<ExpressionStatement> {
   const start = p.getPosition();
   // const expression = parseExpression(p, BindingPower.default_bp, Infinity);
-  const expression = p.exec(Lookups.createNudHandler(BindingPower.default_bp, parseExpression), Infinity);
+  const expression = await p.executeHandler(Lookups.createNudHandler(BindingPower.default_bp, parseExpression), Infinity);
   p.expect([TokenType.EndOfStatement]); //~ This could be parseEndOfStatement and could handle new lines
 
   return createAstNode(AstNodeKind.ExpressionStatement, {start, expression});
@@ -185,10 +184,10 @@ export function parseExpressionStatement(p: Parser): ExpressionStatement {
 
 
 /* ---------------------------------- Expr ---------------------------------- */
-export function parseBinaryExpression(p: Parser, left: Expression, bp: BindingPower, nbSpaces: number): BinaryExpression {
+export async function parseBinaryExpression(p: Parser, left: Expression, bp: BindingPower, nbSpaces: number): Promise<BinaryExpression> {
 	// We assume we are already at the operator token
 	const operator = p.expect([...BinaryOperators]);
-	const right = parseExpression(p, bp, nbSpaces);
+	const right = await p.executeHandler(Lookups.createNudHandler(bp, parseExpression), nbSpaces);
 
 	return createAstNode(AstNodeKind.BinaryExpression, {left, operator: operator.type, right});
 }
@@ -212,9 +211,9 @@ export function parsePrimaryExpression(p: Parser, bp: BindingPower, nbSpaces: nu
 	}
 }
 
-const fn = (parser: Parser, nbSpaces: number) => parseExpression(parser, BindingPower.default_bp, nbSpaces)
-fn.bp = BindingPower.default_bp;
-const testCheckpoint = Checkpoint.new(0, fn, [Infinity]);
+// const fn = (parser: Parser, nbSpaces: number) => parseExpression(parser, BindingPower.default_bp, nbSpaces)
+// fn.bp = BindingPower.default_bp;
+// const testCheckpoint = Checkpoint.new(0, fn, [Infinity]);
 
 
 

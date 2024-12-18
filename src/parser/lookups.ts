@@ -6,13 +6,14 @@ import { BindingPower } from "./bindingPower";
 import Parser, { options } from "./parser";
 import { parseBinaryExpression, parseExpressionStatement, parseGroupingExpressionParen, parsePrimaryExpression } from "./parserFunctions";
 
-export type StmtHandler = (parser: Parser) => Statement;
-export type NudHandler = ((parser: Parser, nbSpaces: number) => Expression) & {bp: number};
-export type LedHandler = ((parser: Parser, left: Expression, nbSpaces: number) => Expression) & {bp: number};
+//TODO make async?
+export type StmtHandler = (parser: Parser) => Statement | Promise<Statement>;
+export type NudHandler = ((parser: Parser, nbSpaces: number) => Expression | Promise<Expression>) & {bp: number};
+export type LedHandler = ((parser: Parser, left: Expression, nbSpaces: number) => Expression | Promise<Expression>) & {bp: number};
 
-export type StmtParsingFunction = (parser: Parser) => Statement;
-export type NudParsingFunction = (parser: Parser, bp: BindingPower, nbSpaces: number) => Expression;
-export type LedParsingFunction = (parser: Parser, left: Expression, bp: BindingPower, nbSpaces: number) => Expression;
+export type StmtParsingFunction = (parser: Parser) => Statement | Promise<Statement>;
+export type NudParsingFunction = (parser: Parser, bp: BindingPower, nbSpaces: number) => Expression | Promise<Expression>;
+export type LedParsingFunction = (parser: Parser, left: Expression, bp: BindingPower, nbSpaces: number) => Expression | Promise<Expression>;
 
 export default class Lookups {
 	private stmt_lu: Map<TokenType, StmtHandler[]> = new Map();
@@ -65,7 +66,7 @@ export default class Lookups {
 
 		this.addStmt(
 			TokenType.EOF, 
-			(parser: Parser) => {
+			async (parser: Parser) => {
 				parser.expect([TokenType.EOF]);
 				return createAstNode(AstNodeKind.EOFStatement, {});
 			}
@@ -73,7 +74,7 @@ export default class Lookups {
 
 		this.addStmt(
 			TokenType.LineBreak, 
-			(parser: Parser) => {
+			async (parser: Parser) => {
 				parser.expect([TokenType.LineBreak]);
 				return createAstNode(AstNodeKind.None, {});
 			}

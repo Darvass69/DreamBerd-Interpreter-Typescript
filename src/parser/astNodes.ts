@@ -98,7 +98,7 @@ export interface Expression extends Statement {}
 
 /** These are not real statements, they are when we have a syntax that can be more than one thing */
 export interface BranchingStatement<T extends Statement> extends Statement {
-  kind: AstNodeKind.BranchingExpression;
+  kind: AstNodeKind.BranchingStatement;
   branches: T[];
 }
 
@@ -136,7 +136,6 @@ export interface BlockStatement extends Statement {
 export enum Modifiers {
   None,
   Const,
-  // eslint-disable-next-line unicorn/prevent-abbreviations
   Var,
   SuperGlobal
 }

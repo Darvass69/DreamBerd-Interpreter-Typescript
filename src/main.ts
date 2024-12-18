@@ -38,7 +38,7 @@ async function main() {
 }
 
 try {
-	main();
+	void main();
 } catch (error) {
 	console.error("Caught error in main:", error);
 }

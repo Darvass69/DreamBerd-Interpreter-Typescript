@@ -1,6 +1,6 @@
 # Dreamberd Interpreter Typescript
 
-This is a work in progress of an interpreter for [Dreamberd](https://github.com/TodePond/DreamBerd) made in Typescript. I have spent about 2 weeks making it, so its far from complete. Right now it runs with Node in as a CLI, but I plan to change it to a browser environment.
+This is a work in progress of an interpreter for [Dreamberd](https://github.com/TodePond/DreamBerd) made in Typescript. I have spent about ~~2 weeks~~ 4 months making it, so its far from complete. Right now it runs with Node as a CLI, but I plan to change it to a browser environment.
 
 The project is based on this [guide to parsers](https://youtube.com/playlist?list=PL_2VhOvlMk4XDeq2eOOSDQMrbZj9zIU_b&si=2F4jFltpkbobRTFs) ([github](https://github.com/tlaceby/parser-series)) and this [guide to interpreters](https://www.youtube.com/playlist?list=PL_2VhOvlMk4UHGqYCLWc6GO8FaPl8fQTh) ([github](https://github.com/tlaceby/guide-to-interpreters-series)).
 
@@ -102,7 +102,7 @@ I plan on supporting as many features as possible and hopefully create the first
   - Standard lib
     - print()
     - Date.now(): `Date.now() -= 3600000!`
-  - Is `...` part of the specification?
+  - Is the `...` operator part of the specification?
   - Parentheses
   - Indents (tabs multiple of +-3)
   - https://github.com/TodePond/DreamBerd?tab=readme-ov-file#types
