@@ -177,10 +177,10 @@ Things I need to do, but that aren't actual features from the language. Mostly c
 
 #### Parser
 
-- [~] Rewrite parser to handle multiple possible results from the same tokens . How it works is that each time we hit a token that can be interpreted more than 1 way, we create a new branch with each possibility. This will also prepare us to drop parentheses and use significant whitespace (it will fix some ambiguity problems with the syntax).
+- [x] Rewrite parser to handle multiple possible results from the same tokens . How it works is that each time we hit a token that can be interpreted more than 1 way, we create a new branch with each possibility. This will also prepare us to drop parentheses and use significant whitespace (it will fix some ambiguity problems with the syntax).
   - [x] Branch for every different way to parse each token
   - [x] Branch for every different stmt, nud, led handler for each tokens
-  - [~] Memoize the results with checkpoints
+  - [x] Memoize the results with checkpoints
 - [ ] Add line number and character in the AST so we can make better errors
 - [ ] More descriptive and accurate error messages.
 
@@ -191,7 +191,10 @@ Things I need to do, but that aren't actual features from the language. Mostly c
 
 #### General
 - [ ] Make sure we are consistent with parsing and executing. There might be some places where we do it one way and another place that does it a different way. We should make sure that the behavior is consistent and somewhat predictable (as predictable as possible with this language). (The problems are going to be where we have spaces, tabs or end of line/end of statement and EOF)
-- [ ] Some of the types are so messy and complicated. I'm sure there is a better way of doing it.
+- [~] Some of the types are so messy and complicated. I'm sure there is a better way of doing it.
+
+#### Extra
+- [ ] AST visualiser as a tree. This way we can better understand what is happening and make sure everything works properly.
 
 ## File Structure
 In the `src` folder, we have:

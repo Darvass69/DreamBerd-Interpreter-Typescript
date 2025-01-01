@@ -1,76 +1,80 @@
-import { isNil } from "lodash";
-import { getChoiceAtPosition, Token, TokenValue } from "../../lexer/token";
-import { LedHandler, NudHandler, StmtHandler } from "../lookups";
-import { ExitBranchError } from "../parser";
-import { Statement } from "../astNodes";
+import { getChoiceAtPosition, TokenValue } from "../../lexer/token.ts";
+import { ExitBranchError } from "../parser.ts";
+import { LedHandler, NudHandler, StmtHandler } from "../parsingFunctionMaps.ts";
+import { Statement } from "../astNodes.ts";
 
 export interface TokenChoice {
-  start: number,
-  value: TokenValue | undefined
-	nullCount: number,
-	totalNullCount: number
+  start: number;
+  value: TokenValue | undefined;
+  nullCount: number;
+  totalNullCount: number;
 }
+
+export type ResultChoice = [endPosition: number, results: Statement];
 
 export class ParserState {
   public position: number;
   /** This is a list of the choice of tokens we made to get from the last checkpoint to here. */
-  private tokenChoices: TokenChoice[];
-  public _handlerChoices: (StmtHandler | NudHandler | LedHandler | null)[]; //* doesn't need to be public. It's public only for logs
-  public _handlerChoiceIndex: number = 0; //* doesn't need to be public. It's public only for logs
-  private resultChoices: [endPosition: number, results: Statement][] = [];
-  private resultChoiceIndex: number = 0;
+  public _tokenChoices: TokenChoice[];
+  public _handlerChoices: (StmtHandler | NudHandler | LedHandler | null)[];
+  public _handlerChoiceIndex: number = 0;
+  public _resultChoices: ResultChoice[] = [];
+  public _resultChoiceIndex: number = 0;
 
-  constructor(startPosition: number, tokenChoices: TokenChoice[], handlerChoices: (StmtHandler | NudHandler | LedHandler | null)[]) {
+  constructor(startPosition: number, tokenChoices: TokenChoice[], handlerChoices: (StmtHandler | NudHandler | LedHandler | null)[], resultChoices: ResultChoice[]) {
     this.position = startPosition;
-    this.tokenChoices = tokenChoices;
+    this._tokenChoices = tokenChoices;
     this._handlerChoices = handlerChoices;
+    this._resultChoices = resultChoices;
   }
 
   public static copy(state: ParserState, checkpointStartPosition: number): ParserState {
-    const tokenChoicesCopy: TokenChoice[] = []
-    for (const tokenChoice of state.tokenChoices) {
+    const tokenChoicesCopy: TokenChoice[] = [];
+    for (const tokenChoice of state._tokenChoices) {
       tokenChoicesCopy.push({
         start: tokenChoice.start,
         value: tokenChoice.value,
         nullCount: 0,
-        totalNullCount: tokenChoice.totalNullCount
-      })
+        totalNullCount: tokenChoice.totalNullCount,
+      });
     }
 
     const handlerChoicesCopy = [...state._handlerChoices];
 
-    return new ParserState(checkpointStartPosition, tokenChoicesCopy, handlerChoicesCopy)
+    const resultChoicesCopy = [...state._resultChoices];
+
+    return new ParserState(checkpointStartPosition, tokenChoicesCopy, handlerChoicesCopy, resultChoicesCopy);
   }
 
   public addTokenChoice(choiceStartPosition: number, choiceValue: TokenValue | null) {
-    let choice = getChoiceAtPosition(choiceStartPosition, this.tokenChoices);
+    let choice = getChoiceAtPosition(choiceStartPosition, this._tokenChoices);
     if (choice === undefined) {
       choice = {
         start: choiceStartPosition,
         value: undefined,
         nullCount: 0,
-        totalNullCount: 0
-      }
+        totalNullCount: 0,
+      };
+      this._tokenChoices.push(choice);
     }
 
     if (choiceValue === null) {
-      choice.nullCount++
-      choice.totalNullCount++
+      choice.totalNullCount++;
     } else {
-      if (choice.value != undefined) {
-        throw new ExitBranchError("We already have a token choice.")
+      if (choice.value !== undefined) {
+        throw new ExitBranchError("We already have a token choice.");
       }
       choice.value = choiceValue;
     }
   }
 
   public getTokenChoice(): TokenValue | null | undefined {
-    const tokenChoice = getChoiceAtPosition(this.position, this.tokenChoices);
+    const tokenChoice = getChoiceAtPosition(this.position, this._tokenChoices);
 
     if (tokenChoice === undefined) {
       return undefined;
     }
-    if (tokenChoice.value === undefined) {
+    if (tokenChoice.nullCount < tokenChoice.totalNullCount) {
       tokenChoice.nullCount++;
       return null;
     }
@@ -82,19 +86,19 @@ export class ParserState {
   }
 
   public getHandlerChoice(): StmtHandler | NudHandler | LedHandler | null | undefined {
-    if (this._handlerChoices.length < this._handlerChoiceIndex) {
+    if (this._handlerChoiceIndex < this._handlerChoices.length) {
       return this._handlerChoices[this._handlerChoiceIndex++];
     }
     return undefined;
   }
 
-  public addResultChoice(choice: [endPosition: number, results: Statement]) {
-    this.resultChoices.push(choice);
+  public addResultChoice(choice: ResultChoice) {
+    this._resultChoices.push(choice);
   }
 
-  public getResultChoice(): [endPosition: number, results: Statement] | undefined {
-    if (this.resultChoices.length < this.resultChoiceIndex) {
-      return this.resultChoices[this.resultChoiceIndex++];
+  public getResultChoice(): ResultChoice | undefined {
+    if (this._resultChoiceIndex < this._resultChoices.length) {
+      return this._resultChoices[this._resultChoiceIndex++];
     }
     return undefined;
   }

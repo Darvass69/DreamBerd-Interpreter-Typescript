@@ -2,20 +2,19 @@ import { FunctionParameter, Statement } from "../parser/astNodes";
 import Environment from "./environment";
 
 export enum ValueKind {
-	null,
-	NullValue,
-	UndefinedValue,
-	BooleanValue,
-	NumberValue,
-	StringValue,
-	ObjectValue,
-	ArrayValue,
-	NativeFunctionValue,
-	FunctionValue
-} 
+  null,
+  NullValue,
+  UndefinedValue,
+  BooleanValue,
+  NumberValue,
+  StringValue,
+  ObjectValue,
+  ArrayValue,
+  NativeFunctionValue,
+  FunctionValue,
+}
 
-export type ValueType<T> =
-  T extends ValueKind.NullValue ? NullValue
+export type ValueType<T> = T extends ValueKind.NullValue ? NullValue
   : T extends ValueKind.UndefinedValue ? UndefinedValue
   : T extends ValueKind.BooleanValue ? BooleanValue
   : T extends ValueKind.NumberValue ? NumberValue
@@ -36,85 +35,79 @@ export function createRuntimeValue<T extends ValueKind>(kind: T, properties: Val
   } as ValueType<T>;
 }
 
-
 export interface RuntimeValue {
-	type: ValueKind
-	typeName: string
+  type: ValueKind;
+  typeName: string;
 }
 
 /* --------------------------------- Values --------------------------------- */
-export type PrimitiveValue = BooleanValue | NumberValue | StringValue
+export type PrimitiveValue = BooleanValue | NumberValue | StringValue;
 
 export interface NullValue extends RuntimeValue {
-	type: ValueKind.NullValue;
-	value: null
+  type: ValueKind.NullValue;
+  value: null;
 }
 export function createNull(): NullValue {
-	return createRuntimeValue(ValueKind.NullValue, {value: null});
+  return createRuntimeValue(ValueKind.NullValue, { value: null });
 }
 
 export interface UndefinedValue extends RuntimeValue {
-	type: ValueKind.UndefinedValue;
-	value: undefined
+  type: ValueKind.UndefinedValue;
+  value: undefined;
 }
 export function createUndefined(): UndefinedValue {
-	return createRuntimeValue(ValueKind.UndefinedValue, {value: undefined});
+  return createRuntimeValue(ValueKind.UndefinedValue, { value: undefined });
 }
-
 
 export interface BooleanValue extends RuntimeValue {
-	type: ValueKind.BooleanValue
-	value: boolean
+  type: ValueKind.BooleanValue;
+  value: boolean;
 }
 export function createBoolean(value: boolean): BooleanValue {
-	return createRuntimeValue(ValueKind.BooleanValue, {value});
+  return createRuntimeValue(ValueKind.BooleanValue, { value });
 }
-
 
 export interface NumberValue extends RuntimeValue {
-	type: ValueKind.NumberValue
-	value: number
+  type: ValueKind.NumberValue;
+  value: number;
 }
 export function createNumber(value: number): NumberValue {
-	return createRuntimeValue(ValueKind.NumberValue, {value});
+  return createRuntimeValue(ValueKind.NumberValue, { value });
 }
-
 
 export interface StringValue extends RuntimeValue {
-	type: ValueKind.StringValue
-	value: string
+  type: ValueKind.StringValue;
+  value: string;
 }
 export function createString(value: string): StringValue {
-	return createRuntimeValue(ValueKind.StringValue, {value});
+  return createRuntimeValue(ValueKind.StringValue, { value });
 }
-
 
 //TODO these need to be a bit more complex to handle default properties like push
 export interface ObjectValue extends RuntimeValue {
-	type: ValueKind.ObjectValue
-	properties: Map<string, RuntimeValue>
+  type: ValueKind.ObjectValue;
+  properties: Map<string, RuntimeValue>;
 }
 
 export interface ArrayValue extends RuntimeValue {
-	type: ValueKind.ArrayValue
-	properties: Map<number, RuntimeValue>
+  type: ValueKind.ArrayValue;
+  properties: Map<number, RuntimeValue>;
 }
 
 /* -------------------------------- Functions ------------------------------- */
 export type FunctionCall = (parameters: RuntimeValue[], environment: Environment) => RuntimeValue;
 
 export interface NativeFunctionValue extends RuntimeValue {
-	type: ValueKind.NativeFunctionValue
-	call: FunctionCall
+  type: ValueKind.NativeFunctionValue;
+  call: FunctionCall;
 }
 
 export interface FunctionValue extends RuntimeValue {
-	type: ValueKind.FunctionValue
-	name: string
-	parameters: FunctionParameter[]
-	declarationEnvironment: Environment,
-	body: Statement[]
+  type: ValueKind.FunctionValue;
+  name: string;
+  parameters: FunctionParameter[];
+  declarationEnvironment: Environment;
+  body: Statement[];
 }
-
 
 //TODO runtime lifetime

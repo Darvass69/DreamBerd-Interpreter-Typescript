@@ -1,146 +1,48 @@
 /* -------------------------------------------------------------------------- */
 /*                                 START TODO                                 */
 /* -------------------------------------------------------------------------- */
+/*
+~ Need fixing
+Comments don't work. (when we make a comment, we remove the characters, but we don't change the remaining tokens, this makes it so their start and end have a gap)
+
+*/
+
 
 /*
-waitForResults
+* Parser/parsing functions improvements
+  - p.executeHandler should allow to give multiple handlers that we then create a choice for each. This way we can execute any combinations.
+		+ a way to easily create parseExpression or any other handler (like a centralized place).
+
+	- better way to handle BranchingStatement type? A way to define a branching and the value at the same time? Equivalent to `Branching<T> | T`
+
+	- a way to filter nodes in branching so we can verify that branching only has some specific types of nodes (ex: we can only assign a value to symbol and member expressions, so we want to filter for them)
+
+	- Most of the parsing functions don't take whitespace into account. Fix that + clean up.
+*/
 
 
+/*
+~ Ast visualiser
+create a web page with vite (and react?)
+
+advanced ast view:
+  be able to log the AST into a better looking way
+  ex: ["1" | #1 | 1]
+      +
+      ...
+
+*/
 
 
+/*
+~ Small improvements
 better/more comments?
-
 
 unit tests to make sure things work well. Could also be done before we try to make it work. It will reduce the debug time by a lot.
 
 */
 
-
-
-
-
-
-/*
-p.exec is now async
-it resolves when all branches has reached
-	when each parser gets in the exec method, add their promise to the list.
-	when we are ready to release them, resolve all the promise in the list
-		we would need an event in the branch manager that triggers each checkpoint with position <= to current position so they can release their parsers
-
-
-
-for this to work, we just need to make sure branches are only created when needed so we don't have duplicates (it shouldn't be a problem, but we need to watch out for it)
-we also need to change how we identify our checkpoints.
-	a checkpoint is a certain starting state with a certain transformation
-		transformation: handler/parsing function
-		state: position, future choices (token and handler)
-	  
-	when all the branches child of the checkpoint have resolved, resolves the parent branches
-
-
-
-parent branches:
-	identified by the order of opened checkpoint it went through. Basically the call stack.
-	This makes sure that all places that needs the result have the result, but that places that comes from the same checkpoint, but with , for example a different choice, aren't duplicated
-	if we handle token choices well, we should not have to check the previous checkpoints.
-
-
-I think we can get rid of branch manager. Each checkpoint will simply start the parsing when ~~everyone has reached their start or later~~. We just need to parse as soon as we create it. Other parser should not change the result.
-
-
-token choices are created before the checkpoint
-handler choices are created in the checkpoint
-
-
-
-its simply impossible to create a checkpoint with token (and handler) choice remaining unless we add more than 1 choice when we get the handler (we can't get the handler, then expect something, then call the handler. It would just break).
-
-We handle choices when we create new branches in the checkpoint. So now, instead of adding to branch manager, the checkpoint itself is going to track those instead.
-
-
-
-
-The checkpoint handles creating and executing branches
-
-
-
-
-*/
-
-/*
-checkpoint needs to know
-	position
-	handler choices past the current position (i'm pretty sure we will never have those)
-	token choices past the current position
-	nb spaces?
-	bp?
-	left?
-
-redo the logs
-*/
-
-/*
-parse grouping whitespace
-*/
-
-
-
-
-
-
-
-
-
-/* -------------------------------------------------------------------------- */
-/*                                  END TODO                                  */
-/* -------------------------------------------------------------------------- */
-/*
-What we have:
-checkpoint: create and use checkpoints dynamically.
-
-parser: I think its (almost) done (see checkpoints)
-
-astNodes: most of them are done, we just need to create them.
-parserFunctions: create all the new parsing functions to parse all the AST nodes we have and significant whitespace in grouping and expression
-lookups: we just need to add missing parsing function when we make them.
-
-references: its a shit way of doing it. We need a better way. Singleton getLookup?
-
-BranchManager: done
-*/
-
-
-import { TokenType, Token } from "./lexer/token";
-/*
-Improvements:
-	- On demand tokens. Allow to search only for the selected types.
-
-
-If you want to use whitespace in a regex, use its char code. Or we could allow to escape it, but then when creating a variable like 'name\ ' we need to add one more space because we are escaping it. (could be very cursed)
-Do we count tabs? New lines? They could be spaces. Then when you want to break an expression over multiple lines, you need to take that into account. It could be very fun.
-
-we might need some token to take priority over any other interpretation. For example, '=====' should not be interpreted as a bunch of equal, but as a file delimiter.
-
-
-The string theory
-'Something'
-"Something"
-"'" -> '
-"'A'" -> A
-"'A" -> 'A
-"'We write something like "this"'" -> 'We write something like 
-
-I think we do:
-	Take all starting quotes (' and ")
-	We get them in order.
-	To close the string, we must have the exact same sequence in the reverse order.
-	If we do "'" -> we expect somewhere to close it with "'".
-	If we want a string with just the character/ starting with the character ', we need to escape it "\'"
-
-*/
-
-
-import Parser from "./parser/parser";
+/* ------------------------------- Whitespace ------------------------------- */
 /*
 TODO
 Whitespace
@@ -199,54 +101,48 @@ fns call
 		token: function arg ',' and a total number of spaces
 */
 
-
-
-
-
-
-
-
+/* -------------------------------------------------------------------------- */
+/*                                  END TODO                                  */
+/* -------------------------------------------------------------------------- */
+import { TokenType, Token } from "./lexer/token.ts";
 /*
-Change our logs to be able to better see what is really happening inside the parser.
+I think most of the tokens work like we want to.
 
-advanced logging:
-  be able to log the AST into a better looking way
-  ex: ["1" | #1 | 1]
-      +
-      ...
-  
-  
-  better represent choices
-    when starting new branch, print the choices for that branch
-      ex: 
-        parseExpressionStatement
-          parsePrimaryExpression: Identifier(1)
-          parseBinaryExpression: Add()
-          parsePrimaryExpression: Identifier(1)
-          parseBinaryExpression: Add()
-          parsePrimaryExpression: Identifier(1)
-        Position: 9
+  TODO clean up identifiers before returning. We want to make sure all identifiers start and end somewhere that isn't just identifiers.
+  TODO don't create identifiers with only "!" and similar.
+	TODO string interpolation
 
+~ On demand tokens
+	- On demand tokens. Allow to search only for the selected types.
 
+~ Whitespace (special use case)
+If you want to use whitespace in a regex, use its char code. Or we could allow to escape it, but then when creating a variable like 'name\ ' we need to add one more space because we are escaping it. (could be very cursed)
+Do we count tabs? New lines? They could be spaces. Then when you want to break an expression over multiple lines, you need to take that into account. It could be very fun.
 
-Later, we might want to improve performance by parsing the code line by line and then cleaning the memory of the source code we don't need anymore (like by using a file reader and reading parts by parts).
-For that, when we call something like `parseProgram` or `parseBlockStatement`, we can do something like
-export function parseProgram(p: Parser): BlockStatement {
-  const body: Statement[] = [];
+~ Token priority
+we might need some token to take priority over any other interpretation. For example, '=====' (outside an explicit string) should never be interpreted as a bunch of equal, but as a file delimiter.
 
-	runLater((p: Parser) => {
-		while (p.hasToken()) {
-			body.push(parseStatement(p));
-		}
-	})
- 
-  return createAstNode(AstNodeKind.BlockStatement, {body});
-}
-We would then get an empty body, that we will then fill in later as we traverse the file.
+~ Strings with any delimiters
+'Something'
+"Something"
+"'" -> '
+"'A'" -> A
+"'A" -> 'A
+"'We write something like "this"'" -> 'We write something like 
+
+I think we do:
+	Take all starting quotes (' and ")
+	We get them in order.
+	To close the string, we must have the exact same sequence in the reverse order.
+	If we do "'" -> we expect somewhere to close it with "'".
+	If we want a string with just the character/ starting with the character ', we need to escape it "\'"
+
 */
 
 
+import Parser from "./parser/parser.ts";
 /*
+& Description
 The idea with the parser is that it abstracts all the complexity from multiple valid interpretation of the same part of code by creating parallel branches that
 parse the same parts, but slightly differently. When parsing, the parser will always react like there is only 1 branch (the current one), but anytime it could 
 answer more than 1 way (it has more than 1 choice), it creates a new branch in the background for each other possibility that wasn't explored. When we reach the
@@ -257,58 +153,16 @@ We also have Checkpoints that make sure that when multiple parsers go over the s
 They memoize the result at that point and returns it without needing to recalculate everything.
 */
 
-import { parseStatement } from "./parser/parserFunctions";
-//TODO recreate all the parsing functions with the new system (should be pretty straightforward)
-//! We need a good way to handle creating and getting the values from Checkpoints
-
+import * as functions from "./parser/parserFunctions.ts";
+// & Description
 // The functions should be completely deterministic based on the state of the parser and only offer different results when the parser is called and it creates a new branch
 // At any other point, it needs to parse the exact same and we need a way to tell the code which possibility we are doing at the moment.
 
 
-import { AstNodeKind } from "./parser/astNodes";
-// TODO need a little bit of cleanup + implement missing AST nodes
-
-
-
-
-
+/* ---------------------------------- Other --------------------------------- */
 /*
-Parser logs:
-expected
-	getChoice
-	expected
-optional
-	getChoice
-	optional
-
-getStmt
-	optional spaces
-	getChoice
-	stmt
-getNud
-	optional spaces
-	expected token
-	getChoice
-	nud
-getLed
-	optional spaces
-	getChoice
-	stmt
-
-Created branche with ...
-expected: Identifier of [...]
-optional: Identifier of [...]
-optional: None of [...]
-
-Stmt: parseExpressionStatement
-Nud: ...
-Led: ...
-
-
-NUD/LED
-	-> space
-	-> type
-	-> space
+Could generator functions be useful? Could it be used instead of async for parsing functions?
+(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)
 
 
 */

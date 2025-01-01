@@ -1,0 +1,200 @@
+{
+  "0": {
+    "startPosition": 0,
+    "parsingFunction": "parseProgram",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp1"
+      ]
+    ],
+    "results": []
+  },
+  "1": {
+    "startPosition": 0,
+    "parsingFunction": "parseStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 0-0",
+        "stmt: parseFunctionDeclarationStatement",
+        "New cp2"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "stmt choice: parseExpressionStatement",
+        "New cp3"
+      ]
+    ],
+    "results": []
+  },
+  "2": {
+    "startPosition": 0,
+    "parsingFunction": "parseFunctionDeclarationStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of Async at 0-0",
+        "expected: Function of Function at 0-8",
+        "Exiting branch because of: Exited because we didn't find one of Identifier at 8"
+      ]
+    ],
+    "results": []
+  },
+  "3": {
+    "startPosition": 0,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp4",
+        "result: [1,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":1}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 1"
+      ],
+      [
+        "result choice: [2,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":2}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 2"
+      ],
+      [
+        "result choice: [3,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":3}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 3"
+      ],
+      [
+        "result choice: [4,{\"kindName\":\"SymbolExpression\",\"symbol\":\"func\",\"end\":4}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 4"
+      ],
+      [
+        "result choice: [5,{\"kindName\":\"SymbolExpression\",\"symbol\":\"funct\",\"end\":5}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 5"
+      ],
+      [
+        "result choice: [6,{\"kindName\":\"SymbolExpression\",\"symbol\":\"functi\",\"end\":6}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 6"
+      ],
+      [
+        "result choice: [7,{\"kindName\":\"SymbolExpression\",\"symbol\":\"functio\",\"end\":7}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 7"
+      ],
+      [
+        "result choice: [9,{\"kindName\":\"SymbolExpression\",\"symbol\":\"function\",\"end\":8}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 9"
+      ]
+    ],
+    "results": []
+  },
+  "4": {
+    "startPosition": 0,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 0-0",
+        "nud: parsePrimaryExpression",
+        "New cp5",
+        "result: [1,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":1}]",
+        "optional: null of WhiteSpace at 1-1",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [8,{\"kindName\":\"SymbolExpression\",\"symbol\":\"function\",\"end\":8}]",
+        "optional: WhiteSpace of WhiteSpace at 8-9",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [7,{\"kindName\":\"SymbolExpression\",\"symbol\":\"functio\",\"end\":7}]",
+        "optional: null of WhiteSpace at 7-7",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [6,{\"kindName\":\"SymbolExpression\",\"symbol\":\"functi\",\"end\":6}]",
+        "optional: null of WhiteSpace at 6-6",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [5,{\"kindName\":\"SymbolExpression\",\"symbol\":\"funct\",\"end\":5}]",
+        "optional: null of WhiteSpace at 5-5",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [4,{\"kindName\":\"SymbolExpression\",\"symbol\":\"func\",\"end\":4}]",
+        "optional: null of WhiteSpace at 4-4",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [3,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":3}]",
+        "optional: null of WhiteSpace at 3-3",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 0-0",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [2,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":2}]",
+        "optional: null of WhiteSpace at 2-2",
+        "led: null"
+      ]
+    ],
+    "results": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9
+    ]
+  },
+  "5": {
+    "startPosition": 0,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 0-1"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-2"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-3"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-4"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-5"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-6"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-7"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 0-8"
+      ]
+    ],
+    "results": [
+      1,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2
+    ]
+  }
+}

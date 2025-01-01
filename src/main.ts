@@ -1,73 +1,71 @@
-import fs from 'node:fs';
-import { createAst } from './parser/parser';
-import { Tokenizer } from './lexer/lexer';
-import { Token, TokenType } from './lexer/token';
+import fs from "node:fs";
+import { createAst } from "./parser/parser.ts";
+import { Tokenizer } from "./lexer/lexer.ts";
+import { TokenType } from "./lexer/token.ts";
+import { AstNodeKind, createAstNode } from "./parser/astNodes.ts";
 // import { createGlobalScope } from './runtime/environment';
 // import { evaluate } from './runtime/interpreter';
 
 /** Path to the file that will be executed. */
 
-const files = ["test.db", "lexerTests.db", "samples.dbx", "runtimeTests.db"];
+const files = ["test.db", "lexerTests.db", "samples.dbx", "runtimeTests.db", "tokenizerTest.db"];
 const fileNb = 0;
-
 
 const path = "./src/examples/" + files[fileNb];
 // const execute = false;
 
-
 async function main() {
-	const file = fs.readFileSync(path, 'utf8');
+  const file = fs.readFileSync(path, "utf8");
 
-	const tokens = new Tokenizer(file).tokenize();
-	fs.writeFileSync("./tokens.json", JSON.stringify(tokens, tokenListToStringJson, 2));
-	
-	console.log(`successfully created ${tokens.length} tokens.`);
-	// console.log(getTokenValues(tokens, 0, []));
+  const tokens = new Tokenizer(file).tokenize();
+  fs.writeFileSync("./tokens.json", JSON.stringify(tokens, tokenListToStringJson, 2));
 
-	const program = await createAst(file);
-	fs.writeFileSync("./ast.json", JSON.stringify(program, astToStringJson, 2));
-	console.info("successfully created the AST !!!");
+  console.log(`successfully created ${tokens.length} tokens.`);
+  // console.log(getTokenValues(tokens, 0, []));
 
-	// if (execute) {
-	// 	const environment = createGlobalScope(); // global scope, use special fn to create
-	// 	const result = evaluate(program, environment);
-	// 	console.log(result);
-	// } else {
-	// 	console.log("Program execution skipped");
-	// }
+  const [program, logs] = await createAst(file);
+  fs.writeFileSync("./ast.json", JSON.stringify(program, astToStringJson, 2));
+  fs.writeFileSync("./logs.json", logs);
+  console.info("successfully created the AST !!!");
+
+  // if (execute) {
+  // 	const environment = createGlobalScope(); // global scope, use special fn to create
+  // 	const result = evaluate(program, environment);
+  // 	console.log(result);
+  // } else {
+  // 	console.log("Program execution skipped");
+  // }
 }
 
 try {
-	void main();
+  void main();
 } catch (error) {
-	console.error("Caught error in main:", error);
+  console.error("Caught error in main:", error);
 }
-
 
 // Ignore some keys when logging the AST
 const ignoredKeys = new Set(["kind"]);
-export function astToStringJson(key: any, value: any)
-{
-	if (ignoredKeys.has(key)) {
-		return;
-	}
+export function astToStringJson(key: any, value: any) {
+  if (ignoredKeys.has(key)) {
+    return;
+  }
 
-	if (key === "operator") {
-		return TokenType[value];
-	}
+  if (key === "operator") {
+    return TokenType[value];
+  }
   return value;
 }
 
 //
 export function tokenListToStringJson(key: any, value: any) {
-	if (key === "type") {
-		return TokenType[value as TokenType];
-	}
-	return value;
+  if (key === "type") {
+    return TokenType[value as TokenType];
+  }
+  return value;
 }
 
 export function saveLogs(fileName: string, content: string) {
-	fs.writeFileSync(`./${fileName}`, content);
+  fs.writeFileSync(`./${fileName}`, content);
 }
 
 /*
