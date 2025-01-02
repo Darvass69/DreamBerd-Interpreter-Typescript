@@ -19,9 +19,14 @@
     "titleBar.inactiveForeground": "#e7e7e799"
   },
   "peacock.color": "#0067b3",
+
   "material-icon-theme.files.associations": {
     "**.db": "../../icons/dreamberd",
     "**.dbx": "../../icons/dreamberd"
   },
-  "eslint.format.enable": true,
+
+  "deno.enable": true,
+  "deno.lint": true,
+  "editor.formatOnSave": true,
+  "[typescript]": { "editor.defaultFormatter": "denoland.vscode-deno" }
 }

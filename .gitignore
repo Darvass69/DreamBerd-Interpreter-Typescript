@@ -132,3 +132,5 @@ dist
 # vs code
 .vscode/launch.json
 .vscode/tasks.json
+
+./dist

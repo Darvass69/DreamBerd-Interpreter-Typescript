@@ -1,0 +1,10 @@
+/*
+getToken
+getChoiceAtPosition
+hasChoicesLeft
+
+getTokenValues
+getTokenTypes
+hasTokensLeft
+
+*/

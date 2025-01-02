@@ -1,186 +1,280 @@
-/*
-When parsing, instead of making only 1 tree, when we hit an apparent error or ambiguous syntax, we'll create branches of possible results. (branches are async?)
-Then, after parsing, we go through each possibility and find which one is more likely/better using some rules.
-I think that ultimately, its impossible to have errors in DreamBerd because we can just turn it to string.
-*/
+import { AstNodeKind, BlockStatement, BranchingStatement, createAstNode, Statement } from "./astNodes.ts";
+import { Tokenizer } from "../lexer/lexer.ts";
+import { getToken, getTokenTypes, getTokenValues, hasTokensLeft, Token, TokenType, TokenValue } from "../lexer/token.ts";
+import ParsingFunctionMaps, { LedHandler, NudHandler, StmtHandler } from "./parsingFunctionMaps.ts";
+import { BindingPower } from "./bindingPower.ts";
+import { parseProgram } from "./parsingFunctions.ts";
+import { Checkpoint, Handler, HandlerParameters } from "./branches/checkpoint.ts";
+import { ParserState, ResultChoice } from "./branches/parserState.ts";
+import { Logger, ParserLogger } from "./branches/logger.ts";
 
-import {AstNodeKind, BlockStatement} from "./astNodes";
-import {tokenize} from "../lexer/lexer";
-import {Token, TokenType, TokenTypeListToString} from "../lexer/token";
-import Lookups from "./lookups";
-import {parseStatement} from "./parserFunctions";
+export interface Options {
+  debug?: boolean;
+  saveLogs?: boolean;
+  useSignificantWhitespace?: boolean;
+  useLifetime?: boolean;
+  useTypes?: boolean;
+}
 
-/** Print a custom error */
-export type CustomError = (token: Token, expectedTypes: TokenType[], ignoredTypes?: TokenType[]) => void;
-export type CustomIdentifierError = (token: Token, expectedIdentifiers: string[], ignoredTypes?: TokenType[]) => void;
+export interface ParsingEnvironment {
+  readonly tokens: Token[];
+  readonly mappings: ParsingFunctionMaps;
+}
 
-// We want to create the parser in a way where we don't mutate its state (directly) so we can branch later.
+// Find a better name
+export async function createAst(sourceCode: string): Promise<[BlockStatement | BranchingStatement<BlockStatement>, string]> {
+  const options: Options = {
+    debug: true,
+    useSignificantWhitespace: false,
+    saveLogs: true,
+  };
+  const tokens = new Tokenizer(sourceCode).tokenize();
+  const mappings = new ParsingFunctionMaps(options);
+
+  const checkpoint = Checkpoint.newCheckpoint(options, { tokens, mappings }, 0, parseProgram, [], new ParserLogger([]));
+
+  const resultList = await checkpoint.getResultsAsStartingPoint();
+
+  if (resultList.length === 1) {
+    return [resultList[0], Logger.getLogs()];
+  }
+  return [createAstNode(AstNodeKind.BranchingStatement, { start: 0, branches: resultList }), Logger.getLogs()];
+}
+
+/* -------------------------------------------------------------------------- */
+
+export class ExitBranchError extends Error {
+  constructor(message?: string) {
+    super(message);
+  }
+}
+
+/**
+ * The idea with the parser is that it abstracts all the complexity from multiple valid interpretation of the same part of source code by creating parallel branches that
+ * parse the same parts, but slightly differently. When parsing, the parser will always react like there is only 1 branch (the current one), but anytime it could
+ * answer more than 1 way (it has more than 1 choice), it creates a new branch in the background for each other possibility that wasn't explored. When we reach the
+ * end of a branch, we save the result and continue parsing other branches. If a possibility leads to incorrect or invalid code, the branch is aborted and we continue
+ * parsing other branches.
+ *
+ * We also have Checkpoints that make sure that when multiple parsers go over the same part of the code in the same way, they don't have to do the same work twice.
+ * They memoize the result at that point and returns it without needing to recalculate everything.
+ */
 export default class Parser {
-  private tokens: Token[] = [];
-  public lookups: Lookups;
-  private defaultIgnoredTypes = [TokenType.WhiteSpace, TokenType.LineBreak];
+  //Checkpoint
+  private checkpoint: Checkpoint<any, any>;
 
-  // private lookup
-  private position: number = 0;
+  // State
+  private state: ParserState;
 
-  public getPosition() {return this.position;}
+  private logger: ParserLogger;
 
-  constructor() {
-    this.lookups = new Lookups();
+  constructor(checkpoint: Checkpoint<any, any>, state: ParserState, logger: ParserLogger) {
+    this.checkpoint = checkpoint;
+    this.state = state;
+    this.logger = logger;
   }
 
-  /* --------------------------------- Parsing -------------------------------- */
-  public parse(sourceCode: string): BlockStatement {
-    this.tokens = tokenize(sourceCode);
-    console.log(this.tokens);
-
-    const program: BlockStatement = {
-      kindName: AstNodeKind[AstNodeKind.BlockStatement],
-      kind: AstNodeKind.BlockStatement,
-      body: [],
-    };
-
-    // Parse tokens into an ast until there is no token left
-    while (this.hasToken()) {
-      program.body.push(parseStatement(this));
-    }
-
-    return program;
+  public get environment() {
+    return this.checkpoint.environment;
   }
 
-  /* ---------------------------------- Utils --------------------------------- */
-  public currentToken(): Token {
-    return this.tokens[this.position];
-  }
-
-  public getTokenAtOffset(offset: number): Token {
-    return this.tokens[this.position + offset];
-  }
-
-  /** Returns current token and advances a number of times (can also go back) */
-  public advance(offset = 1): Token {
-    const token = this.currentToken();
-    this.position += offset;
-    return token;
+  public get options() {
+    return this.checkpoint.options;
   }
 
   public hasToken(): boolean {
-    return (
-      this.position < this.tokens.length &&
-      this.currentToken().type != TokenType.EOF
-    );
+    return hasTokensLeft(this.getPosition(), this.checkpoint.environment.tokens);
   }
 
-  public remainingLength(): number {
-    return this.tokens.length - this.position;
+  public getPosition(): number {
+    return this.state.position;
   }
 
-  public exit(error?: string) {
-    console.error(error ?? "ERROR: An unknown problem ocurred before the parsing was complete.");
-    process.exit();
-    // throw "Process exit";
+  private current(): Token {
+    const token = getToken(this.getPosition(), this.checkpoint.environment.tokens);
+
+    if (token !== undefined) {
+      return token;
+    }
+
+    throw this.exit(`No token was found at position ${this.getPosition()}`);
   }
 
-  /* --------------------------------- Expect --------------------------------- */
-  public expect(
-    expectedTypes: TokenType[],
-    ignoredTypes?: TokenType[],
-    advance: boolean = true,
-    isFatal: boolean = true,
-    customError?: CustomError
-  ): [wasFound: boolean, token: Token] {
+  private moveTo(end: number) {
+    this.state.position = end;
+  }
 
-    ignoredTypes = ignoredTypes == undefined ? this.defaultIgnoredTypes : ignoredTypes;
-    // if we have found the correct token yet.
-    let expectedFound: boolean = false;
+  /**
+   * TODO better errors
+   * @throws
+   */
+  public exit(reason?: string) {
+    const message = "Exiting branch because of: " + (reason ?? "unknown");
+    this.logger.exit(message);
+    return new ExitBranchError(message);
+  }
 
-    // Check tokens until we hit a non-ignored token
-    let index = 0;
-    while (this.hasToken()) {
-      // Get the token.
-      const token = this.getTokenAtOffset(index);
+  public async executeHandler<T extends HandlerParameters, R extends Statement>(
+    parsingFunction: Handler<T, R>,
+    ...parameters: T
+  ): Promise<R | BranchingStatement<R>> {
+    const choice = this.state.getResultChoice();
+    if (choice !== undefined) {
+      this.logger.resultFound(true, choice);
+      this.moveTo(choice[0]);
+      return choice[1] as R;
+    }
 
-      // Check if we should ignore it.
-      if (!ignoredTypes?.includes(token.type)) {
-        // Check if valid or error out
-        if (expectedTypes.includes(token.type)) {
-          expectedFound = true;
-        } else {
-          // Print a message
-          if (customError) {
-            customError(token, expectedTypes, ignoredTypes);
-          } else {
-            console.error(`Expected ${TokenTypeListToString(expectedTypes)} but received ${TokenType[token.type]} instead\n`);
-          }
-          // Exit if its a critical error
-          if (isFatal) {
-            this.exit();
-          }
-        }
-        break;
+    const newCheckpoint = Checkpoint.newCheckpoint(this.checkpoint.options, this.checkpoint.environment, this.getPosition(), parsingFunction, parameters, this.logger);
+    const results = await newCheckpoint.getResults();
+
+    this.checkpoint.submitResultChoice(results, this.state);
+    const currentChoice = this.state.getResultChoice() as ResultChoice;
+    this.logger.resultFound(false, currentChoice);
+
+    this.moveTo(currentChoice[0]);
+    return currentChoice[1] as R;
+  }
+
+  /**
+   * Return the next token. If it doesn't match one of the expected types, throws an error.
+   * + creates branches.
+   * @param expected Token expected.
+   * @param ignored Ignores those tokens.
+   * @returns The token matched.
+   * @throws `ExitBranchError`
+   */
+  public expect<T extends TokenType>(expected: T[]): TokenValue & { type: T } {
+    const oldPosition = this.getPosition();
+    const [result, isChoice] = this.findToken(expected);
+
+    if (result === null) {
+      throw this.exit(`Exited because we didn't find one of ${expected.map((element) => typeof element === "string" ? element : TokenType[element]).toString()} at ${this.getPosition()}`);
+    } else {
+      this.logger.tokenFound(false, isChoice, expected, result, oldPosition, this.getPosition());
+    }
+
+    return result;
+  }
+
+  /**
+   * Return the next token. If it doesn't match one of the expected types, returns null (and doesn't eat that token).
+   * + creates branches.
+   * @param expected Token expected.
+   * @param ignored Ignores those tokens.
+   * @returns The token matched.
+   */
+  public optional<T extends TokenType>(expected: T[]): TokenValue & { type: T } | null {
+    const oldPosition = this.getPosition();
+    const [result, isChoice] = this.findToken(expected, true);
+    this.logger.tokenFound(true, isChoice, expected, result, oldPosition, this.getPosition());
+    return result;
+  }
+
+  /**
+   * Return the next token. If it doesn't match one of the expected, returns null (and doesn't eat that token).
+   * + creates branches.
+   * @param expected Token expected.
+   * @param ignored Ignores those tokens.
+   * @returns The token matched.
+   */
+  private findToken<T extends TokenType>(expected: T[], optional?: boolean): [TokenValue & { type: T } | null, isChoice: boolean] {
+    let currentChoice: TokenValue & { type: T } | null;
+    let isChoice = false;
+
+    const choice = this.state.getTokenChoice();
+    if (choice !== undefined) {
+      if (choice !== null && !(expected as TokenType[]).includes(choice.type)) {
+        throw this.exit(`Found a choice ${JSON.stringify(choice)} with type ${TokenType[choice.type]} which is not in types ${expected.map((type) => TokenType[type])}`); //!!!
       }
-      index++;
-    }
+      isChoice = true;
+      currentChoice = choice as TokenValue & { type: T } | null;
+    } else {
+      const token = this.current();
+      const matched: (TokenValue | null)[] = getTokenValues(token, expected);
 
-    const token = this.getTokenAtOffset(index);
-    if (advance) {
-      this.advance(index + 1);
-    }
-    return [expectedFound, token];
-  }
-
-  public expectIdentifier(
-    identifiers: string[],
-    ignoredTypes?: TokenType[],
-    advance: boolean = true,
-    isFatal: boolean = true,
-    customError?: CustomIdentifierError
-  ): [wasFound: boolean, token: Token] {
-    
-    ignoredTypes = ignoredTypes == undefined ? this.defaultIgnoredTypes : ignoredTypes;
-    // if we have found the correct token yet.
-    let expectedFound: boolean = false;
-
-    // Check tokens until we hit a non-ignored token
-    let index = 0;
-    while (this.hasToken()) {
-      // Get the token.
-      const token = this.getTokenAtOffset(index);
-
-      // Check if we should ignore it.
-      if (!ignoredTypes?.includes(token.type)) {
-        // Check if valid or error out
-        if (
-          token.type == TokenType.Identifier &&
-          identifiers.includes(token.value)
-        ) {
-          expectedFound = true;
-        } else {
-          // Print a message
-          if (customError) {
-            customError(token, identifiers, ignoredTypes);
-          } else {
-            console.error(
-              `Expected identifier in ${identifiers} but received ${
-                TokenType[token.type]
-              } with value '${token.value}' instead\n`
-            );
-          }
-
-          // Exit if its a critical error
-          if (isFatal) {
-            this.exit();
-          }
-        }
-        break;
+      if (matched.length === 0 || (optional && !(expected.length === 1 && expected[0] === TokenType.WhiteSpace))) {
+        matched.push(null);
       }
-      index++;
+
+      this.checkpoint.submitTokenChoices(matched, this.state);
+      currentChoice = this.state.getTokenChoice() as TokenValue & { type: T } | null ?? null;
+      if (currentChoice !== null && !(expected as TokenType[]).includes(currentChoice.type)) {
+        throw this.exit(`Found a choice ${JSON.stringify(currentChoice)} with type ${TokenType[currentChoice.type]} which is not in types ${expected.map((type) => TokenType[type])}`);
+      }
     }
 
-    const token = this.getTokenAtOffset(index);
-    if (advance) {
-      this.advance(index + 1);
+    if (currentChoice !== null) {
+      this.moveTo(currentChoice?.end);
     }
-    return [expectedFound, token];
+    return [currentChoice, isChoice];
   }
+
+  /* -------------------------------- Handlers -------------------------------- */
+  public getStmt(): StmtHandler {
+    const choice = this.state.getHandlerChoice() as StmtHandler | undefined;
+    if (choice !== undefined) {
+      this.logger.handlerFound("stmt", true, choice);
+      return choice;
+    }
+
+    // Get handlers
+    const current = this.current();
+    const handlers: StmtHandler[] = this.checkpoint.environment.mappings.getStmtHandlers(getTokenTypes(current));
+
+    if (handlers.length === 0) {
+      throw this.exit(`Could not find Stmt handler for token at ${this.getPosition()}`);
+    }
+
+    this.checkpoint.submitHandlerChoices(handlers, this.state);
+    const currentChoice = this.state.getHandlerChoice() as StmtHandler;
+    this.logger.handlerFound("stmt", false, currentChoice);
+    return currentChoice;
+  }
+
+  public getNud(bp: BindingPower): NudHandler {
+    const choice = this.state.getHandlerChoice() as NudHandler | undefined;
+    if (choice !== undefined) {
+      this.logger.handlerFound("nud", true, choice);
+      return choice;
+    }
+
+    // Get handlers
+    const current = this.current();
+    const handlers: NudHandler[] = this.checkpoint.environment.mappings.getNudHandlers(bp, getTokenTypes(current));
+
+    if (handlers.length === 0) {
+      throw this.exit(`Could not find Nud handler for token at ${this.getPosition()}`);
+    }
+
+    this.checkpoint.submitHandlerChoices(handlers, this.state);
+    const currentChoice = this.state.getHandlerChoice() as NudHandler;
+    this.logger.handlerFound("nud", false, currentChoice);
+    return currentChoice;
+  }
+
+  public getLed(bp: BindingPower): LedHandler | null {
+    const choice = this.state.getHandlerChoice() as LedHandler | null | undefined;
+    if (choice !== undefined) {
+      this.logger.handlerFound("led", true, choice);
+      return choice;
+    }
+
+    // Get handlers
+    const current = this.current();
+    const handlers: (LedHandler | null)[] = this.checkpoint.environment.mappings.getLedHandlers(bp, getTokenTypes(current));
+
+    if (handlers.length === 0) {
+      handlers.push(null);
+    }
+
+    this.checkpoint.submitHandlerChoices(handlers, this.state);
+    const currentChoice = this.state.getHandlerChoice() as LedHandler;
+    this.logger.handlerFound("led", false, currentChoice);
+    return currentChoice;
+  }
+}
+
+function choiceToString(choice: StmtHandler | NudHandler | LedHandler | null) {
+  return typeof choice === "function" ? choice.name : (choice === null ? "null" : choice);
 }
