@@ -3,6 +3,7 @@ import { createAst } from "./parser/parser.ts";
 import { Tokenizer } from "./lexer/lexer.ts";
 import { TokenType } from "./lexer/token.ts";
 import { AstNodeKind, createAstNode } from "./parser/astNodes.ts";
+import { astToStringJson, tokenListToStringJson } from "./utils.ts";
 // import { createGlobalScope } from './runtime/environment';
 // import { evaluate } from './runtime/interpreter';
 
@@ -41,31 +42,6 @@ try {
   void main();
 } catch (error) {
   console.error("Caught error in main:", error);
-}
-
-// Ignore some keys when logging the AST
-const ignoredKeys = new Set(["kind"]);
-export function astToStringJson(key: any, value: any) {
-  if (ignoredKeys.has(key)) {
-    return;
-  }
-
-  if (key === "operator") {
-    return TokenType[value];
-  }
-  return value;
-}
-
-//
-export function tokenListToStringJson(key: any, value: any) {
-  if (key === "type") {
-    return TokenType[value as TokenType];
-  }
-  return value;
-}
-
-export function saveLogs(fileName: string, content: string) {
-  fs.writeFileSync(`./${fileName}`, content);
 }
 
 /*

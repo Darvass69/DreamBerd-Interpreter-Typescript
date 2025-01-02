@@ -5,10 +5,23 @@
     "parameters": "",
     "branches": [
       [
-        "New cp1"
+        "New cp1",
+        "result: [30,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"add\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":22,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}}},{\"kindName\":\"ExpressionStatement\",\"start\":22,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}}}]}}]",
+        "New cp12",
+        "result: [61,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"multiply\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":53,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}}},{\"kindName\":\"ExpressionStatement\",\"start\":53,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}}}]}}]",
+        "New cp23",
+        "result: [91,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"subtract\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":83,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}}},{\"kindName\":\"ExpressionStatement\",\"start\":83,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}}}]}}]",
+        "New cp34",
+        "result: [118,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"divide\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":110,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}}},{\"kindName\":\"ExpressionStatement\",\"start\":110,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}}}]}}]",
+        "New cp45",
+        "result: [148,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"power\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":140,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}}},{\"kindName\":\"ExpressionStatement\",\"start\":140,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}}}]}}]",
+        "New cp56",
+        "result: [170,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"inverse\",\"parameters\":[{\"identifier\":\"a\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":164,\"expression\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a\",\"end\":167}]}},{\"kindName\":\"ExpressionStatement\",\"start\":164,\"expression\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a!\",\"end\":168}]}}]}}]"
       ]
     ],
-    "results": []
+    "results": [
+      170
+    ]
   },
   "1": {
     "startPosition": 0,
@@ -18,15 +31,18 @@
       [
         "optional: null of WhiteSpace at 0-0",
         "stmt: parseFunctionDeclarationStatement",
-        "New cp2"
+        "New cp2",
+        "result: [30,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"add\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":22,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}}},{\"kindName\":\"ExpressionStatement\",\"start\":22,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}}}]}}]"
       ],
       [
         "optional choice: null of WhiteSpace at 0-0",
         "stmt choice: parseExpressionStatement",
-        "New cp3"
+        "New cp9"
       ]
     ],
-    "results": []
+    "results": [
+      30
+    ]
   },
   "2": {
     "startPosition": 0,
@@ -35,19 +51,247 @@
     "branches": [
       [
         "optional: null of Async at 0-0",
+        "optional: null of WhiteSpace at 0-0",
         "expected: Function of Function at 0-8",
-        "Exiting branch because of: Exited because we didn't find one of Identifier at 8"
+        "optional: WhiteSpace of WhiteSpace at 8-9",
+        "expected: Identifier of Identifier at 9-10",
+        "optional: null of WhiteSpace at 10-10",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 10"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-11",
+        "optional: null of WhiteSpace at 11-11",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 11"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-12",
+        "optional: null of WhiteSpace at 12-12",
+        "expected: OpenParen of OpenParen at 12-13",
+        "expected: Identifier of Identifier at 13-14",
+        "optional: CommaDelimiter of CommaDelimiter at 14-16",
+        "expected: Identifier of Identifier at 16-17",
+        "optional: null of CommaDelimiter at 17-17",
+        "expected: CloseParen of CloseParen at 17-18",
+        "optional: WhiteSpace of WhiteSpace at 18-19",
+        "expected: Arrow of Arrow at 19-21",
+        "optional: WhiteSpace of WhiteSpace at 21-22",
+        "optional: null of OpenCurly at 22-22",
+        "New cp3",
+        "result: [30,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":22,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}}},{\"kindName\":\"ExpressionStatement\",\"start\":22,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}}}]}]"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-13",
+        "optional: null of WhiteSpace at 13-13",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 13"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-14",
+        "optional: null of WhiteSpace at 14-14",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 14"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-15",
+        "optional: WhiteSpace of WhiteSpace at 15-16",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 16"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-12",
+        "optional choice: null of WhiteSpace at 12-12",
+        "expected choice: OpenParen of OpenParen at 12-13",
+        "expected choice: Identifier of Identifier at 13-15",
+        "optional: null of CommaDelimiter at 15-15",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 15"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-12",
+        "optional choice: null of WhiteSpace at 12-12",
+        "expected choice: OpenParen of OpenParen at 12-13",
+        "expected choice: Identifier of Identifier at 13-14",
+        "optional choice: null of CommaDelimiter at 14-14",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 14"
+      ],
+      [
+        "optional choice: null of Async at 0-0",
+        "optional choice: null of WhiteSpace at 0-0",
+        "expected choice: Function of Function at 0-8",
+        "optional choice: WhiteSpace of WhiteSpace at 8-9",
+        "expected choice: Identifier of Identifier at 9-12",
+        "optional choice: null of WhiteSpace at 12-12",
+        "expected choice: OpenParen of OpenParen at 12-13",
+        "expected choice: Identifier of Identifier at 13-14",
+        "optional choice: CommaDelimiter of CommaDelimiter at 14-16",
+        "expected choice: Identifier of Identifier at 16-18",
+        "optional: null of CommaDelimiter at 18-18",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 18"
       ]
     ],
-    "results": []
+    "results": [
+      30
+    ]
   },
   "3": {
-    "startPosition": 0,
+    "startPosition": 22,
     "parsingFunction": "parseExpressionStatement",
     "parameters": "",
     "branches": [
       [
         "New cp4",
+        "result: [27,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}}]",
+        "expected: EndOfStatement of EndOfStatement at 27-30"
+      ],
+      [
+        "result choice: [28,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}}]",
+        "expected: EndOfStatement of EndOfStatement at 28-30"
+      ]
+    ],
+    "results": [
+      30
+    ]
+  },
+  "4": {
+    "startPosition": 22,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 22-22",
+        "nud: parsePrimaryExpression",
+        "New cp5",
+        "result: [23,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23}]",
+        "optional: WhiteSpace of WhiteSpace at 23-24",
+        "led: parseBinaryExpression",
+        "New cp6",
+        "result: [27,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}}]",
+        "optional: null of WhiteSpace at 27-27",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 22-22",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [23,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23}]",
+        "optional choice: WhiteSpace of WhiteSpace at 23-24",
+        "led choice: parseBinaryExpression",
+        "result choice: [28,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23},\"operator\":\"Add\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}}]",
+        "optional: null of WhiteSpace at 28-28",
+        "led: null"
+      ]
+    ],
+    "results": [
+      27,
+      28
+    ]
+  },
+  "5": {
+    "startPosition": 22,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 22-23"
+      ]
+    ],
+    "results": [
+      23
+    ]
+  },
+  "6": {
+    "startPosition": 24,
+    "parsingFunction": "parseBinaryExpression",
+    "parameters": "left:{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":23}; nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Add of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 24-25",
+        "New cp7",
+        "result: [27,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}]"
+      ],
+      [
+        "expected choice: Add of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 24-25",
+        "result choice: [28,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}]"
+      ]
+    ],
+    "results": [
+      27,
+      28
+    ]
+  },
+  "7": {
+    "startPosition": 25,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: WhiteSpace of WhiteSpace at 25-26",
+        "nud: parsePrimaryExpression",
+        "New cp8",
+        "result: [27,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":27}]",
+        "optional: null of WhiteSpace at 27-27",
+        "led: null"
+      ],
+      [
+        "optional choice: WhiteSpace of WhiteSpace at 25-26",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [28,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":28}]",
+        "optional: null of WhiteSpace at 28-28",
+        "led: null"
+      ]
+    ],
+    "results": [
+      27,
+      28
+    ]
+  },
+  "8": {
+    "startPosition": 26,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 26-27"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 26-28"
+      ]
+    ],
+    "results": [
+      27,
+      28
+    ]
+  },
+  "9": {
+    "startPosition": 0,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp10",
         "result: [1,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":1}]",
         "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 1"
       ],
@@ -82,7 +326,7 @@
     ],
     "results": []
   },
-  "4": {
+  "10": {
     "startPosition": 0,
     "parsingFunction": "parseExpression",
     "parameters": "nbSpaces:Infinity",
@@ -90,7 +334,7 @@
       [
         "optional: null of WhiteSpace at 0-0",
         "nud: parsePrimaryExpression",
-        "New cp5",
+        "New cp11",
         "result: [1,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":1}]",
         "optional: null of WhiteSpace at 1-1",
         "led: null"
@@ -156,7 +400,7 @@
       9
     ]
   },
-  "5": {
+  "11": {
     "startPosition": 0,
     "parsingFunction": "parsePrimaryExpression",
     "parameters": "nbSpaces:Infinity",
@@ -195,6 +439,1896 @@
       4,
       3,
       2
+    ]
+  },
+  "12": {
+    "startPosition": 30,
+    "parsingFunction": "parseStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 30-30",
+        "stmt: parseFunctionDeclarationStatement",
+        "New cp13",
+        "result: [61,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"multiply\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":53,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}}},{\"kindName\":\"ExpressionStatement\",\"start\":53,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}}}]}}]"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 30-30",
+        "stmt choice: parseExpressionStatement",
+        "New cp20"
+      ]
+    ],
+    "results": [
+      61
+    ]
+  },
+  "13": {
+    "startPosition": 30,
+    "parsingFunction": "parseFunctionDeclarationStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of Async at 30-30",
+        "optional: null of WhiteSpace at 30-30",
+        "expected: Function of Function at 30-34",
+        "optional: WhiteSpace of WhiteSpace at 34-35",
+        "expected: Identifier of Identifier at 35-36",
+        "optional: null of WhiteSpace at 36-36",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 36"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-37",
+        "optional: null of WhiteSpace at 37-37",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 37"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-38",
+        "optional: null of WhiteSpace at 38-38",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 38"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-39",
+        "optional: null of WhiteSpace at 39-39",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 39"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-40",
+        "optional: null of WhiteSpace at 40-40",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 40"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-41",
+        "optional: null of WhiteSpace at 41-41",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 41"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-42",
+        "optional: null of WhiteSpace at 42-42",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 42"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-43",
+        "optional: null of WhiteSpace at 43-43",
+        "expected: OpenParen of OpenParen at 43-44",
+        "expected: Identifier of Identifier at 44-45",
+        "optional: CommaDelimiter of CommaDelimiter at 45-47",
+        "expected: Identifier of Identifier at 47-48",
+        "optional: null of CommaDelimiter at 48-48",
+        "expected: CloseParen of CloseParen at 48-49",
+        "optional: WhiteSpace of WhiteSpace at 49-50",
+        "expected: Arrow of Arrow at 50-52",
+        "optional: WhiteSpace of WhiteSpace at 52-53",
+        "optional: null of OpenCurly at 53-53",
+        "New cp14",
+        "result: [61,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":53,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}}},{\"kindName\":\"ExpressionStatement\",\"start\":53,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}}}]}]"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-44",
+        "optional: null of WhiteSpace at 44-44",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 44"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-45",
+        "optional: null of WhiteSpace at 45-45",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 45"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-46",
+        "optional: WhiteSpace of WhiteSpace at 46-47",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 47"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-43",
+        "optional choice: null of WhiteSpace at 43-43",
+        "expected choice: OpenParen of OpenParen at 43-44",
+        "expected choice: Identifier of Identifier at 44-46",
+        "optional: null of CommaDelimiter at 46-46",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 46"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-43",
+        "optional choice: null of WhiteSpace at 43-43",
+        "expected choice: OpenParen of OpenParen at 43-44",
+        "expected choice: Identifier of Identifier at 44-45",
+        "optional choice: null of CommaDelimiter at 45-45",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 45"
+      ],
+      [
+        "optional choice: null of Async at 30-30",
+        "optional choice: null of WhiteSpace at 30-30",
+        "expected choice: Function of Function at 30-34",
+        "optional choice: WhiteSpace of WhiteSpace at 34-35",
+        "expected choice: Identifier of Identifier at 35-43",
+        "optional choice: null of WhiteSpace at 43-43",
+        "expected choice: OpenParen of OpenParen at 43-44",
+        "expected choice: Identifier of Identifier at 44-45",
+        "optional choice: CommaDelimiter of CommaDelimiter at 45-47",
+        "expected choice: Identifier of Identifier at 47-49",
+        "optional: null of CommaDelimiter at 49-49",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 49"
+      ]
+    ],
+    "results": [
+      61
+    ]
+  },
+  "14": {
+    "startPosition": 53,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp15",
+        "result: [58,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}}]",
+        "expected: EndOfStatement of EndOfStatement at 58-61"
+      ],
+      [
+        "result choice: [59,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}}]",
+        "expected: EndOfStatement of EndOfStatement at 59-61"
+      ]
+    ],
+    "results": [
+      61
+    ]
+  },
+  "15": {
+    "startPosition": 53,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 53-53",
+        "nud: parsePrimaryExpression",
+        "New cp16",
+        "result: [54,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54}]",
+        "optional: WhiteSpace of WhiteSpace at 54-55",
+        "led: parseBinaryExpression",
+        "New cp17",
+        "result: [58,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}}]",
+        "optional: null of WhiteSpace at 58-58",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 53-53",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [54,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54}]",
+        "optional choice: WhiteSpace of WhiteSpace at 54-55",
+        "led choice: parseBinaryExpression",
+        "result choice: [59,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54},\"operator\":\"Multiply\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}}]",
+        "optional: null of WhiteSpace at 59-59",
+        "led: null"
+      ]
+    ],
+    "results": [
+      58,
+      59
+    ]
+  },
+  "16": {
+    "startPosition": 53,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 53-54"
+      ]
+    ],
+    "results": [
+      54
+    ]
+  },
+  "17": {
+    "startPosition": 55,
+    "parsingFunction": "parseBinaryExpression",
+    "parameters": "left:{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":54}; nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Multiply of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 55-56",
+        "New cp18",
+        "result: [58,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}]"
+      ],
+      [
+        "expected choice: Multiply of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 55-56",
+        "result choice: [59,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}]"
+      ]
+    ],
+    "results": [
+      58,
+      59
+    ]
+  },
+  "18": {
+    "startPosition": 56,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: WhiteSpace of WhiteSpace at 56-57",
+        "nud: parsePrimaryExpression",
+        "New cp19",
+        "result: [58,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":58}]",
+        "optional: null of WhiteSpace at 58-58",
+        "led: null"
+      ],
+      [
+        "optional choice: WhiteSpace of WhiteSpace at 56-57",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [59,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":59}]",
+        "optional: null of WhiteSpace at 59-59",
+        "led: null"
+      ]
+    ],
+    "results": [
+      58,
+      59
+    ]
+  },
+  "19": {
+    "startPosition": 57,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 57-58"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 57-59"
+      ]
+    ],
+    "results": [
+      58,
+      59
+    ]
+  },
+  "20": {
+    "startPosition": 30,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp21",
+        "result: [31,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":31}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 31"
+      ],
+      [
+        "result choice: [32,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":32}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 32"
+      ],
+      [
+        "result choice: [33,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":33}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 33"
+      ],
+      [
+        "result choice: [35,{\"kindName\":\"SymbolExpression\",\"symbol\":\"func\",\"end\":34}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 35"
+      ]
+    ],
+    "results": []
+  },
+  "21": {
+    "startPosition": 30,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 30-30",
+        "nud: parsePrimaryExpression",
+        "New cp22",
+        "result: [31,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":31}]",
+        "optional: null of WhiteSpace at 31-31",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 30-30",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [34,{\"kindName\":\"SymbolExpression\",\"symbol\":\"func\",\"end\":34}]",
+        "optional: WhiteSpace of WhiteSpace at 34-35",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 30-30",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [33,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":33}]",
+        "optional: null of WhiteSpace at 33-33",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 30-30",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [32,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":32}]",
+        "optional: null of WhiteSpace at 32-32",
+        "led: null"
+      ]
+    ],
+    "results": [
+      31,
+      32,
+      33,
+      35
+    ]
+  },
+  "22": {
+    "startPosition": 30,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 30-31"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 30-32"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 30-33"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 30-34"
+      ]
+    ],
+    "results": [
+      31,
+      34,
+      33,
+      32
+    ]
+  },
+  "23": {
+    "startPosition": 61,
+    "parsingFunction": "parseStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 61-61",
+        "stmt: parseFunctionDeclarationStatement",
+        "New cp24",
+        "result: [91,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"subtract\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":83,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}}},{\"kindName\":\"ExpressionStatement\",\"start\":83,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}}}]}}]"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 61-61",
+        "stmt choice: parseExpressionStatement",
+        "New cp31"
+      ]
+    ],
+    "results": [
+      91
+    ]
+  },
+  "24": {
+    "startPosition": 61,
+    "parsingFunction": "parseFunctionDeclarationStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of Async at 61-61",
+        "optional: null of WhiteSpace at 61-61",
+        "expected: Function of Function at 61-64",
+        "optional: WhiteSpace of WhiteSpace at 64-65",
+        "expected: Identifier of Identifier at 65-66",
+        "optional: null of WhiteSpace at 66-66",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 66"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-67",
+        "optional: null of WhiteSpace at 67-67",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 67"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-68",
+        "optional: null of WhiteSpace at 68-68",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 68"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-69",
+        "optional: null of WhiteSpace at 69-69",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 69"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-70",
+        "optional: null of WhiteSpace at 70-70",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 70"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-71",
+        "optional: null of WhiteSpace at 71-71",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 71"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-72",
+        "optional: null of WhiteSpace at 72-72",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 72"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-73",
+        "optional: null of WhiteSpace at 73-73",
+        "expected: OpenParen of OpenParen at 73-74",
+        "expected: Identifier of Identifier at 74-75",
+        "optional: CommaDelimiter of CommaDelimiter at 75-77",
+        "expected: Identifier of Identifier at 77-78",
+        "optional: null of CommaDelimiter at 78-78",
+        "expected: CloseParen of CloseParen at 78-79",
+        "optional: WhiteSpace of WhiteSpace at 79-80",
+        "expected: Arrow of Arrow at 80-82",
+        "optional: WhiteSpace of WhiteSpace at 82-83",
+        "optional: null of OpenCurly at 83-83",
+        "New cp25",
+        "result: [91,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":83,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}}},{\"kindName\":\"ExpressionStatement\",\"start\":83,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}}}]}]"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-74",
+        "optional: null of WhiteSpace at 74-74",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 74"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-75",
+        "optional: null of WhiteSpace at 75-75",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 75"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-76",
+        "optional: WhiteSpace of WhiteSpace at 76-77",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 77"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-73",
+        "optional choice: null of WhiteSpace at 73-73",
+        "expected choice: OpenParen of OpenParen at 73-74",
+        "expected choice: Identifier of Identifier at 74-76",
+        "optional: null of CommaDelimiter at 76-76",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 76"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-73",
+        "optional choice: null of WhiteSpace at 73-73",
+        "expected choice: OpenParen of OpenParen at 73-74",
+        "expected choice: Identifier of Identifier at 74-75",
+        "optional choice: null of CommaDelimiter at 75-75",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 75"
+      ],
+      [
+        "optional choice: null of Async at 61-61",
+        "optional choice: null of WhiteSpace at 61-61",
+        "expected choice: Function of Function at 61-64",
+        "optional choice: WhiteSpace of WhiteSpace at 64-65",
+        "expected choice: Identifier of Identifier at 65-73",
+        "optional choice: null of WhiteSpace at 73-73",
+        "expected choice: OpenParen of OpenParen at 73-74",
+        "expected choice: Identifier of Identifier at 74-75",
+        "optional choice: CommaDelimiter of CommaDelimiter at 75-77",
+        "expected choice: Identifier of Identifier at 77-79",
+        "optional: null of CommaDelimiter at 79-79",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 79"
+      ]
+    ],
+    "results": [
+      91
+    ]
+  },
+  "25": {
+    "startPosition": 83,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp26",
+        "result: [88,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}}]",
+        "expected: EndOfStatement of EndOfStatement at 88-91"
+      ],
+      [
+        "result choice: [89,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}}]",
+        "expected: EndOfStatement of EndOfStatement at 89-91"
+      ]
+    ],
+    "results": [
+      91
+    ]
+  },
+  "26": {
+    "startPosition": 83,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 83-83",
+        "nud: parsePrimaryExpression",
+        "New cp27",
+        "result: [84,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84}]",
+        "optional: WhiteSpace of WhiteSpace at 84-85",
+        "led: parseBinaryExpression",
+        "New cp28",
+        "result: [88,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}}]",
+        "optional: null of WhiteSpace at 88-88",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 83-83",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [84,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84}]",
+        "optional choice: WhiteSpace of WhiteSpace at 84-85",
+        "led choice: parseBinaryExpression",
+        "result choice: [89,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84},\"operator\":\"Subtract\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}}]",
+        "optional: null of WhiteSpace at 89-89",
+        "led: null"
+      ]
+    ],
+    "results": [
+      88,
+      89
+    ]
+  },
+  "27": {
+    "startPosition": 83,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 83-84"
+      ]
+    ],
+    "results": [
+      84
+    ]
+  },
+  "28": {
+    "startPosition": 85,
+    "parsingFunction": "parseBinaryExpression",
+    "parameters": "left:{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":84}; nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Subtract of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 85-86",
+        "New cp29",
+        "result: [88,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}]"
+      ],
+      [
+        "expected choice: Subtract of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 85-86",
+        "result choice: [89,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}]"
+      ]
+    ],
+    "results": [
+      88,
+      89
+    ]
+  },
+  "29": {
+    "startPosition": 86,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: WhiteSpace of WhiteSpace at 86-87",
+        "nud: parsePrimaryExpression",
+        "New cp30",
+        "result: [88,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":88}]",
+        "optional: null of WhiteSpace at 88-88",
+        "led: null"
+      ],
+      [
+        "optional choice: WhiteSpace of WhiteSpace at 86-87",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [89,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":89}]",
+        "optional: null of WhiteSpace at 89-89",
+        "led: null"
+      ]
+    ],
+    "results": [
+      88,
+      89
+    ]
+  },
+  "30": {
+    "startPosition": 87,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 87-88"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 87-89"
+      ]
+    ],
+    "results": [
+      88,
+      89
+    ]
+  },
+  "31": {
+    "startPosition": 61,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp32",
+        "result: [62,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":62}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 62"
+      ],
+      [
+        "result choice: [63,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":63}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 63"
+      ],
+      [
+        "result choice: [65,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":64}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 65"
+      ]
+    ],
+    "results": []
+  },
+  "32": {
+    "startPosition": 61,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 61-61",
+        "nud: parsePrimaryExpression",
+        "New cp33",
+        "result: [62,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":62}]",
+        "optional: null of WhiteSpace at 62-62",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 61-61",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [64,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":64}]",
+        "optional: WhiteSpace of WhiteSpace at 64-65",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 61-61",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [63,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":63}]",
+        "optional: null of WhiteSpace at 63-63",
+        "led: null"
+      ]
+    ],
+    "results": [
+      62,
+      63,
+      65
+    ]
+  },
+  "33": {
+    "startPosition": 61,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 61-62"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 61-63"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 61-64"
+      ]
+    ],
+    "results": [
+      62,
+      64,
+      63
+    ]
+  },
+  "34": {
+    "startPosition": 91,
+    "parsingFunction": "parseStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 91-91",
+        "stmt: parseFunctionDeclarationStatement",
+        "New cp35",
+        "result: [118,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"divide\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":110,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}}},{\"kindName\":\"ExpressionStatement\",\"start\":110,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}}}]}}]"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 91-91",
+        "stmt choice: parseExpressionStatement",
+        "New cp42"
+      ]
+    ],
+    "results": [
+      118
+    ]
+  },
+  "35": {
+    "startPosition": 91,
+    "parsingFunction": "parseFunctionDeclarationStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of Async at 91-91",
+        "optional: null of WhiteSpace at 91-91",
+        "expected: Function of Function at 91-93",
+        "optional: WhiteSpace of WhiteSpace at 93-94",
+        "expected: Identifier of Identifier at 94-95",
+        "optional: null of WhiteSpace at 95-95",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 95"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-96",
+        "optional: null of WhiteSpace at 96-96",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 96"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-97",
+        "optional: null of WhiteSpace at 97-97",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 97"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-98",
+        "optional: null of WhiteSpace at 98-98",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 98"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-99",
+        "optional: null of WhiteSpace at 99-99",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 99"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-100",
+        "optional: null of WhiteSpace at 100-100",
+        "expected: OpenParen of OpenParen at 100-101",
+        "expected: Identifier of Identifier at 101-102",
+        "optional: CommaDelimiter of CommaDelimiter at 102-104",
+        "expected: Identifier of Identifier at 104-105",
+        "optional: null of CommaDelimiter at 105-105",
+        "expected: CloseParen of CloseParen at 105-106",
+        "optional: WhiteSpace of WhiteSpace at 106-107",
+        "expected: Arrow of Arrow at 107-109",
+        "optional: WhiteSpace of WhiteSpace at 109-110",
+        "optional: null of OpenCurly at 110-110",
+        "New cp36",
+        "result: [118,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":110,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}}},{\"kindName\":\"ExpressionStatement\",\"start\":110,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}}}]}]"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-101",
+        "optional: null of WhiteSpace at 101-101",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 101"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-102",
+        "optional: null of WhiteSpace at 102-102",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 102"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-103",
+        "optional: WhiteSpace of WhiteSpace at 103-104",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 104"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-100",
+        "optional choice: null of WhiteSpace at 100-100",
+        "expected choice: OpenParen of OpenParen at 100-101",
+        "expected choice: Identifier of Identifier at 101-103",
+        "optional: null of CommaDelimiter at 103-103",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 103"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-100",
+        "optional choice: null of WhiteSpace at 100-100",
+        "expected choice: OpenParen of OpenParen at 100-101",
+        "expected choice: Identifier of Identifier at 101-102",
+        "optional choice: null of CommaDelimiter at 102-102",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 102"
+      ],
+      [
+        "optional choice: null of Async at 91-91",
+        "optional choice: null of WhiteSpace at 91-91",
+        "expected choice: Function of Function at 91-93",
+        "optional choice: WhiteSpace of WhiteSpace at 93-94",
+        "expected choice: Identifier of Identifier at 94-100",
+        "optional choice: null of WhiteSpace at 100-100",
+        "expected choice: OpenParen of OpenParen at 100-101",
+        "expected choice: Identifier of Identifier at 101-102",
+        "optional choice: CommaDelimiter of CommaDelimiter at 102-104",
+        "expected choice: Identifier of Identifier at 104-106",
+        "optional: null of CommaDelimiter at 106-106",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 106"
+      ]
+    ],
+    "results": [
+      118
+    ]
+  },
+  "36": {
+    "startPosition": 110,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp37",
+        "result: [115,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}}]",
+        "expected: EndOfStatement of EndOfStatement at 115-118"
+      ],
+      [
+        "result choice: [116,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}}]",
+        "expected: EndOfStatement of EndOfStatement at 116-118"
+      ]
+    ],
+    "results": [
+      118
+    ]
+  },
+  "37": {
+    "startPosition": 110,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 110-110",
+        "nud: parsePrimaryExpression",
+        "New cp38",
+        "result: [111,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111}]",
+        "optional: WhiteSpace of WhiteSpace at 111-112",
+        "led: parseBinaryExpression",
+        "New cp39",
+        "result: [115,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}}]",
+        "optional: null of WhiteSpace at 115-115",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 110-110",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [111,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111}]",
+        "optional choice: WhiteSpace of WhiteSpace at 111-112",
+        "led choice: parseBinaryExpression",
+        "result choice: [116,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}}]",
+        "optional: null of WhiteSpace at 116-116",
+        "led: null"
+      ]
+    ],
+    "results": [
+      115,
+      116
+    ]
+  },
+  "38": {
+    "startPosition": 110,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 110-111"
+      ]
+    ],
+    "results": [
+      111
+    ]
+  },
+  "39": {
+    "startPosition": 112,
+    "parsingFunction": "parseBinaryExpression",
+    "parameters": "left:{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":111}; nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Divide of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 112-113",
+        "New cp40",
+        "result: [115,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}]"
+      ],
+      [
+        "expected choice: Divide of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 112-113",
+        "result choice: [116,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}]"
+      ]
+    ],
+    "results": [
+      115,
+      116
+    ]
+  },
+  "40": {
+    "startPosition": 113,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: WhiteSpace of WhiteSpace at 113-114",
+        "nud: parsePrimaryExpression",
+        "New cp41",
+        "result: [115,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":115}]",
+        "optional: null of WhiteSpace at 115-115",
+        "led: null"
+      ],
+      [
+        "optional choice: WhiteSpace of WhiteSpace at 113-114",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [116,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":116}]",
+        "optional: null of WhiteSpace at 116-116",
+        "led: null"
+      ]
+    ],
+    "results": [
+      115,
+      116
+    ]
+  },
+  "41": {
+    "startPosition": 114,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 114-115"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 114-116"
+      ]
+    ],
+    "results": [
+      115,
+      116
+    ]
+  },
+  "42": {
+    "startPosition": 91,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp43",
+        "result: [92,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":92}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 92"
+      ],
+      [
+        "result choice: [94,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fn\",\"end\":93}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 94"
+      ]
+    ],
+    "results": []
+  },
+  "43": {
+    "startPosition": 91,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 91-91",
+        "nud: parsePrimaryExpression",
+        "New cp44",
+        "result: [92,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":92}]",
+        "optional: null of WhiteSpace at 92-92",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 91-91",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [93,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fn\",\"end\":93}]",
+        "optional: WhiteSpace of WhiteSpace at 93-94",
+        "led: null"
+      ]
+    ],
+    "results": [
+      92,
+      94
+    ]
+  },
+  "44": {
+    "startPosition": 91,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 91-92"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 91-93"
+      ]
+    ],
+    "results": [
+      92,
+      93
+    ]
+  },
+  "45": {
+    "startPosition": 118,
+    "parsingFunction": "parseStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 118-118",
+        "stmt: parseFunctionDeclarationStatement",
+        "New cp46",
+        "result: [148,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"power\",\"parameters\":[{\"identifier\":\"a\"},{\"identifier\":\"b\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":140,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}}},{\"kindName\":\"ExpressionStatement\",\"start\":140,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}}}]}}]"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 118-118",
+        "stmt choice: parseExpressionStatement",
+        "New cp53"
+      ]
+    ],
+    "results": [
+      148
+    ]
+  },
+  "46": {
+    "startPosition": 118,
+    "parsingFunction": "parseFunctionDeclarationStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of Async at 118-118",
+        "optional: null of WhiteSpace at 118-118",
+        "expected: Function of Function at 118-124",
+        "optional: WhiteSpace of WhiteSpace at 124-125",
+        "expected: Identifier of Identifier at 125-126",
+        "optional: null of WhiteSpace at 126-126",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 126"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-127",
+        "optional: null of WhiteSpace at 127-127",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 127"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-128",
+        "optional: null of WhiteSpace at 128-128",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 128"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-129",
+        "optional: null of WhiteSpace at 129-129",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 129"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-130",
+        "optional: null of WhiteSpace at 130-130",
+        "expected: OpenParen of OpenParen at 130-131",
+        "expected: Identifier of Identifier at 131-132",
+        "optional: CommaDelimiter of CommaDelimiter at 132-134",
+        "expected: Identifier of Identifier at 134-135",
+        "optional: null of CommaDelimiter at 135-135",
+        "expected: CloseParen of CloseParen at 135-136",
+        "optional: WhiteSpace of WhiteSpace at 136-137",
+        "expected: Arrow of Arrow at 137-139",
+        "optional: WhiteSpace of WhiteSpace at 139-140",
+        "optional: null of OpenCurly at 140-140",
+        "New cp47",
+        "result: [148,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":140,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}}},{\"kindName\":\"ExpressionStatement\",\"start\":140,\"expression\":{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}}}]}]"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-131",
+        "optional: null of WhiteSpace at 131-131",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 131"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-132",
+        "optional: null of WhiteSpace at 132-132",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 132"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-133",
+        "optional: WhiteSpace of WhiteSpace at 133-134",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 134"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-130",
+        "optional choice: null of WhiteSpace at 130-130",
+        "expected choice: OpenParen of OpenParen at 130-131",
+        "expected choice: Identifier of Identifier at 131-133",
+        "optional: null of CommaDelimiter at 133-133",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 133"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-130",
+        "optional choice: null of WhiteSpace at 130-130",
+        "expected choice: OpenParen of OpenParen at 130-131",
+        "expected choice: Identifier of Identifier at 131-132",
+        "optional choice: null of CommaDelimiter at 132-132",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 132"
+      ],
+      [
+        "optional choice: null of Async at 118-118",
+        "optional choice: null of WhiteSpace at 118-118",
+        "expected choice: Function of Function at 118-124",
+        "optional choice: WhiteSpace of WhiteSpace at 124-125",
+        "expected choice: Identifier of Identifier at 125-130",
+        "optional choice: null of WhiteSpace at 130-130",
+        "expected choice: OpenParen of OpenParen at 130-131",
+        "expected choice: Identifier of Identifier at 131-132",
+        "optional choice: CommaDelimiter of CommaDelimiter at 132-134",
+        "expected choice: Identifier of Identifier at 134-136",
+        "optional: null of CommaDelimiter at 136-136",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 136"
+      ]
+    ],
+    "results": [
+      148
+    ]
+  },
+  "47": {
+    "startPosition": 140,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp48",
+        "result: [145,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}}]",
+        "expected: EndOfStatement of EndOfStatement at 145-148"
+      ],
+      [
+        "result choice: [146,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}}]",
+        "expected: EndOfStatement of EndOfStatement at 146-148"
+      ]
+    ],
+    "results": [
+      148
+    ]
+  },
+  "48": {
+    "startPosition": 140,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 140-140",
+        "nud: parsePrimaryExpression",
+        "New cp49",
+        "result: [141,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141}]",
+        "optional: WhiteSpace of WhiteSpace at 141-142",
+        "led: parseBinaryExpression",
+        "New cp50",
+        "result: [145,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}}]",
+        "optional: null of WhiteSpace at 145-145",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 140-140",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [141,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141}]",
+        "optional choice: WhiteSpace of WhiteSpace at 141-142",
+        "led choice: parseBinaryExpression",
+        "result choice: [146,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141},\"operator\":\"Exponent\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}}]",
+        "optional: null of WhiteSpace at 146-146",
+        "led: null"
+      ]
+    ],
+    "results": [
+      145,
+      146
+    ]
+  },
+  "49": {
+    "startPosition": 140,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 140-141"
+      ]
+    ],
+    "results": [
+      141
+    ]
+  },
+  "50": {
+    "startPosition": 142,
+    "parsingFunction": "parseBinaryExpression",
+    "parameters": "left:{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":141}; nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Exponent of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 142-143",
+        "New cp51",
+        "result: [145,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}]"
+      ],
+      [
+        "expected choice: Exponent of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 142-143",
+        "result choice: [146,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}]"
+      ]
+    ],
+    "results": [
+      145,
+      146
+    ]
+  },
+  "51": {
+    "startPosition": 143,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: WhiteSpace of WhiteSpace at 143-144",
+        "nud: parsePrimaryExpression",
+        "New cp52",
+        "result: [145,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b\",\"end\":145}]",
+        "optional: null of WhiteSpace at 145-145",
+        "led: null"
+      ],
+      [
+        "optional choice: WhiteSpace of WhiteSpace at 143-144",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [146,{\"kindName\":\"SymbolExpression\",\"symbol\":\"b!\",\"end\":146}]",
+        "optional: null of WhiteSpace at 146-146",
+        "led: null"
+      ]
+    ],
+    "results": [
+      145,
+      146
+    ]
+  },
+  "52": {
+    "startPosition": 144,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 144-145"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 144-146"
+      ]
+    ],
+    "results": [
+      145,
+      146
+    ]
+  },
+  "53": {
+    "startPosition": 118,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp54",
+        "result: [119,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":119}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 119"
+      ],
+      [
+        "result choice: [120,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":120}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 120"
+      ],
+      [
+        "result choice: [121,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":121}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 121"
+      ],
+      [
+        "result choice: [122,{\"kindName\":\"SymbolExpression\",\"symbol\":\"func\",\"end\":122}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 122"
+      ],
+      [
+        "result choice: [123,{\"kindName\":\"SymbolExpression\",\"symbol\":\"funct\",\"end\":123}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 123"
+      ],
+      [
+        "result choice: [125,{\"kindName\":\"SymbolExpression\",\"symbol\":\"functi\",\"end\":124}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 125"
+      ]
+    ],
+    "results": []
+  },
+  "54": {
+    "startPosition": 118,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 118-118",
+        "nud: parsePrimaryExpression",
+        "New cp55",
+        "result: [119,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":119}]",
+        "optional: null of WhiteSpace at 119-119",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 118-118",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [124,{\"kindName\":\"SymbolExpression\",\"symbol\":\"functi\",\"end\":124}]",
+        "optional: WhiteSpace of WhiteSpace at 124-125",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 118-118",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [123,{\"kindName\":\"SymbolExpression\",\"symbol\":\"funct\",\"end\":123}]",
+        "optional: null of WhiteSpace at 123-123",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 118-118",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [122,{\"kindName\":\"SymbolExpression\",\"symbol\":\"func\",\"end\":122}]",
+        "optional: null of WhiteSpace at 122-122",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 118-118",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [121,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fun\",\"end\":121}]",
+        "optional: null of WhiteSpace at 121-121",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 118-118",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [120,{\"kindName\":\"SymbolExpression\",\"symbol\":\"fu\",\"end\":120}]",
+        "optional: null of WhiteSpace at 120-120",
+        "led: null"
+      ]
+    ],
+    "results": [
+      119,
+      120,
+      121,
+      122,
+      123,
+      125
+    ]
+  },
+  "55": {
+    "startPosition": 118,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 118-119"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 118-120"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 118-121"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 118-122"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 118-123"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 118-124"
+      ]
+    ],
+    "results": [
+      119,
+      124,
+      123,
+      122,
+      121,
+      120
+    ]
+  },
+  "56": {
+    "startPosition": 148,
+    "parsingFunction": "parseStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 148-148",
+        "stmt: parseFunctionDeclarationStatement",
+        "New cp57",
+        "result: [170,{\"kindName\":\"FunctionDeclarationStatement\",\"name\":\"inverse\",\"parameters\":[{\"identifier\":\"a\"}],\"isAsync\":false,\"body\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":164,\"expression\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a\",\"end\":167}]}},{\"kindName\":\"ExpressionStatement\",\"start\":164,\"expression\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a!\",\"end\":168}]}}]}}]"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 148-148",
+        "stmt choice: parseExpressionStatement",
+        "New cp64"
+      ]
+    ],
+    "results": [
+      170
+    ]
+  },
+  "57": {
+    "startPosition": 148,
+    "parsingFunction": "parseFunctionDeclarationStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "optional: null of Async at 148-148",
+        "optional: null of WhiteSpace at 148-148",
+        "expected: Function of Function at 148-149",
+        "optional: WhiteSpace of WhiteSpace at 149-150",
+        "expected: Identifier of Identifier at 150-151",
+        "optional: null of WhiteSpace at 151-151",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 151"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-152",
+        "optional: null of WhiteSpace at 152-152",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 152"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-153",
+        "optional: null of WhiteSpace at 153-153",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 153"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-154",
+        "optional: null of WhiteSpace at 154-154",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 154"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-155",
+        "optional: null of WhiteSpace at 155-155",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 155"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-156",
+        "optional: null of WhiteSpace at 156-156",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 156"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-157",
+        "optional: null of WhiteSpace at 157-157",
+        "expected: OpenParen of OpenParen at 157-158",
+        "expected: Identifier of Identifier at 158-159",
+        "optional: null of CommaDelimiter at 159-159",
+        "expected: CloseParen of CloseParen at 159-160",
+        "optional: WhiteSpace of WhiteSpace at 160-161",
+        "expected: Arrow of Arrow at 161-163",
+        "optional: WhiteSpace of WhiteSpace at 163-164",
+        "optional: null of OpenCurly at 164-164",
+        "New cp58",
+        "result: [170,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"ExpressionStatement\",\"start\":164,\"expression\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a\",\"end\":167}]}},{\"kindName\":\"ExpressionStatement\",\"start\":164,\"expression\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a!\",\"end\":168}]}}]}]"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-158",
+        "optional: null of WhiteSpace at 158-158",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 158"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-159",
+        "optional: null of WhiteSpace at 159-159",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 159"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-160",
+        "optional: WhiteSpace of WhiteSpace at 160-161",
+        "Exiting branch because of: Exited because we didn't find one of OpenParen at 161"
+      ],
+      [
+        "optional choice: null of Async at 148-148",
+        "optional choice: null of WhiteSpace at 148-148",
+        "expected choice: Function of Function at 148-149",
+        "optional choice: WhiteSpace of WhiteSpace at 149-150",
+        "expected choice: Identifier of Identifier at 150-157",
+        "optional choice: null of WhiteSpace at 157-157",
+        "expected choice: OpenParen of OpenParen at 157-158",
+        "expected choice: Identifier of Identifier at 158-160",
+        "optional: null of CommaDelimiter at 160-160",
+        "Exiting branch because of: Exited because we didn't find one of CloseParen at 160"
+      ]
+    ],
+    "results": [
+      170
+    ]
+  },
+  "58": {
+    "startPosition": 164,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp59",
+        "result: [167,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a\",\"end\":167}]}]",
+        "expected: EndOfStatement of EndOfStatement at 167-170"
+      ],
+      [
+        "result choice: [168,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a!\",\"end\":168}]}]",
+        "expected: EndOfStatement of EndOfStatement at 168-170"
+      ],
+      [
+        "result choice: [166,{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/\",\"end\":166}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 166"
+      ]
+    ],
+    "results": [
+      170
+    ]
+  },
+  "59": {
+    "startPosition": 164,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 164-164",
+        "nud: parsePrimaryExpression",
+        "New cp60",
+        "result: [165,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]}]",
+        "optional: null of WhiteSpace at 165-165",
+        "led: parseBinaryExpression",
+        "New cp61",
+        "result: [167,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}}]",
+        "optional: null of WhiteSpace at 167-167",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 164-164",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [168,{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a!\",\"end\":168}]",
+        "optional: null of WhiteSpace at 168-168",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 164-164",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [167,{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/a\",\"end\":167}]",
+        "optional: null of WhiteSpace at 167-167",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 164-164",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [166,{\"kindName\":\"SymbolExpression\",\"symbol\":\"1/\",\"end\":166}]",
+        "optional: null of WhiteSpace at 166-166",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 164-164",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [165,{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]}]",
+        "optional choice: null of WhiteSpace at 165-165",
+        "led choice: parseBinaryExpression",
+        "result choice: [168,{\"kindName\":\"BinaryExpression\",\"left\":{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]},\"operator\":\"Divide\",\"right\":{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}}]",
+        "optional: null of WhiteSpace at 168-168",
+        "led: null"
+      ]
+    ],
+    "results": [
+      167,
+      168,
+      166
+    ]
+  },
+  "60": {
+    "startPosition": 164,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Number of Number,String,Identifier at 164-165"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 164-165"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 164-166"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 164-167"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 164-168"
+      ]
+    ],
+    "results": [
+      165,
+      168,
+      167,
+      166
+    ]
+  },
+  "61": {
+    "startPosition": 165,
+    "parsingFunction": "parseBinaryExpression",
+    "parameters": "left:{\"kindName\":\"BranchingStatement\",\"branches\":[{\"kindName\":\"NumberExpression\",\"value\":1,\"end\":165},{\"kindName\":\"SymbolExpression\",\"symbol\":\"1\",\"end\":165}]}; nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Divide of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 165-166",
+        "New cp62",
+        "result: [167,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}]"
+      ],
+      [
+        "expected choice: Divide of LogicalOr,LogicalAnd,BitwiseOr,BitwiseXor,BitwiseAnd,Equals,NotEqual,StrongEqual,StrongNotEqual,StrongestEqual,StrongestNotEqual,Smaller,Greater,SmallerEqual,GreaterEqual,BitShiftLeft,BitShiftRight,BitShiftUnsignedLeft,BitShiftUnsignedRight,Add,Subtract,Multiply,Divide,Modulo,Exponent at 165-166",
+        "result choice: [168,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}]"
+      ]
+    ],
+    "results": [
+      167,
+      168
+    ]
+  },
+  "62": {
+    "startPosition": 166,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 166-166",
+        "nud: parsePrimaryExpression",
+        "New cp63",
+        "result: [167,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a\",\"end\":167}]",
+        "optional: null of WhiteSpace at 167-167",
+        "led: null"
+      ],
+      [
+        "optional choice: null of WhiteSpace at 166-166",
+        "nud choice: parsePrimaryExpression",
+        "result choice: [168,{\"kindName\":\"SymbolExpression\",\"symbol\":\"a!\",\"end\":168}]",
+        "optional: null of WhiteSpace at 168-168",
+        "led: null"
+      ]
+    ],
+    "results": [
+      167,
+      168
+    ]
+  },
+  "63": {
+    "startPosition": 166,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 166-167"
+      ],
+      [
+        "expected choice: Identifier of Number,String,Identifier at 166-168"
+      ]
+    ],
+    "results": [
+      167,
+      168
+    ]
+  },
+  "64": {
+    "startPosition": 148,
+    "parsingFunction": "parseExpressionStatement",
+    "parameters": "",
+    "branches": [
+      [
+        "New cp65",
+        "result: [150,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":149}]",
+        "Exiting branch because of: Exited because we didn't find one of EndOfStatement at 150"
+      ]
+    ],
+    "results": []
+  },
+  "65": {
+    "startPosition": 148,
+    "parsingFunction": "parseExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "optional: null of WhiteSpace at 148-148",
+        "nud: parsePrimaryExpression",
+        "New cp66",
+        "result: [149,{\"kindName\":\"SymbolExpression\",\"symbol\":\"f\",\"end\":149}]",
+        "optional: WhiteSpace of WhiteSpace at 149-150",
+        "led: null"
+      ]
+    ],
+    "results": [
+      150
+    ]
+  },
+  "66": {
+    "startPosition": 148,
+    "parsingFunction": "parsePrimaryExpression",
+    "parameters": "nbSpaces:Infinity",
+    "branches": [
+      [
+        "expected: Identifier of Number,String,Identifier at 148-149"
+      ]
+    ],
+    "results": [
+      149
     ]
   }
 }

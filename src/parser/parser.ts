@@ -1,21 +1,16 @@
-/*
-When parsing, instead of making only 1 tree, when we hit an apparent error or ambiguous syntax, we'll create branches of possible results. (branches are async?)
-Then, after parsing, we go through each possibility and find which one is more likely/better using some rules.
-I think that ultimately, its impossible to have errors in DreamBerd because we can just turn it to string.
-*/
-
 import { AstNodeKind, BlockStatement, BranchingStatement, createAstNode, Statement } from "./astNodes.ts";
 import { Tokenizer } from "../lexer/lexer.ts";
 import { getToken, getTokenTypes, getTokenValues, hasTokensLeft, Token, TokenType, TokenValue } from "../lexer/token.ts";
 import ParsingFunctionMaps, { LedHandler, NudHandler, StmtHandler } from "./parsingFunctionMaps.ts";
 import { BindingPower } from "./bindingPower.ts";
-import { parseProgram } from "./parserFunctions.ts";
+import { parseProgram } from "./parsingFunctions.ts";
 import { Checkpoint, Handler, HandlerParameters } from "./branches/checkpoint.ts";
 import { ParserState, ResultChoice } from "./branches/parserState.ts";
 import { Logger, ParserLogger } from "./branches/logger.ts";
 
 export interface Options {
   debug?: boolean;
+  saveLogs?: boolean;
   useSignificantWhitespace?: boolean;
   useLifetime?: boolean;
   useTypes?: boolean;
@@ -31,20 +26,14 @@ export async function createAst(sourceCode: string): Promise<[BlockStatement | B
   const options: Options = {
     debug: true,
     useSignificantWhitespace: false,
+    saveLogs: true,
   };
   const tokens = new Tokenizer(sourceCode).tokenize();
   const mappings = new ParsingFunctionMaps(options);
 
   const checkpoint = Checkpoint.newCheckpoint(options, { tokens, mappings }, 0, parseProgram, [], new ParserLogger([]));
 
-  const allResults = (await checkpoint.getResults()).map(([, results]) => results);
-
-  const resultList = allResults.flatMap((astNode) => {
-    if (astNode.kind === AstNodeKind.BranchingStatement) {
-      return astNode.branches;
-    }
-    return [astNode];
-  });
+  const resultList = await checkpoint.getResultsAsStartingPoint();
 
   if (resultList.length === 1) {
     return [resultList[0], Logger.getLogs()];
@@ -60,6 +49,16 @@ export class ExitBranchError extends Error {
   }
 }
 
+/**
+ * The idea with the parser is that it abstracts all the complexity from multiple valid interpretation of the same part of source code by creating parallel branches that
+ * parse the same parts, but slightly differently. When parsing, the parser will always react like there is only 1 branch (the current one), but anytime it could
+ * answer more than 1 way (it has more than 1 choice), it creates a new branch in the background for each other possibility that wasn't explored. When we reach the
+ * end of a branch, we save the result and continue parsing other branches. If a possibility leads to incorrect or invalid code, the branch is aborted and we continue
+ * parsing other branches.
+ *
+ * We also have Checkpoints that make sure that when multiple parsers go over the same part of the code in the same way, they don't have to do the same work twice.
+ * They memoize the result at that point and returns it without needing to recalculate everything.
+ */
 export default class Parser {
   //Checkpoint
   private checkpoint: Checkpoint<any, any>;
@@ -83,7 +82,15 @@ export default class Parser {
     return this.checkpoint.options;
   }
 
-  public current(): Token {
+  public hasToken(): boolean {
+    return hasTokensLeft(this.getPosition(), this.checkpoint.environment.tokens);
+  }
+
+  public getPosition(): number {
+    return this.state.position;
+  }
+
+  private current(): Token {
     const token = getToken(this.getPosition(), this.checkpoint.environment.tokens);
 
     if (token !== undefined) {
@@ -93,16 +100,8 @@ export default class Parser {
     throw this.exit(`No token was found at position ${this.getPosition()}`);
   }
 
-  public moveTo(end: number) {
+  private moveTo(end: number) {
     this.state.position = end;
-  }
-
-  public hasToken(): boolean {
-    return hasTokensLeft(this.getPosition(), this.checkpoint.environment.tokens);
-  }
-
-  public getPosition(): number {
-    return this.state.position;
   }
 
   /**

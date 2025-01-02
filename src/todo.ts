@@ -2,6 +2,17 @@
 /*                                 START TODO                                 */
 /* -------------------------------------------------------------------------- */
 /*
+next steps:
+	- fix small problems (comments)
+	- add whitespace and significant whitespace to every parsing functions
+	- fix parsing that ends at different places creates a slightly different copy of the whole thing.
+	- various improvements to help with parsing functions (exec with multiple handlers, better BranchingStatement type)
+	- tests
+*/
+
+
+
+/*
 ~ Need fixing
 Comments don't work. (when we make a comment, we remove the characters, but we don't change the remaining tokens, this makes it so their start and end have a gap)
 
@@ -18,6 +29,11 @@ Comments don't work. (when we make a comment, we remove the characters, but we d
 	- a way to filter nodes in branching so we can verify that branching only has some specific types of nodes (ex: we can only assign a value to symbol and member expressions, so we want to filter for them)
 
 	- Most of the parsing functions don't take whitespace into account. Fix that + clean up.
+		How and when should we take care of whitespace?
+		What about new lines and indent?
+		How do we make them consistent between everything?
+			- Whitespace
+			- end of line/end of statement/end of file
 */
 
 
@@ -139,24 +155,6 @@ I think we do:
 
 */
 
-
-import Parser from "./parser/parser.ts";
-/*
-& Description
-The idea with the parser is that it abstracts all the complexity from multiple valid interpretation of the same part of code by creating parallel branches that
-parse the same parts, but slightly differently. When parsing, the parser will always react like there is only 1 branch (the current one), but anytime it could 
-answer more than 1 way (it has more than 1 choice), it creates a new branch in the background for each other possibility that wasn't explored. When we reach the
-end of a branch, we save the result and continue parsing other branches. If a possibility leads to incorrect or invalid code, the branch is aborted and we continue
-parsing other branches.
-
-We also have Checkpoints that make sure that when multiple parsers go over the same part of the code in the same way, they don't have to do the same work twice.
-They memoize the result at that point and returns it without needing to recalculate everything.
-*/
-
-import * as functions from "./parser/parserFunctions.ts";
-// & Description
-// The functions should be completely deterministic based on the state of the parser and only offer different results when the parser is called and it creates a new branch
-// At any other point, it needs to parse the exact same and we need a way to tell the code which possibility we are doing at the moment.
 
 
 /* ---------------------------------- Other --------------------------------- */

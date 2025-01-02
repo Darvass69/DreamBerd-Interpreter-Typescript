@@ -1,10 +1,8 @@
-// Order of operations
-
 import { TokenType } from "../lexer/token.ts";
 import { AstNodeKind, createAstNode, Expression, Statement } from "./astNodes.ts";
 import { BindingPower } from "./bindingPower.ts";
 import Parser, { Options } from "./parser.ts";
-import { parseAssignmentExpression, parseBinaryExpression, parseBlockStatement, parseCallExpression, parseExpressionStatement, parseFunctionDeclarationStatement, parseGroupingExpressionParen, parseIfStatement, parseMemberExpression, parsePrefixExpression, parsePrimaryExpression, parseReturnStatement, parseStateExpression, parseVariableDeclarationStatement, parseWhenStatement } from "./parserFunctions.ts";
+import { parseAssignmentExpression, parseBinaryExpression, parseBlockStatement, parseCallExpression, parseExpressionStatement, parseFunctionDeclarationStatement, parseGroupingExpressionParen, parseIfStatement, parseMemberExpression, parsePrefixExpression, parsePrimaryExpression, parseReturnStatement, parseStateExpression, parseVariableDeclarationStatement, parseWhenStatement } from "./parsingFunctions.ts";
 
 //TODO make async?
 export type StmtHandler = (parser: Parser) => Statement | Promise<Statement>;
@@ -17,6 +15,10 @@ export type LedParsingFunction = (parser: Parser, left: Expression, bp: BindingP
 
 //TODO add shorthand for `Lookups.createNudHandler(BindingPower.default_bp, parseExpression)`. Its used at multiple places.
 
+/**
+ * Holds mapping between parsing functions and tokens they can parse.
+ * TODO? Add a way to create mappings via injection so we can do unit tests more easily.
+ */
 export default class ParsingFunctionMaps {
   private stmt_lu: Map<TokenType, StmtHandler[]> = new Map();
   private nud_lu: Map<TokenType, NudHandler[]> = new Map();

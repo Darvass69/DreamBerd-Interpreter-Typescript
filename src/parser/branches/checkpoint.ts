@@ -96,7 +96,7 @@ export class Checkpoint<T extends HandlerParameters, R extends Statement> {
       this.checkpoints.get(position)?.get(parsingFunction.name)?.push(returnCheckpoint);
     } else if (oldCheckpoint.length > 1) {
       console.error("Found 2 checkpoints with same signature.");
-      //! If we get this, something is seriously wrong.
+      //& If we hit this, something is seriously wrong.
       throw new Error("Found 2 checkpoints with same signature.");
     } else {
       returnCheckpoint = oldCheckpoint[0];
@@ -272,5 +272,16 @@ export class Checkpoint<T extends HandlerParameters, R extends Statement> {
     });
 
     return await promise;
+  }
+
+  public async getResultsAsStartingPoint() {
+    const allResults = (await this.getResults()).map(([, results]) => results);
+
+    return allResults.flatMap((astNode) => {
+      if (astNode.kind === AstNodeKind.BranchingStatement) {
+        return (astNode as BranchingStatement<R>).branches;
+      }
+      return [astNode];
+    });
   }
 }

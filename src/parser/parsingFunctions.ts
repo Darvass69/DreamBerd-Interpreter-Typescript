@@ -1,9 +1,17 @@
-import { BinaryOperators, TokenType, TokenValue } from "../lexer/token.ts";
+import { BinaryOperators, TokenType } from "../lexer/token.ts";
 import { AssignmentExpression, AstNodeKind, BinaryExpression, BlockStatement, BranchingStatement, CallExpression, createAstNode, Expression, ExpressionStatement, FunctionDeclarationStatement, IfStatement, MemberExpression, NumberExpression, PrefixExpression, ReturnStatement, StateExpression, Statement, StringExpression, SymbolExpression, VariableDeclarationStatement, VariableModifiers, WhenStatement } from "./astNodes.ts";
 import { BindingPower } from "./bindingPower.ts";
 import ParsingFunctionMaps, { LedHandler } from "./parsingFunctionMaps.ts";
 import Parser from "./parser.ts";
 import { FunctionParameterDeclaration } from "./astNodes.ts";
+
+/**
+ * Parsing functions are the functions that turn part of the source code (in their token form) into their AST form.
+ *
+ * To do that and be compatible with the parser, they need to follow a simple rule. It needs to be completely deterministic with the results from the Parser.
+ * This means that if we call the same parsing function multiple times with a parser with the same internal state, it should always return the exact same thing.
+ * Essentially, the only thing that should affect the result is data coming from the Parser, and nothing else.
+ */
 
 class NotImplementedError extends Error {
   constructor(feature: string, fn: Function) {
@@ -23,7 +31,11 @@ export async function parseProgram(p: Parser): Promise<BlockStatement> {
 }
 
 export async function parseStatement(p: Parser): Promise<Statement> {
-  p.optional([TokenType.WhiteSpace]); //*Whitespace
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]); //*Whitespace
+  }
   return await p.executeHandler(p.getStmt());
 }
 
@@ -38,17 +50,31 @@ export async function parseExpression(p: Parser, bp: BindingPower, nbSpaces: num
   //   p.exit();
   // }
 
-  p.optional([TokenType.WhiteSpace]); //*Whitespace
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseExpression);
+  } else {
+    p.optional([TokenType.WhiteSpace]); //*Whitespace
+  }
 
   const nud_handler = p.getNud(bp);
-
   let left = await p.executeHandler(nud_handler, nbSpaces);
-  p.optional([TokenType.WhiteSpace]); //*Whitespace //! this will be a problem. We can't always eat this one, sometimes we might need to keep it to parse the next grouping
+
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseExpression);
+  } else {
+    p.optional([TokenType.WhiteSpace]); //*Whitespace //! this will be a problem. We can't always eat this one, sometimes we might need to keep it to parse the next grouping
+  }
 
   let led_handler: LedHandler | null = p.getLed(bp);
   while (led_handler !== null) { //! we need to add a branch with null
     left = await p.executeHandler(led_handler, left, nbSpaces);
-    p.optional([TokenType.WhiteSpace]); //*Whitespace
+
+    if (p.options.useSignificantWhitespace) {
+      throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+    } else {
+      p.optional([TokenType.WhiteSpace]); //*Whitespace
+    }
+
     led_handler = p.getLed(bp);
   }
   return left;
@@ -57,7 +83,9 @@ export async function parseExpression(p: Parser, bp: BindingPower, nbSpaces: num
 // Essentially a NUD, but its whitespace counterpart is way more complicated
 export async function parseGroupingExpressionParen(p: Parser, bp: BindingPower, nbSpaces: number): Promise<Expression> {
   p.expect([TokenType.OpenParen]);
+  p.optional([TokenType.WhiteSpace]);
   const expression = await p.executeHandler(ParsingFunctionMaps.createNudHandler(BindingPower.default_bp, parseExpression), nbSpaces); //*pExpr
+  p.optional([TokenType.WhiteSpace]);
   p.expect([TokenType.CloseParen]);
   return expression;
 }
@@ -97,14 +125,25 @@ export async function parseBlockStatement(p: Parser): Promise<BlockStatement> {
 
 export async function parseVariableDeclarationStatement(p: Parser): Promise<VariableDeclarationStatement> {
   const assignmentModifier = p.expect([TokenType.Const, TokenType.Var]);
-  p.optional([TokenType.WhiteSpace]);
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
   const mutationModifier = p.expect([TokenType.Const, TokenType.Var]);
-  p.optional([TokenType.WhiteSpace]);
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
   const superglobal = p.optional([TokenType.Const]);
-  p.optional([TokenType.WhiteSpace]);
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
 
   const modifiers: VariableModifiers = { canReassign: assignmentModifier.type === TokenType.Var, canMutate: mutationModifier.type === TokenType.Var, superglobal: false };
-
   if (
     assignmentModifier.type === TokenType.Const &&
     mutationModifier.type === TokenType.Const &&
@@ -114,7 +153,11 @@ export async function parseVariableDeclarationStatement(p: Parser): Promise<Vari
   }
 
   const identifier = p.expect([TokenType.Identifier]);
-  p.optional([TokenType.WhiteSpace]);
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
 
   if (p.options.useLifetime) {
     // const lifetime = p.executeHandler(parseLifetime)
@@ -128,7 +171,11 @@ export async function parseVariableDeclarationStatement(p: Parser): Promise<Vari
 
   let value: Expression | undefined = undefined;
   const assignment = p.optional([TokenType.Assignment]);
-  p.optional([TokenType.WhiteSpace]);
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
 
   if (assignment !== null) {
     // We can't use combined assignment in the declaration
@@ -150,25 +197,43 @@ export async function parseVariableDeclarationStatement(p: Parser): Promise<Vari
 
 export async function parseFunctionDeclarationStatement(p: Parser): Promise<FunctionDeclarationStatement> {
   const async = p.optional([TokenType.Async]);
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
 
   p.expect([TokenType.Function]);
+
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
+
   const identifier = p.expect([TokenType.Identifier]);
 
-  if (!p.options.useSignificantWhitespace) {
-    p.expect([TokenType.OpenParen]);
-  } else {
+  if (p.options.useSignificantWhitespace) {
     throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
   }
 
   const parameters = parseFunctionParametersDeclaration(p);
 
-  if (!p.options.useSignificantWhitespace) {
-    p.expect([TokenType.CloseParen]);
-  } else {
+  if (p.options.useSignificantWhitespace) {
     throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
   }
 
   p.expect([TokenType.Arrow]);
+
+  if (p.options.useSignificantWhitespace) {
+    throw new NotImplementedError("useSignificantWhitespace", parseFunctionDeclarationStatement);
+  } else {
+    p.optional([TokenType.WhiteSpace]);
+  }
 
   let body: ExpressionStatement | BlockStatement | BranchingStatement<ExpressionStatement | BlockStatement>;
   if (p.optional([TokenType.OpenCurly]) !== null) { //!!! This doesn't work. We are eating the curly when it should be block statement that handles that. We need a way to give more than 1 thing to execute.

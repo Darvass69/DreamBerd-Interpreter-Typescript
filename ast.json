@@ -1,5 +1,366 @@
 {
-  "kindName": "BranchingStatement",
-  "start": 0,
-  "branches": []
+  "kindName": "BlockStatement",
+  "body": [
+    {
+      "kindName": "FunctionDeclarationStatement",
+      "name": "add",
+      "parameters": [
+        {
+          "identifier": "a"
+        },
+        {
+          "identifier": "b"
+        }
+      ],
+      "isAsync": false,
+      "body": {
+        "kindName": "BranchingStatement",
+        "branches": [
+          {
+            "kindName": "ExpressionStatement",
+            "start": 22,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 23
+              },
+              "operator": "Add",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b",
+                "end": 27
+              }
+            }
+          },
+          {
+            "kindName": "ExpressionStatement",
+            "start": 22,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 23
+              },
+              "operator": "Add",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b!",
+                "end": 28
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kindName": "FunctionDeclarationStatement",
+      "name": "multiply",
+      "parameters": [
+        {
+          "identifier": "a"
+        },
+        {
+          "identifier": "b"
+        }
+      ],
+      "isAsync": false,
+      "body": {
+        "kindName": "BranchingStatement",
+        "branches": [
+          {
+            "kindName": "ExpressionStatement",
+            "start": 53,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 54
+              },
+              "operator": "Multiply",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b",
+                "end": 58
+              }
+            }
+          },
+          {
+            "kindName": "ExpressionStatement",
+            "start": 53,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 54
+              },
+              "operator": "Multiply",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b!",
+                "end": 59
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kindName": "FunctionDeclarationStatement",
+      "name": "subtract",
+      "parameters": [
+        {
+          "identifier": "a"
+        },
+        {
+          "identifier": "b"
+        }
+      ],
+      "isAsync": false,
+      "body": {
+        "kindName": "BranchingStatement",
+        "branches": [
+          {
+            "kindName": "ExpressionStatement",
+            "start": 83,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 84
+              },
+              "operator": "Subtract",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b",
+                "end": 88
+              }
+            }
+          },
+          {
+            "kindName": "ExpressionStatement",
+            "start": 83,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 84
+              },
+              "operator": "Subtract",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b!",
+                "end": 89
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kindName": "FunctionDeclarationStatement",
+      "name": "divide",
+      "parameters": [
+        {
+          "identifier": "a"
+        },
+        {
+          "identifier": "b"
+        }
+      ],
+      "isAsync": false,
+      "body": {
+        "kindName": "BranchingStatement",
+        "branches": [
+          {
+            "kindName": "ExpressionStatement",
+            "start": 110,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 111
+              },
+              "operator": "Divide",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b",
+                "end": 115
+              }
+            }
+          },
+          {
+            "kindName": "ExpressionStatement",
+            "start": 110,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 111
+              },
+              "operator": "Divide",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b!",
+                "end": 116
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kindName": "FunctionDeclarationStatement",
+      "name": "power",
+      "parameters": [
+        {
+          "identifier": "a"
+        },
+        {
+          "identifier": "b"
+        }
+      ],
+      "isAsync": false,
+      "body": {
+        "kindName": "BranchingStatement",
+        "branches": [
+          {
+            "kindName": "ExpressionStatement",
+            "start": 140,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 141
+              },
+              "operator": "Exponent",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b",
+                "end": 145
+              }
+            }
+          },
+          {
+            "kindName": "ExpressionStatement",
+            "start": 140,
+            "expression": {
+              "kindName": "BinaryExpression",
+              "left": {
+                "kindName": "SymbolExpression",
+                "symbol": "a",
+                "end": 141
+              },
+              "operator": "Exponent",
+              "right": {
+                "kindName": "SymbolExpression",
+                "symbol": "b!",
+                "end": 146
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kindName": "FunctionDeclarationStatement",
+      "name": "inverse",
+      "parameters": [
+        {
+          "identifier": "a"
+        }
+      ],
+      "isAsync": false,
+      "body": {
+        "kindName": "BranchingStatement",
+        "branches": [
+          {
+            "kindName": "ExpressionStatement",
+            "start": 164,
+            "expression": {
+              "kindName": "BranchingStatement",
+              "branches": [
+                {
+                  "kindName": "BinaryExpression",
+                  "left": {
+                    "kindName": "BranchingStatement",
+                    "branches": [
+                      {
+                        "kindName": "NumberExpression",
+                        "value": 1,
+                        "end": 165
+                      },
+                      {
+                        "kindName": "SymbolExpression",
+                        "symbol": "1",
+                        "end": 165
+                      }
+                    ]
+                  },
+                  "operator": "Divide",
+                  "right": {
+                    "kindName": "SymbolExpression",
+                    "symbol": "a",
+                    "end": 167
+                  }
+                },
+                {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1/a",
+                  "end": 167
+                }
+              ]
+            }
+          },
+          {
+            "kindName": "ExpressionStatement",
+            "start": 164,
+            "expression": {
+              "kindName": "BranchingStatement",
+              "branches": [
+                {
+                  "kindName": "BinaryExpression",
+                  "left": {
+                    "kindName": "BranchingStatement",
+                    "branches": [
+                      {
+                        "kindName": "NumberExpression",
+                        "value": 1,
+                        "end": 165
+                      },
+                      {
+                        "kindName": "SymbolExpression",
+                        "symbol": "1",
+                        "end": 165
+                      }
+                    ]
+                  },
+                  "operator": "Divide",
+                  "right": {
+                    "kindName": "SymbolExpression",
+                    "symbol": "a!",
+                    "end": 168
+                  }
+                },
+                {
+                  "kindName": "SymbolExpression",
+                  "symbol": "1/a!",
+                  "end": 168
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
 }

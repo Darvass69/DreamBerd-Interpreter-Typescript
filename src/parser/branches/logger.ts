@@ -1,5 +1,5 @@
 import { TokenType, TokenValue } from "../../lexer/token.ts";
-import { astToStringJson } from "../../main.ts";
+import { astToStringJson } from "../../utils.ts";
 import { Expression, Statement } from "../astNodes.ts";
 import { Handler, HandlerParameters } from "./checkpoint.ts";
 import { ResultChoice } from "./parserState.ts";
